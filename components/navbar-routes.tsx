@@ -4,7 +4,7 @@
 
 import { UserButton, useAuth } from '@clerk/nextjs';
 import { usePathname } from 'next/navigation';
-import { LogOut } from 'lucide-react';
+import { LogOut, PlusCircle } from 'lucide-react';
 import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
@@ -16,30 +16,21 @@ export const NavbarRoutes = () => {
   const { userId } = useAuth();
   const pathname = usePathname();
 
-  const isCreatorPage = pathname?.startsWith('/creator');
-  const isCoursePage = pathname?.includes('/courses');
-  const isSearchPage = pathname === '/search';
+  const isHome = pathname === '/';
 
   return (
     <>
-      {isSearchPage && (
-        <div className='hidden md:block'>{/* <SearchInput /> */}</div>
-      )}
+      <div className='hidden md:block'>{/* <SearchInput /> */}</div>
       <div className='flex gap-x-2 ml-auto'>
-        {isCreatorPage || isCoursePage ? (
-          <Link href='/'>
-            <Button size='sm' variant='ghost'>
-              <LogOut className='h-4 w-4 mr-2' />
-              Exit
-            </Button>
-          </Link>
-        ) : (
-          <Link href='/creator/food'>
-            <Button size='sm' variant='ghost'>
-              Creator mode
+        {isHome && (
+          <Link href='/create'>
+            <Button size='sm'>
+              <PlusCircle className='h-4 w-4 mr-2' />
+              Add Food
             </Button>
           </Link>
         )}
+
         <UserButton afterSignOutUrl='/' />
       </div>
     </>

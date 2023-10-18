@@ -80,3 +80,52 @@ body,
     @apply bg-background text-foreground;
   }
 }
+
+/* PILLS */
+
+.pill-label {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 20px;
+  background-color: #007bff; /* Selected color */
+  color: #fff; /* Text color for selected pills */
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &::before {
+    content: '\2713'; /* Unicode checkmark symbol */
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background-color: #fff; /* Background for selected state */
+    margin-right: 8px;
+    color: #007bff; /* Checkmark color for selected pills */
+    text-align: center;
+    line-height: 18px;
+    transform: scale(0); /* Initially, the checkmark is hidden */
+    transition: transform 0.3s;
+  }
+}
+
+/* Style for the selected pills */
+.pill-label input:checked + .pill-label {
+  background-color: #ccc; /* Background color for selected state */
+  color: #000; /* Text color for selected pills */
+
+  &::before {
+    transform: scale(1); /* Show the checkmark */
+  }
+}
+
+/* Hover effect */
+.pill-label:hover {
+  background-color: #0056b3; /* Hover color */
+}
+
+/* Style for the hidden checkboxes */
+/* input[type='checkbox'] {
+  display: none;
+} */
+
+@import '~@uploadthing/react/styles.css';

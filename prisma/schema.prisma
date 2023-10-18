@@ -9,4 +9,266 @@ generator client {
 }
 
 
+enum Gender {
+  MALE
+  FEMALE
+}
+
+model User {
+  id String @id @default(uuid())
+  name            String?
+  email           String?   @unique
+  emailVerified   DateTime?
+  image           String?
+  hashedPassword  String?
+
+  age Int?
+  height Int?
+  weight Float?
+  gender Gender?
+  pal Float?
+  rmr Float?
+
+  foods Food[]
+  meals Meal[]
+  favorites Favorite[]
+  
+  accounts Account[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Account {
+  id String @id @default(uuid())
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?  
+  access_token       String?  
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?  
+  session_state      String?
+
+  userId             String  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  
+  @@index([userId])
+}
+
+model Meal {
+  id String @id @default(uuid())
+  title String @db.Text
+  imageUrl String? @db.Text
+  description String? @db.Text
+
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  mealFoods MealFood[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model Food {
+  id String @id @default(uuid())
+  title String @db.Text
+  imageUrl String? @db.Text
+  preferences Json?
+  characteristics Json?
+  isCreator Boolean @default(false)
+
+  categoryId String
+  category Category @relation(fields: [categoryId], references: [id])
+
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  mealFoods MealFood[]
+  favourites Favorite[]
+  mainNutrients MainNutrient[]
+  minerals Mineral[]
+  traceElements TraceElement[]
+  vitamins Vitamin[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([categoryId])
+  @@index([userId])
+}
+
+model MealFood {
+  id String @id @default(uuid())
+  quantity Float
+
+  mealId String
+  meal Meal @relation(fields: [mealId], references: [id])
+
+  foodId String
+  food Food @relation(fields: [foodId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([mealId])
+  @@index([foodId])
+}
+
+model Favorite {
+  id String @id @default(uuid())
+
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  foodId String
+  food Food @relation(fields: [foodId] ,references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, foodId])
+  @@index([foodId])
+}
+
+model Category {
+  id String @id @default(uuid())
+  name String @unique
+  foods Food[]
+}
+
+model MainNutrient {
+  id String @id @default(uuid())
+  calories Float
+  fats Float
+  saturated Float
+  unsaturated Float
+  polyunsaturated Float
+  proteins Float
+  carbohydrates Float
+  sugar Float
+  fiber Float
+  salt Float
+  water Float
+
+  caloriesUnit String @default("kcal")
+  fatsUnit String @default("g")
+  saturatedUnit String @default("g")
+  unsaturatedUnit String @default("g")
+  polyunsaturatedUnit String @default("g")
+  proteinsUnit String @default("g")
+  carbohydratesUnit String @default("g")
+  sugarUnit String @default("g")
+  fiberUnit String @default("g")
+  saltUnit String @default("g")
+  waterUnit String @default("ml")
+
+  foodId String
+  food Food @relation(fields: [foodId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([foodId])
+}
+
+model Mineral {
+  id String @id @default(uuid())
+  calcium Float
+  chloride Float
+  potassium Float
+  magnesium Float
+  sodium Float
+  phosphorus Float
+  sulfur Float
+
+  calciumUnit String @default("mg")
+  chlorideUnit String @default("mg")
+  potassiumUnit String @default("mg")
+  magnesiumUnit String @default("mg")
+  sodiumUnit String @default("mg")
+  phosphorusUnit String @default("mg")
+  sulfurUnit String @default("mg")
+
+  foodId String
+  food Food @relation(fields: [foodId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([foodId])
+}
+
+model TraceElement {
+  id String @id @default(uuid())
+  copper Float
+  fluoride Float
+  iron Float
+  iodine Float
+  manganese Float
+  zinc Float
+  selenium Float
+
+  ironUnit String @default("mg")
+  fluorideUnit String @default("mg")
+  copperUnit String @default("mg")
+  manganeseUnit String @default("mg")
+  seleniumUnit String @default("µg")
+  iodineUnit String @default("µg")
+  zincUnit String @default("µg")
+
+  foodId String
+  food Food @relation(fields: [foodId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([foodId])
+} 
+
+model Vitamin { 
+  id String @id @default(uuid())
+  vitaminA Float
+  vitaminB1 Float
+  vitaminB2 Float
+  vitaminB3 Float
+  vitaminB5 Float
+  vitaminB6 Float
+  vitaminB7 Float
+  vitaminB9 Float
+  vitaminB12 Float
+  vitaminC Float
+  vitaminD Float
+  vitaminE Float
+  vitaminK Float
+
+  vitaminAUnit String @default("µg")
+  vitaminB1Unit String @default("mg")
+  vitaminB2Unit String @default("mg")
+  vitaminB3Unit String @default("mg")
+  vitaminB5Unit String @default("mg")
+  vitaminB6Unit String @default("mg")
+  vitaminB7Unit String @default("µg")
+  vitaminB9Unit String @default("µg")
+  vitaminB12Unit String @default("µg")
+  vitaminCUnit String @default("mg")
+  vitaminDUnit String @default("µg")
+  vitaminEUnit String @default("mg")
+  vitaminKUnit String @default("µg")
+
+  foodId String
+  food Food @relation(fields: [foodId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([foodId])
+} 
 
