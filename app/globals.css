@@ -81,51 +81,51 @@ body,
   }
 }
 
+@import '~@uploadthing/react/styles.css';
+
 /* PILLS */
 
-.pill-label {
+/* .pill-label {
   display: inline-block;
   padding: 8px 16px;
   border-radius: 20px;
-  background-color: #007bff; /* Selected color */
-  color: #fff; /* Text color for selected pills */
+  background-color: #007bff; 
+  color: #fff;
   cursor: pointer;
   transition: background-color 0.3s;
 
   &::before {
-    content: '\2713'; /* Unicode checkmark symbol */
+    content: '\2713'; 
     display: inline-block;
     width: 18px;
     height: 18px;
     border-radius: 50%;
-    background-color: #fff; /* Background for selected state */
+    background-color: #fff; 
     margin-right: 8px;
-    color: #007bff; /* Checkmark color for selected pills */
+    color: #007bff; 
     text-align: center;
     line-height: 18px;
-    transform: scale(0); /* Initially, the checkmark is hidden */
+    transform: scale(0); 
     transition: transform 0.3s;
   }
 }
 
-/* Style for the selected pills */
+
 .pill-label input:checked + .pill-label {
-  background-color: #ccc; /* Background color for selected state */
-  color: #000; /* Text color for selected pills */
+  background-color: #ccc; 
+  color: #000;
 
   &::before {
-    transform: scale(1); /* Show the checkmark */
+    transform: scale(1); 
   }
 }
 
-/* Hover effect */
+
 .pill-label:hover {
-  background-color: #0056b3; /* Hover color */
-}
+  background-color: #0056b3; 
+} */
 
 /* Style for the hidden checkboxes */
 /* input[type='checkbox'] {
   display: none;
 } */
-
-@import '~@uploadthing/react/styles.css';

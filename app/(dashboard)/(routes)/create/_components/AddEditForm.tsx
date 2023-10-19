@@ -6,12 +6,22 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import GeneralForm from './GeneralForm';
 
-import { Form } from '@/components/ui/form';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import { Food } from '@prisma/client';
 import { ImageForm } from './ImageForm';
+import { Input } from '@/components/ui/input';
+import { IconBadge } from '@/components/IconBadge';
+import { Brush } from 'lucide-react';
 
 interface GeneralFormProps {
   initialData?: Food;
@@ -22,9 +32,9 @@ interface GeneralFormProps {
 const formSchema = z.object({
   title: z.string().min(1, { message: 'Title is required' }),
   categoryId: z.string().min(1),
-  imageUrl: z.string().min(1, {
-    message: 'Image is required',
-  }),
+  // imageUrl: z.string().min(1, {
+  //   message: 'Image is required',
+  // }),
 });
 
 const AddEditForm = ({ initialData, foodId, options }: GeneralFormProps) => {
@@ -35,10 +45,11 @@ const AddEditForm = ({ initialData, foodId, options }: GeneralFormProps) => {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    // defaultValue: initialData
-    defaultValues: {
-      categoryId: initialData?.categoryId,
-    },
+    defaultValues: initialData,
+    // defaultValues: {
+    //   title: initialData?.title,
+    //   categoryId: initialData?.categoryId,
+    // },
   });
 
   const { isSubmitting, isValid } = form.formState;
@@ -52,7 +63,7 @@ const AddEditForm = ({ initialData, foodId, options }: GeneralFormProps) => {
     //     await axios.post('/api/food/', values);
     //   }
 
-    //   toast.success('Food Created');
+    //   toast.success(`Food ${isEditSession ? 'updated' : 'created'}`);
     //   router.refresh();
     // } catch {
     //   toast.error('Something went wrong');
@@ -71,20 +82,31 @@ const AddEditForm = ({ initialData, foodId, options }: GeneralFormProps) => {
           </span>
         </div>
       </div>
-      <div className='grid grid-cols-1 md:grid-cols-2 gap-6 mt-16'>
+      <div className=''>
         <div>
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
-              className='grid grid-rows-1 gap-2'
+              className='grid grid-cols-1 md:grid-cols-2 gap-6 mt-16'
             >
-              <GeneralForm
-                form={form}
-                isSubmitting={isSubmitting}
-                options={options}
-              />
+              <div>
+                <div className='flex items-center gap-x-2'>
+                  <IconBadge icon={Brush} />
+                  <h2 className='text-xl text-primary-600 font-semibold'>
+                    Customize your Food
+                  </h2>
+                </div>
+                <GeneralForm
+                  form={form}
+                  isSubmitting={isSubmitting}
+                  options={options}
+                />
+              </div>
 
-              <ImageForm initialData={initialData} foodId={initialData?.id} />
+              <ImageForm
+                initialData={isEditSession ? initialData : null}
+                foodId={isEditSession ? initialData?.id : null}
+              />
 
               <div className='flex items-center gap-x-2'>
                 <Button disabled={!isValid || isSubmitting} type='submit'>

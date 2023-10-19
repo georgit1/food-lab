@@ -1,20 +1,26 @@
 import { db } from '@/lib/db';
-import { auth } from '@clerk/nextjs';
 import { redirect } from 'next/navigation';
 import AddEditForm from '../_components/AddEditForm';
+import getCurrentUser from '@/lib/getCurrentUser';
 
 const EditFoodPage = async ({ params }: { params: { foodId: string } }) => {
+  const currentUser = await getCurrentUser();
   const { foodId } = params;
-  const { userId } = auth();
 
-  if (!userId) {
+  if (!currentUser?.id || !currentUser?.email) {
     return redirect('/');
   }
+
+  const categories = await db.category.findMany({
+    orderBy: {
+      name: 'asc',
+    },
+  });
 
   const food = await db.food.findUnique({
     where: {
       id: foodId,
-      userId,
+      userId: currentUser.id,
     },
   });
 
@@ -22,10 +28,18 @@ const EditFoodPage = async ({ params }: { params: { foodId: string } }) => {
     return redirect('/');
   }
 
+  console.log(food);
+
   return (
     <div>
-      EditForm
-      {/* <AddEditForm initialFood={food} foodId={food.id} /> */}
+      <AddEditForm
+        initialData={food}
+        foodId={food.id}
+        options={categories.map((category) => ({
+          label: category.name,
+          value: category.id,
+        }))}
+      />
     </div>
   );
 };

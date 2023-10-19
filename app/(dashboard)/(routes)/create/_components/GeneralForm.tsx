@@ -23,12 +23,12 @@ interface GeneralFormProps {
 const GeneralForm = ({ form, isSubmitting, options }: GeneralFormProps) => {
   return (
     <>
-      <div className='flex items-center gap-x-2'>
+      {/* <div className='flex items-center gap-x-2'>
         <IconBadge icon={Brush} />
         <h2 className='text-xl text-primary-600 font-semibold'>
           Customize your Food
         </h2>
-      </div>
+      </div> */}
       <div className='flex flex-col mt-3 border bg-primary-50 rounded-md p-4 gap-2'>
         <div className='flex'>
           <FormField
@@ -44,6 +44,7 @@ const GeneralForm = ({ form, isSubmitting, options }: GeneralFormProps) => {
                     disabled={isSubmitting}
                     placeholder='Enter title'
                     {...field}
+                    value={field.value || ''}
                   />
                 </FormControl>
                 <FormMessage />
@@ -59,7 +60,11 @@ const GeneralForm = ({ form, isSubmitting, options }: GeneralFormProps) => {
                   Category
                 </FormLabel>
                 <FormControl>
-                  <Combobox options={...options} {...field} />
+                  <Combobox
+                    options={...options}
+                    {...field}
+                    value={field.value || undefined}
+                  />
                 </FormControl>
                 <FormMessage className='text-sm' />
               </FormItem>

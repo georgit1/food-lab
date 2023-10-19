@@ -6,6 +6,7 @@ const database = new PrismaClient();
 
 async function main() {
   try {
+    await database.$connect();
     await database.category.createMany({
       data: [
         { name: 'Grains' },

@@ -1,25 +1,27 @@
-import { auth } from '@clerk/nextjs';
 import { NextResponse } from 'next/server';
 
 import { db } from '@/lib/db';
+import getCurrentUser from '@/lib/getCurrentUser';
 
 export async function POST(req: Request) {
   try {
-    const { userId } = auth();
+    const currentUser = await getCurrentUser();
     const data = await req.json();
 
-    if (!userId) {
+    if (!currentUser?.id || !currentUser?.email) {
       return new NextResponse('Unauthorized', { status: 401 });
     }
 
     const foodData = {
       ...data,
-      userId,
+      userId: currentUser.id,
     };
 
     const food = await db.food.create({
       data: foodData,
     });
+
+    // #######################
 
     // const food = await db.food.create({
     //   ...data,

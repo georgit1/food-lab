@@ -1,24 +1,24 @@
 import { db } from '@/lib/db';
-import { auth } from '@clerk/nextjs';
+import getCurrentUser from '@/lib/getCurrentUser';
 import { NextResponse } from 'next/server';
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { courseId: string } }
+  { params }: { params: { foodId: string } }
 ) {
   try {
-    const { userId } = auth();
-    const { courseId } = params;
+    const currentUser = await getCurrentUser();
+    const { foodId } = params;
     const values = await req.json();
 
-    if (!userId) {
+    if (!currentUser?.id || !currentUser?.email) {
       return new NextResponse('Unauthorized', { status: 401 });
     }
 
     const course = await db.food.update({
       where: {
-        id: courseId,
-        userId,
+        id: foodId,
+        userId: currentUser.id,
       },
       data: {
         ...values,
@@ -27,7 +27,7 @@ export async function PATCH(
 
     return NextResponse.json(course);
   } catch (error) {
-    console.log('[COURSE_ID]', error);
+    console.log('[FOOD_ID]', error);
     return new NextResponse('Internal Error', { status: 500 });
   }
 }
