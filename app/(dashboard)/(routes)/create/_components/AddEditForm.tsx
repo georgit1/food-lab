@@ -3,25 +3,15 @@
 import * as z from 'zod';
 import axios from 'axios';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import GeneralForm from './GeneralForm';
-
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
-import { Button } from '@/components/ui/button';
-import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 import { Food } from '@prisma/client';
-import { ImageForm } from './ImageForm';
-import { Input } from '@/components/ui/input';
-import { IconBadge } from '@/components/IconBadge';
-import { Brush } from 'lucide-react';
+
+import { Form } from '@/components/ui/form';
+import { Button } from '@/components/ui/button';
+import GeneralForm from './GeneralForm';
+import ImageForm from './ImageForm';
 
 interface GeneralFormProps {
   initialData?: Food;
@@ -32,6 +22,7 @@ interface GeneralFormProps {
 const formSchema = z.object({
   title: z.string().min(1, { message: 'Title is required' }),
   categoryId: z.string().min(1),
+  preferences: z.record(z.string()),
   // imageUrl: z.string().min(1, {
   //   message: 'Image is required',
   // }),
@@ -46,6 +37,7 @@ const AddEditForm = ({ initialData, foodId, options }: GeneralFormProps) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: initialData,
+
     // defaultValues: {
     //   title: initialData?.title,
     //   categoryId: initialData?.categoryId,
@@ -85,31 +77,22 @@ const AddEditForm = ({ initialData, foodId, options }: GeneralFormProps) => {
       <div className=''>
         <div>
           <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(onSubmit)}
-              className='grid grid-cols-1 md:grid-cols-2 gap-6 mt-16'
-            >
-              <div>
-                <div className='flex items-center gap-x-2'>
-                  <IconBadge icon={Brush} />
-                  <h2 className='text-xl text-primary-600 font-semibold'>
-                    Customize your Food
-                  </h2>
-                </div>
+            <form onSubmit={form.handleSubmit(onSubmit)}>
+              <div className='grid grid-cols-1 md:grid-cols-2 gap-6 mt-16'>
                 <GeneralForm
                   form={form}
                   isSubmitting={isSubmitting}
                   options={options}
                 />
+
+                <ImageForm
+                  initialData={isEditSession ? initialData : null}
+                  foodId={isEditSession ? initialData?.id : null}
+                />
               </div>
 
-              <ImageForm
-                initialData={isEditSession ? initialData : null}
-                foodId={isEditSession ? initialData?.id : null}
-              />
-
-              <div className='flex items-center gap-x-2'>
-                <Button disabled={!isValid || isSubmitting} type='submit'>
+              <div className='flex items-center gap-x-2 mt-6 float-right'>
+                <Button disabled={isSubmitting} type='submit'>
                   Save
                 </Button>
               </div>

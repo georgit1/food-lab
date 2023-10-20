@@ -23,7 +23,7 @@ const formSchema = z.object({
   }),
 });
 
-export const ImageForm = ({ initialData, foodId }: ImageFormProps) => {
+const ImageForm = ({ initialData, foodId }: ImageFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
 
   const toggleEdit = () => setIsEditing((current) => !current);
@@ -99,3 +99,5 @@ export const ImageForm = ({ initialData, foodId }: ImageFormProps) => {
     </div>
   );
 };
+
+export default ImageForm;

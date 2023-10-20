@@ -2,7 +2,7 @@
 
 import { BarChart, Compass, Layout, Apple } from 'lucide-react';
 import { usePathname } from 'next/navigation';
-import { SidebarItem } from './sidebar-item';
+import { SidebarItem } from './SidebarItem';
 
 // import { SidebarItem } from "./sidebar-item";
 

@@ -3,13 +3,14 @@
 import * as z from 'zod';
 import axios from 'axios';
 import { signIn, useSession } from 'next-auth/react';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { BsGithub, BsGoogle } from 'react-icons/bs';
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { toast } from 'react-hot-toast';
 
 import AuthSocialButton from './AuthSocialButton';
-import { toast } from 'react-hot-toast';
 
 import {
   Form,
@@ -21,40 +22,32 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { zodResolver } from '@hookform/resolvers/zod';
-
-type Variant = 'LOGIN' | 'REGISTER';
 
 const formSchema = z.object({
   name: z.string().min(1, {
     message: 'Name is required',
   }),
-  email: z.string().min(1, {
-    message: 'Email is required',
-  }),
-  password: z.string().min(8, {
+  email: z
+    .string()
+    .min(1, {
+      message: 'Email is required',
+    })
+    .email(),
+  password: z.string().min(1, { message: 'password is required' }).min(8, {
     message: 'Password must be at least 8 characters long',
   }),
-  // .regex(
-  //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/,
-  //   {
-  //     message:
-  //       'Password must contain at least one lowercase letter, one uppercase letter, one digit, and one special character',
-  //   }
-  // ),
 });
 
-const AuthForm = () => {
+const SignUpForm = () => {
   const session = useSession();
   const router = useRouter();
-  const [variant, setVariant] = useState<Variant>('LOGIN');
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: { name: '', email: '', password: '' },
   });
 
-  const { isSubmitting, isValid } = form.formState;
+  const { isSubmitting } = form.formState;
 
   useEffect(() => {
     if (session?.status === 'authenticated') {
@@ -62,51 +55,25 @@ const AuthForm = () => {
     }
   }, [session?.status, router]);
 
-  const toggleVariant = useCallback(() => {
-    if (variant === 'LOGIN') {
-      setVariant('REGISTER');
-    } else {
-      setVariant('LOGIN');
-    }
-  }, [variant]);
-
-  // TODO
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    if (variant === 'REGISTER') {
-      axios
-        .post('/api/register', values)
-        .then(() =>
-          signIn('credentials', {
-            ...values,
-            redirect: false,
-          })
-        )
-        .then((callback) => {
-          if (callback?.error) {
-            toast.error('Invalid credentials!');
-          }
-
-          if (callback?.ok && !callback?.error) {
-            router.push('/');
-          }
+    axios
+      .post('/api/register', values)
+      .then(() =>
+        signIn('credentials', {
+          ...values,
+          redirect: false,
         })
-        .catch(() => toast.error('Something went wrong!'));
-    }
-
-    if (variant === 'LOGIN') {
-      signIn('credentials', {
-        ...values,
-        redirect: false,
-      }).then((callback) => {
+      )
+      .then((callback) => {
         if (callback?.error) {
           toast.error('Invalid credentials!');
         }
 
-        if (callback?.ok) {
+        if (callback?.ok && !callback?.error) {
           router.push('/');
         }
-      });
-    }
+      })
+      .catch(() => toast.error('Something went wrong!'));
   };
 
   const socialAction = (action: string) => {
@@ -135,27 +102,26 @@ const AuthForm = () => {
       >
         <Form {...form}>
           <form className='space-y-6' onSubmit={form.handleSubmit(onSubmit)}>
-            {variant === 'REGISTER' && (
-              <FormField
-                control={form.control}
-                name='name'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className='text-primary-600 font-semibold'>
-                      Name
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        disabled={isSubmitting}
-                        placeholder='Enter your name'
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            )}
+            <FormField
+              control={form.control}
+              name='name'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className='text-primary-600 font-semibold'>
+                    Name
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={isSubmitting}
+                      placeholder='Enter your name'
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <FormField
               control={form.control}
               name='email'
@@ -198,7 +164,7 @@ const AuthForm = () => {
             />
             <div>
               <Button disabled={isSubmitting} type='submit' className='w-full'>
-                {variant === 'LOGIN' ? 'Sign in' : 'Register'}
+                Sign Up
               </Button>
             </div>
           </form>
@@ -245,13 +211,12 @@ const AuthForm = () => {
             text-gray-500
           '
         >
-          <div>
-            {variant === 'LOGIN'
-              ? 'New to Messenger?'
-              : 'Already have an account?'}
-          </div>
-          <div onClick={toggleVariant} className='underline cursor-pointer'>
-            {variant === 'LOGIN' ? 'Create an account' : 'Login'}
+          <div>Already have an account?</div>
+          <div
+            onClick={() => router.push('/sign-in')}
+            className='underline cursor-pointer'
+          >
+            Sign up
           </div>
         </div>
       </div>
@@ -259,4 +224,4 @@ const AuthForm = () => {
   );
 };
 
-export default AuthForm;
+export default SignUpForm;
