@@ -4,8 +4,6 @@ import { BarChart, Compass, Layout, Apple } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { SidebarItem } from './SidebarItem';
 
-// import { SidebarItem } from "./sidebar-item";
-
 const routes = [
   {
     icon: Compass,

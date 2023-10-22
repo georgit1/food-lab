@@ -1,9 +1,9 @@
 import { db } from '@/lib/db';
 import { redirect } from 'next/navigation';
-import AddEditForm from '../_components/AddEditForm';
+import AddEditForm from './_components/AddEditForm';
 import getCurrentUser from '@/lib/getCurrentUser';
 
-const EditFoodPage = async ({ params }: { params: { foodId: string } }) => {
+const AddEditFoodPage = async ({ params }: { params: { foodId: string } }) => {
   const currentUser = await getCurrentUser();
   const { foodId } = params;
 
@@ -44,4 +44,4 @@ const EditFoodPage = async ({ params }: { params: { foodId: string } }) => {
   );
 };
 
-export default EditFoodPage;
+export default AddEditFoodPage;

@@ -148,9 +148,9 @@ model MainNutrient {
   id String @id @default(uuid())
   calories Float
   fats Float
-  saturated Float
-  unsaturated Float
-  polyunsaturated Float
+  saturated Float?
+  unsaturated Float?
+  polyunsaturated Float?
   proteins Float
   carbohydrates Float
   sugar Float
@@ -181,13 +181,13 @@ model MainNutrient {
 
 model Mineral {
   id String @id @default(uuid())
-  calcium Float
-  chloride Float
-  potassium Float
-  magnesium Float
-  sodium Float
-  phosphorus Float
-  sulfur Float
+  calcium Float?
+  chloride Float?
+  potassium Float?
+  magnesium Float?
+  sodium Float?
+  phosphorus Float?
+  sulfur Float?
 
   calciumUnit String @default("mg")
   chlorideUnit String @default("mg")
@@ -208,13 +208,13 @@ model Mineral {
 
 model TraceElement {
   id String @id @default(uuid())
-  copper Float
-  fluoride Float
-  iron Float
-  iodine Float
-  manganese Float
-  zinc Float
-  selenium Float
+  copper Float?
+  fluoride Float?
+  iron Float?
+  iodine Float?
+  manganese Float?
+  zinc Float?
+  selenium Float?
 
   ironUnit String @default("mg")
   fluorideUnit String @default("mg")
@@ -235,19 +235,19 @@ model TraceElement {
 
 model Vitamin { 
   id String @id @default(uuid())
-  vitaminA Float
-  vitaminB1 Float
-  vitaminB2 Float
-  vitaminB3 Float
-  vitaminB5 Float
-  vitaminB6 Float
-  vitaminB7 Float
-  vitaminB9 Float
-  vitaminB12 Float
-  vitaminC Float
-  vitaminD Float
-  vitaminE Float
-  vitaminK Float
+  vitaminA Float?
+  vitaminB1 Float?
+  vitaminB2 Float?
+  vitaminB3 Float?
+  vitaminB5 Float?
+  vitaminB6 Float?
+  vitaminB7 Float?
+  vitaminB9 Float?
+  vitaminB12 Float?
+  vitaminC Float?
+  vitaminD Float?
+  vitaminE Float?
+  vitaminK Float?
 
   vitaminAUnit String @default("µg")
   vitaminB1Unit String @default("mg")

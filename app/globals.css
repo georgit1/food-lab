@@ -82,3 +82,7 @@ body,
 }
 
 @import '~@uploadthing/react/styles.css';
+
+.z-9999 {
+  z-index: 9999;
+}

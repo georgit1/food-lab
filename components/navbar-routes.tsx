@@ -1,18 +1,47 @@
 'use client';
 
 import { usePathname, useRouter } from 'next/navigation';
-import { LogOut, LogOutIcon, PlusCircle } from 'lucide-react';
-import Link from 'next/link';
+import { LogOutIcon, PlusCircle } from 'lucide-react';
+import * as z from 'zod';
+import axios from 'axios';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { Form } from '@/components/ui/form';
 
 import { Button } from '@/components/ui/button';
-import getCurrentUser from '@/lib/getCurrentUser';
 import { signOut, useSession } from 'next-auth/react';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
 import { Separator } from './ui/separator';
-// import { isTeacher } from "@/lib/teacher";
+import toast from 'react-hot-toast';
 
-// import { SearchInput } from "./search-input";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from './ui/dialog';
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from './ui/form';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from './ui/select';
+import { Input } from './ui/input';
+
+interface NavbarRoutesProps {
+  options: { label: string; value: string }[];
+}
 
 const getInitials = (fullName: string) => {
   const nameParts = fullName.split(' ');
@@ -33,31 +62,126 @@ const getInitials = (fullName: string) => {
   return `${firstNameInitial}${lastNameInitial}`;
 };
 
-export const NavbarRoutes = () => {
+const formSchema = z.object({
+  title: z.string().min(1, { message: 'Title is required' }),
+  categoryId: z.string({
+    required_error: 'Please select a category.',
+  }),
+});
+
+export const NavbarRoutes = ({ options }: NavbarRoutesProps) => {
   const currentUser = useSession().data?.user;
   const pathname = usePathname();
   const router = useRouter();
 
   const isHome = pathname === '/';
 
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: { title: '', categoryId: '' },
+  });
+
+  const { isSubmitting } = form.formState;
+
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    try {
+      const response = await axios.post('/api/food', values);
+      router.push(`/manage/${response.data.id}`);
+      toast.success('Food added');
+    } catch {
+      toast.error('Something went wrong');
+    }
+  };
+
   return (
     <>
       <div className='hidden md:block'>{/* <SearchInput /> */}</div>
       <div className='flex gap-x-8 ml-auto'>
         {isHome && (
-          <Link href='/create'>
-            <Button size='sm'>
-              <PlusCircle className='h-4 w-4 mr-2' />
-              Add Food
-            </Button>
-          </Link>
+          <Dialog>
+            <DialogTrigger asChild>
+              {/* TODO - button lower right corner on mobile */}
+              <Button variant='outline'>
+                <PlusCircle className='h-4 w-4 mr-2' />
+                Add Food
+              </Button>
+            </DialogTrigger>
+            <DialogContent className='sm:max-w-[425px]'>
+              <DialogHeader>
+                <DialogTitle>Add a new food</DialogTitle>
+                <DialogDescription>
+                  Fill out the fields to insert nutrition data.
+                </DialogDescription>
+              </DialogHeader>
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)}>
+                  <FormField
+                    control={form.control}
+                    name='title'
+                    render={({ field }) => (
+                      <FormItem className='w-full'>
+                        <FormLabel className='text-primary-600 font-semibold'>
+                          Title
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            disabled={isSubmitting}
+                            placeholder='Enter title'
+                            {...field}
+                            value={field.value || ''}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name='categoryId'
+                    render={({ field }) => (
+                      <FormItem className=' w-full mt-3'>
+                        <FormLabel className='text-primary-600 font-semibold'>
+                          Category
+                        </FormLabel>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder='Select a Category' />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {options.map((option) => (
+                              <SelectItem
+                                key={option.value}
+                                value={option.value}
+                              >
+                                {option.label}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <div className='flex items-center gap-x-2 mt-6 float-right'>
+                    <Button disabled={isSubmitting} type='submit'>
+                      Save
+                    </Button>
+                  </div>
+                </form>
+              </Form>
+            </DialogContent>
+          </Dialog>
         )}
 
-        {/* TODO */}
         <Popover>
           <PopoverTrigger>
             <Avatar className='ring ring-primary-600 ring-offset-2'>
-              <AvatarImage src={currentUser?.image || ''} />
+              <AvatarImage src={currentUser?.image || '/profile.jpg'} />
               <AvatarFallback>
                 {getInitials(currentUser?.name || '')}
               </AvatarFallback>
@@ -86,7 +210,9 @@ export const NavbarRoutes = () => {
               variant='ghost'
               onClick={
                 currentUser?.email
-                  ? () => signOut()
+                  ? // TODO
+                    // ? () => signOut().then(() => toast.success('Logged out'))
+                    () => signOut()
                   : () => router.push('/sign-in')
               }
               className='w-full flex justify-start'

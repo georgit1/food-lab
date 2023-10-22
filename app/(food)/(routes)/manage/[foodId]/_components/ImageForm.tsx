@@ -13,8 +13,8 @@ import { Button } from '@/components/ui/button';
 import { FileUpload } from '@/components/file-upload';
 
 interface ImageFormProps {
-  initialData?: Food | null;
-  foodId?: string | null;
+  initialData: Food;
+  foodId: string;
 }
 
 const formSchema = z.object({
@@ -30,14 +30,10 @@ const ImageForm = ({ initialData, foodId }: ImageFormProps) => {
 
   const router = useRouter();
 
-  // TODO
-
-  const foodIdXY = 'ca5953e2-4f92-443f-b9e6-1c7826bc7ba7';
-
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     console.log(values);
     try {
-      await axios.patch(`/api/food/${foodIdXY}`, values);
+      await axios.patch(`/api/food/${foodId}`, values);
       toast.success('Food updated');
       toggleEdit();
       router.refresh();
@@ -47,10 +43,10 @@ const ImageForm = ({ initialData, foodId }: ImageFormProps) => {
   };
 
   return (
-    <div className='mt-14 border bg-slate-100 rounded-md p-4'>
+    <div className='border bg-primary-50 rounded-md p-4'>
       <div className='font-medium flex items-center justify-between'>
         Course image
-        <Button onClick={toggleEdit} variant='ghost'>
+        <Button onClick={toggleEdit} variant='ghost' type='button'>
           {isEditing && <>Cancel</>}
           {!isEditing && !initialData?.imageUrl && (
             <>
@@ -68,7 +64,7 @@ const ImageForm = ({ initialData, foodId }: ImageFormProps) => {
       </div>
       {!isEditing &&
         (!initialData?.imageUrl ? (
-          <div className='flex items-center justify-center h-60 bg-slate-200 rounded-md'>
+          <div className='flex items-center justify-center h-60 bg-primary-100 rounded-md'>
             <ImageIcon className='h-10 w-10 text-slate-500' />
           </div>
         ) : (
