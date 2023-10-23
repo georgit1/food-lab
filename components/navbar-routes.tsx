@@ -101,6 +101,7 @@ export const NavbarRoutes = ({ options }: NavbarRoutesProps) => {
           <Dialog>
             <DialogTrigger asChild>
               {/* TODO - button lower right corner on mobile */}
+              {/* TODO - lgoin alert on signed out */}
               <Button variant='outline'>
                 <PlusCircle className='h-4 w-4 mr-2' />
                 Add Food
