@@ -2,7 +2,9 @@
 
 import * as z from 'zod';
 import axios from 'axios';
+import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
@@ -11,6 +13,8 @@ import { Brush } from 'lucide-react';
 
 import { Form } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
+import { Label } from '@radix-ui/react-label';
+import { Switch } from '@/components/ui/switch';
 import IconHeader from '@/components/IconHeader';
 import GeneralForm from './GeneralForm';
 import ImageForm from './ImageForm';
@@ -18,6 +22,7 @@ import MainNutrientsForm from './MainNutrientsForm';
 import MineralsForm from './MineralsForm';
 import TraceElementsForm from './TraceElementsForm';
 import VitaminsForm from './VitaminsForm';
+import { isAdmin } from '@/lib/admin';
 
 interface GeneralFormProps {
   initialData: Food;
@@ -31,6 +36,7 @@ const formSchema = z.object({
     required_error: 'Please select a category.',
   }),
   preferences: z.unknown(),
+  isCreator: z.boolean(),
   // imageUrl: z.string().min(1, {
   //   message: 'Image is required',
   // }),
@@ -242,17 +248,24 @@ const formSchema = z.object({
 });
 
 const AddEditForm = ({ initialData, foodId, options }: GeneralFormProps) => {
+  const [isFoodCreator, setIsFoodCreator] = useState<boolean>(
+    initialData.isCreator
+  );
+  const currentUser = useSession().data?.user;
+
   const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    // TODO - no prefilled nutrients
     defaultValues: initialData,
   });
 
   const { isSubmitting, isValid } = form.formState;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+    values.isCreator = isFoodCreator;
+
     try {
       await axios.patch(`/api/food/${foodId}`, values);
       toast.success('Food updated');
@@ -264,7 +277,7 @@ const AddEditForm = ({ initialData, foodId, options }: GeneralFormProps) => {
 
   return (
     <div className='p-6'>
-      <div className='flex items-center justify-between'>
+      <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4'>
         <div className='flex flex-col gap-y-2'>
           <h1 className='text-2xl text-neutral-800 font-semibold'>
             Customize Food
@@ -273,10 +286,23 @@ const AddEditForm = ({ initialData, foodId, options }: GeneralFormProps) => {
             fill out as much and accurate as possible
           </span>
         </div>
+        {isAdmin(currentUser?.email) && (
+          <div className='flex items-center space-x-2'>
+            <Switch
+              id='is-creator'
+              checked={isFoodCreator}
+              onCheckedChange={() => setIsFoodCreator((c) => !c)}
+            />
+            <Label htmlFor='is-creator'>is Creator</Label>
+          </div>
+        )}
+        <Button variant={'outline'} onClick={() => router.push('/')}>
+          Back
+        </Button>
       </div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className='grid grid-cols-1 sm:grid-cols-2 gap-6 mt-16'>
+          <div className='grid grid-cols-1 md:grid-cols-2 gap-6 mt-16'>
             <div className='md:col-span-2'>
               <IconHeader icon={Brush} title='Customize your Food' />
             </div>

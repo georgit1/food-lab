@@ -127,8 +127,7 @@ const GeneralForm = ({
           <FormLabel className='text-primary-600 font-semibold'>
             Preferences
           </FormLabel>
-          {/* TODO - jump to next row on bigger screen */}
-          <div className='flex whitespace-nowrap overflow-x-auto mt-2'>
+          <div className='flex whitespace-nowrap overflow-x-auto sm:flex sm:items-start sm:flex-wrap gap-1 mt-2'>
             {preferences.map((preference) => (
               <PillCheckbox
                 key={preference}

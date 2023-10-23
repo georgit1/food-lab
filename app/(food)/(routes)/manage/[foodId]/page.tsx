@@ -28,8 +28,6 @@ const AddEditFoodPage = async ({ params }: { params: { foodId: string } }) => {
     return redirect('/');
   }
 
-  console.log(food);
-
   return (
     <div>
       <AddEditForm

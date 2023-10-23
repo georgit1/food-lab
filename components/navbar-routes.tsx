@@ -38,9 +38,10 @@ import {
   SelectValue,
 } from './ui/select';
 import { Input } from './ui/input';
+import SearchInput from './SearchInput';
 
 interface NavbarRoutesProps {
-  options: { label: string; value: string }[];
+  options?: { label: string; value: string }[];
 }
 
 const getInitials = (fullName: string) => {
@@ -95,13 +96,19 @@ export const NavbarRoutes = ({ options }: NavbarRoutesProps) => {
 
   return (
     <>
-      <div className='hidden md:block'>{/* <SearchInput /> */}</div>
+      {isHome && (
+        <div className='hidden md:block'>
+          <SearchInput />
+        </div>
+      )}
+
       <div className='flex gap-x-8 ml-auto'>
         {isHome && (
           <Dialog>
             <DialogTrigger asChild>
               {/* TODO - button lower right corner on mobile */}
-              {/* TODO - lgoin alert on signed out */}
+              {/* TODO - login alert on signed out */}
+              {/* TODO - indicate loading on redirecting to id-page */}
               <Button variant='outline'>
                 <PlusCircle className='h-4 w-4 mr-2' />
                 Add Food
@@ -154,7 +161,7 @@ export const NavbarRoutes = ({ options }: NavbarRoutesProps) => {
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            {options.map((option) => (
+                            {options?.map((option) => (
                               <SelectItem
                                 key={option.value}
                                 value={option.value}
@@ -213,6 +220,7 @@ export const NavbarRoutes = ({ options }: NavbarRoutesProps) => {
                 currentUser?.email
                   ? // TODO
                     // ? () => signOut().then(() => toast.success('Logged out'))
+                    // TODO - on sign out from "/" -> to many redirects
                     () => signOut()
                   : () => router.push('/sign-in')
               }
