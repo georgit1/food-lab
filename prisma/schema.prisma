@@ -30,9 +30,10 @@ model User {
   pal Float?
   rmr Float?
 
+  // favoriteIds Json @default("[]")
+  favorites Favorite[]
   foods Food[]
   meals Meal[]
-  favorites Favorite[]
   
   accounts Account[]
 

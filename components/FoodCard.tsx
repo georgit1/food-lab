@@ -1,6 +1,10 @@
-import { Heart, ImageIcon, User } from 'lucide-react';
+import { ImageIcon, User } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import FavoriteButton from './FavoriteButton';
+import getCurrentUser from '@/lib/getCurrentUser';
+import { getFavorites } from '@/actions/get-favorites';
+import { IconBadge } from './IconBadge';
 
 interface FoodCardProps {
   id: string;
@@ -16,7 +20,7 @@ interface FoodCardProps {
   isCreator: boolean;
 }
 
-const FoodCard = ({
+const FoodCard = async ({
   id,
   title,
   imageUrl,
@@ -32,22 +36,25 @@ const FoodCard = ({
   // TODO - color
   const dynamicColor = `bg-${color}`;
   const isImage = Boolean(imageUrl);
+  const currentUser = await getCurrentUser();
+  const favorites = await getFavorites(currentUser?.id || '');
 
   return (
-    <Link href={`/details/${id}`}>
-      <div className='inline-flex flex-col w-[260px] gap-4 border-b-2 border-primary-600 rounded-xl p-4 shadow-md bg-primary-50 relative overflow-hidden'>
+    <Link href={`/details/${id}`} className=''>
+      <div className='flex flex-col gap-4 border-b-2 border-primary-600 rounded-xl p-4 shadow-md bg-primary-50 relative overflow-hidden max-w-[340px]'>
         <div
           className={`absolute h-10 w-32 bg-primary-600 -right-3 -top-6 rotate-12`}
         ></div>
-        <div className='absolute flex items-center justify-center h-8 w-8 bg-primary-50 border-[3px] border-primary-100 top-[5px] right-[5px] rounded-full'>
-          <Heart size={22} className='text-primary-700' />
+        <div className='absolute top-[5px] right-[5px]'>
+          <FavoriteButton
+            foodId={id}
+            favoriteIds={favorites.map((favorite) => favorite.foodId)}
+          />
         </div>
         {!isCreator && (
-          <div className='absolute flex items-center justify-center h-5 w-5 bg-primary-200 top-1 left-1 rounded-full '>
-            <User size={16} className='text-primary-700' />
-          </div>
+          <IconBadge icon={User} size='sm' className='absolute top-1 left-1' />
         )}
-        <div className='flex items-center justify-start gap-2'>
+        <div className='flex items-center justify-center gap-4'>
           {/* Image */}
           <div className='flex items-center justify-center h-[95px] w-[95px] border-[3.5px] border-primary-600 rounded-full overflow-hidden'>
             {isImage && (
@@ -63,14 +70,14 @@ const FoodCard = ({
           </div>
           <div className='flex flex-col text-slate-900'>
             <span className='text-lg font-bold'>{title}</span>
-            <span className='border-[2px] border-primary-600 rounded-full px-2 text-xs font-medium'>
+            <span className='w-max border-[2px] border-primary-600 rounded-full px-2 text-xs font-medium'>
               {category}
             </span>
           </div>
         </div>
 
         {/* Table */}
-        <div className='flex gap-3 text-sm text-slate-600'>
+        <div className='flex justify-center gap-3 text-sm text-slate-600'>
           <div className='flex flex-col'>
             <span>Calories</span>
             <span>Proteins</span>

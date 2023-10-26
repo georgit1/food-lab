@@ -30,6 +30,7 @@ export const getFood = async ({ userId, title, categoryId }: GetFood) => {
       include: {
         category: true,
         mainNutrients: true,
+        favourites: true,
       },
       orderBy: {
         createdAt: 'desc',

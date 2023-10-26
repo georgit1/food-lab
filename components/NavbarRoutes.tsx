@@ -1,7 +1,7 @@
 'use client';
 
 import { usePathname, useRouter } from 'next/navigation';
-import { LogOutIcon, PlusCircle } from 'lucide-react';
+import { Heart, LogOutIcon, PlusCircle } from 'lucide-react';
 import * as z from 'zod';
 import axios from 'axios';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -17,6 +17,7 @@ import toast from 'react-hot-toast';
 
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogHeader,
@@ -39,9 +40,14 @@ import {
 } from './ui/select';
 import { Input } from './ui/input';
 import SearchInput from './SearchInput';
+import { Category, Food } from '@prisma/client';
+import FavoritesTable from './FavoritesTable';
+
+type FoodWithCategory = Food & { category: Category };
 
 interface NavbarRoutesProps {
   options?: { label: string; value: string }[];
+  favorites: FoodWithCategory[];
 }
 
 const getInitials = (fullName: string) => {
@@ -70,7 +76,7 @@ const formSchema = z.object({
   }),
 });
 
-export const NavbarRoutes = ({ options }: NavbarRoutesProps) => {
+export const NavbarRoutes = ({ options, favorites }: NavbarRoutesProps) => {
   const currentUser = useSession().data?.user;
   const pathname = usePathname();
   const router = useRouter();
@@ -103,6 +109,7 @@ export const NavbarRoutes = ({ options }: NavbarRoutesProps) => {
       )}
 
       <div className='flex gap-x-8 ml-auto'>
+        {/* Add Food */}
         {isHome && (
           <Dialog>
             <DialogTrigger asChild>
@@ -111,7 +118,7 @@ export const NavbarRoutes = ({ options }: NavbarRoutesProps) => {
               {/* TODO - indicate loading on redirecting to id-page */}
               <Button variant='outline'>
                 <PlusCircle className='h-4 w-4 mr-2' />
-                Add Food
+                <span>Add Food</span>
               </Button>
             </DialogTrigger>
             <DialogContent className='sm:max-w-[425px]'>
@@ -186,6 +193,31 @@ export const NavbarRoutes = ({ options }: NavbarRoutesProps) => {
           </Dialog>
         )}
 
+        {/* Favorites */}
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button
+              variant='outline'
+              className='rounded-full p-2 bg-primary-50 hover:bg-primary-100 border-primary-200 transition duration-300'
+            >
+              <Heart className='text-primary-600' fill='#0284c7' />
+            </Button>
+          </DialogTrigger>
+          <DialogContent className='sm:max-w-md'>
+            <DialogHeader>
+              <DialogTitle className='text-primary-600'>Favorites</DialogTitle>
+              <DialogDescription className='text-primary-400'>
+                Browse your favorite foods
+              </DialogDescription>
+            </DialogHeader>
+            <FavoritesTable favorites={favorites} />
+            {/* <DialogFooter>
+            <Button type='submit'>Save changes</Button>
+          </DialogFooter> */}
+          </DialogContent>
+        </Dialog>
+
+        {/* Avatar */}
         <Popover>
           <PopoverTrigger>
             <Avatar className='ring ring-primary-600 ring-offset-2'>

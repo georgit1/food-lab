@@ -25,9 +25,9 @@ const FoodList = ({ items }: FoodListProps) => {
 
   return (
     <div>
-      <div className='grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4 gap-4'>
-        {/* TODO- following */}
-        {/* <div className='grid-cols-[repeat(auto-fill, minmax(100px,1fr))] gap-4 '> */}
+      {/* <div className='grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4 gap-4'> */}
+      {/* TODO- following */}
+      <div className='grid gap-4 grid-cols-[repeat(auto-fill,minmax(260px,1fr))]'>
         {items.map((item) => (
           <FoodCard
             key={item.id}

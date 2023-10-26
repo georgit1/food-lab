@@ -7,6 +7,7 @@ import { getFood } from '@/actions/get-food';
 import FoodList from '@/components/FoodList';
 
 import Categories from '@/app/(dashboard)/(routes)/_components/Categories';
+import { getFavorites } from '@/actions/get-favorites';
 
 interface SearchPageProps {
   searchParams: {
@@ -29,6 +30,8 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
     userId: currentUser.id,
     ...searchParams,
   });
+
+  // const favorites = await getFavorites(currentUser?.id || '');
 
   return (
     <>
