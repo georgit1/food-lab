@@ -181,7 +181,7 @@ const SignInForm = () => {
             text-gray-500
           '
         >
-          <div>New to Messenger?</div>
+          <div>New to FoodLab?</div>
           <div
             onClick={() => router.push('/sign-up')}
             className='underline cursor-pointer'

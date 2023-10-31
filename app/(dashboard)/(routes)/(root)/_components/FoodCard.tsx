@@ -1,10 +1,10 @@
 import { ImageIcon, User } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import FavoriteButton from './FavoriteButton';
+import FavoriteButton from '../../../../../components/FavoriteButton';
 import getCurrentUser from '@/lib/getCurrentUser';
 import { getFavorites } from '@/actions/get-favorites';
-import { IconBadge } from './IconBadge';
+import { IconBadge } from '../../../../../components/IconBadge';
 
 interface FoodCardProps {
   id: string;
@@ -40,8 +40,9 @@ const FoodCard = async ({
   const favorites = await getFavorites(currentUser?.id || '');
 
   return (
-    <Link href={`/details/${id}`} className=''>
-      <div className='flex flex-col gap-4 border-b-2 border-primary-600 rounded-xl p-4 shadow-md bg-primary-50 relative overflow-hidden max-w-[340px]'>
+    <Link href={`/details/${id}`}>
+      {/* TODO - max-w-[340px] */}
+      <div className='flex flex-col gap-4 border-b-2 border-primary-600 rounded-xl p-4 shadow-md bg-primary-50 relative overflow-hidden'>
         <div
           className={`absolute h-10 w-32 bg-primary-600 -right-3 -top-6 rotate-12`}
         ></div>

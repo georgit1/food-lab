@@ -10,7 +10,7 @@ const PillCheckbox = ({ label, checked, onChange }: PillCheckBoxProps) => {
   return (
     <label
       className={cn(
-        'relative rounded-full border text-primary-600 border-primary-600 flex items-center py-1 px-3 text-sm cursor-pointer',
+        'relative rounded-full border text-primary-600 border-primary-600 flex items-center py-1 px-3 text-sm cursor-pointer hover:border-2 transition  duration-300',
         checked && 'border-2 font-semibold'
       )}
     >

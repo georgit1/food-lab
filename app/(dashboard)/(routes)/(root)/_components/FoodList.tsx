@@ -1,5 +1,5 @@
 import { Food, Category, MainNutrient } from '@prisma/client';
-import FoodCard from '@/components/FoodCard';
+import FoodCard from '@/app/(dashboard)/(routes)/(root)/_components/FoodCard';
 
 type FoodWithCategory = Food & {
   category: Category | null;

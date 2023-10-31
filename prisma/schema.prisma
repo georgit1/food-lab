@@ -30,6 +30,15 @@ model User {
   pal Float?
   rmr Float?
 
+  hours_sleep Int?
+  hours_sleep_select String?
+  hours_profession Int?
+  hours_profession_select String?
+  hours_sport Int?
+  hours_sport_select String?
+  hours_leisure_time Int?
+  hours_leisure_time_select String?
+
   // favoriteIds Json @default("[]")
   favorites Favorite[]
   foods Food[]

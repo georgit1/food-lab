@@ -12,6 +12,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { IconBadge } from '@/components/IconBadge';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 interface GeneralFormProps {
   form: any;
@@ -20,7 +21,9 @@ interface GeneralFormProps {
 
 const MainNutrientsForm = ({ form, isSubmitting }: GeneralFormProps) => {
   const [showDetails, setShowDetails] = useState<boolean>(false);
+  const router = useRouter();
 
+  // TODO - no prefilled on uncollapse
   const toggleShowDetails = () => {
     setShowDetails((d) => !d);
   };

@@ -1,7 +1,7 @@
 'use client';
 
 import axios from 'axios';
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { Heart } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
@@ -47,6 +47,7 @@ interface FavoriteButtonProps
 }
 
 // TODO favoriteIds inside this comp.
+// TODO - opitmistic update
 const FavoriteButton = ({
   foodId,
   favoriteIds,
@@ -62,6 +63,7 @@ const FavoriteButton = ({
   const toggleFavorites = useCallback(
     async (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
       e.preventDefault();
+
       try {
         if (isFavorite) {
           await axios.delete('/api/food/favorite', { data: { foodId } });
@@ -89,7 +91,6 @@ const FavoriteButton = ({
         // className='text-primary-600 hover:scale-110 transition'
         className={cn(iconVariants({ size }))}
         fill={isFavorite ? '#0284c7' : 'transparent'}
-        // size={20}
       />
     </div>
   );

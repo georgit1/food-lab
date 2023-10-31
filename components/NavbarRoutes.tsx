@@ -42,6 +42,7 @@ import { Input } from './ui/input';
 import SearchInput from './SearchInput';
 import { Category, Food } from '@prisma/client';
 import FavoritesTable from './FavoritesTable';
+import { useEffect, useState } from 'react';
 
 type FoodWithCategory = Food & { category: Category };
 
@@ -77,11 +78,26 @@ const formSchema = z.object({
 });
 
 export const NavbarRoutes = ({ options, favorites }: NavbarRoutesProps) => {
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const currentUser = useSession().data?.user;
   const pathname = usePathname();
   const router = useRouter();
 
   const isHome = pathname === '/';
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  const isSmallScreen = windowWidth <= 768;
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -108,18 +124,26 @@ export const NavbarRoutes = ({ options, favorites }: NavbarRoutesProps) => {
         </div>
       )}
 
-      <div className='flex gap-x-8 ml-auto'>
+      <div className='flex gap-x-6 ml-auto'>
         {/* Add Food */}
         {isHome && (
           <Dialog>
             <DialogTrigger asChild>
-              {/* TODO - button lower right corner on mobile */}
               {/* TODO - login alert on signed out */}
-              {/* TODO - indicate loading on redirecting to id-page */}
-              <Button variant='outline'>
-                <PlusCircle className='h-4 w-4 mr-2' />
-                <span>Add Food</span>
-              </Button>
+              {/* TODO - indicate loading on redirecting to id-page when add food*/}
+              {isSmallScreen ? (
+                <Button className='fixed bottom-6 right-6 p-4 h-auto shadow-md rounded-full'>
+                  <PlusCircle className='h-5 w-5' />
+                </Button>
+              ) : (
+                <Button
+                  variant='outline'
+                  className='p-2.5 h-auto rounded-full md:static lg:rounded-md'
+                >
+                  <PlusCircle className='h-5 w-5' />
+                  <span className='hidden lg:inline-block ml-2'>Add Food</span>
+                </Button>
+              )}
             </DialogTrigger>
             <DialogContent className='sm:max-w-[425px]'>
               <DialogHeader>
@@ -249,6 +273,11 @@ export const NavbarRoutes = ({ options, favorites }: NavbarRoutesProps) => {
             <Button
               variant='ghost'
               onClick={
+                // () => signOut()
+                // () => {
+                //   signOut(), router.push('/sign-in');
+                // }
+
                 currentUser?.email
                   ? // TODO
                     // ? () => signOut().then(() => toast.success('Logged out'))

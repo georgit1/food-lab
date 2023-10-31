@@ -1,6 +1,6 @@
 'use client';
 
-import { BarChart, Compass, Layout, Apple } from 'lucide-react';
+import { BarChart, Compass, Layout, Apple, UserCircle } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { SidebarItem } from './SidebarItem';
 
@@ -10,11 +10,11 @@ const routes = [
     label: 'Browse',
     href: '/',
   },
-  // {
-  //   icon: Compass,
-  //   label: 'Browse',
-  //   href: '/search',
-  // },
+  {
+    icon: UserCircle,
+    label: 'User Profile',
+    href: '/profile',
+  },
 ];
 
 export const SidebarRoutes = () => {

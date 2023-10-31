@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation';
 import AddEditForm from './_components/AddEditForm';
 import getCurrentUser from '@/lib/getCurrentUser';
 
+// TODO - only admin can edit admin food
 const AddEditFoodPage = async ({ params }: { params: { foodId: string } }) => {
   const currentUser = await getCurrentUser();
   const { foodId } = params;
@@ -22,6 +23,12 @@ const AddEditFoodPage = async ({ params }: { params: { foodId: string } }) => {
       id: foodId,
       userId: currentUser.id,
     },
+    include: {
+      mainNutrients: true,
+      minerals: true,
+      traceElements: true,
+      vitamins: true,
+    },
   });
 
   if (!food) {
@@ -29,16 +36,14 @@ const AddEditFoodPage = async ({ params }: { params: { foodId: string } }) => {
   }
 
   return (
-    <div>
-      <AddEditForm
-        initialData={food}
-        foodId={food.id}
-        options={categories.map((category) => ({
-          label: category.name,
-          value: category.id,
-        }))}
-      />
-    </div>
+    <AddEditForm
+      initialData={food}
+      foodId={food.id}
+      options={categories.map((category) => ({
+        label: category.name,
+        value: category.id,
+      }))}
+    />
   );
 };
 

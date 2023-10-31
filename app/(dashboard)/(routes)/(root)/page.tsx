@@ -4,9 +4,9 @@ import { db } from '@/lib/db';
 import getCurrentUser from '@/lib/getCurrentUser';
 import SearchInput from '@/components/SearchInput';
 import { getFood } from '@/actions/get-food';
-import FoodList from '@/components/FoodList';
+import FoodList from '@/app/(dashboard)/(routes)/(root)/_components/FoodList';
 
-import Categories from '@/app/(dashboard)/(routes)/_components/Categories';
+import Categories from '@/app/(dashboard)/(routes)/(root)/_components/Categories';
 import { getFavorites } from '@/actions/get-favorites';
 
 interface SearchPageProps {
@@ -35,10 +35,10 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
 
   return (
     <>
-      <div className='px-6 pt-6 md:hidden md:mb-0 block'>
+      <div className='mb-3 md:hidden md:mb-0 block'>
         <SearchInput />
       </div>
-      <div className='p-6 space-y-5'>
+      <div className='space-y-5 pb-4'>
         <Categories items={categories} />
         <FoodList items={food} />
       </div>
