@@ -70,7 +70,7 @@ const FoodCard = async ({
             {!isImage && <ImageIcon className='text-neutral-400' size={30} />}
           </div>
           <div className='flex flex-col text-slate-900'>
-            <span className='text-lg font-bold'>{title}</span>
+            <span className='text-lg font-bold truncate'>{title}</span>
             <span className='w-max border-[2px] border-primary-600 rounded-full px-2 text-xs font-medium'>
               {category}
             </span>

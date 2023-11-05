@@ -18,7 +18,7 @@ interface SearchPageProps {
 const SearchPage = async ({ searchParams }: SearchPageProps) => {
   const currentUser = await getCurrentUser();
 
-  if (!currentUser?.id || !currentUser.email) return redirect('/');
+  // if (!currentUser?.id || !currentUser.email) return redirect('/');
 
   const categories = await db.category.findMany({
     orderBy: {
@@ -27,7 +27,7 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
   });
 
   const food = await getFood({
-    userId: currentUser.id,
+    userId: currentUser?.id,
     ...searchParams,
   });
 

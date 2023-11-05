@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { Info } from 'lucide-react';
-import { User } from '@prisma/client';
+import { Gender, User } from '@prisma/client';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -17,6 +17,7 @@ import BiometricForm from './BiometricForm';
 
 interface CalculatorProps {
   userData: User;
+  onClose: () => void;
 }
 
 type HoursData = {
@@ -27,7 +28,8 @@ type HoursData = {
 };
 
 const formSchema = z.object({
-  gender: z.string().min(1, { message: 'Gender is required' }),
+  // gender: z.string().min(1, { message: 'Gender is required' }),
+  gender: z.nativeEnum(Gender),
   age: z.number().min(1, { message: 'Age is required' }),
   height: z.number().min(1, { message: 'Height is required' }),
   weight: z.number().min(1, { message: 'Weight is required' }),
@@ -65,13 +67,14 @@ const formSchema = z.object({
 //   }
 // );
 
-const PalCalculator = ({ userData }: CalculatorProps) => {
+const PalCalculator = ({ userData, onClose }: CalculatorProps) => {
   const [error, setError] = useState<boolean>(false);
 
   const router = useRouter();
 
   const defaultValues = {
-    gender: userData?.gender ?? '',
+    // gender: userData?.gender ?? '',
+    gender: userData.gender ?? Gender.MALE,
     age: userData?.age ?? 0,
     height: userData?.height ?? 0,
     weight: userData?.weight ?? 0,
@@ -123,6 +126,7 @@ const PalCalculator = ({ userData }: CalculatorProps) => {
       try {
         await axios.patch(`/api/users/${userData.id}`, { ...values, rmr, pal });
         toast.success('Updated data');
+        onClose();
         router.refresh();
       } catch {
         toast.error('Something went wrong');

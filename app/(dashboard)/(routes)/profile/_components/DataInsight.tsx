@@ -1,23 +1,29 @@
+'use client';
+
 import { User } from '@prisma/client';
 import { Bike, CircleSlash2, Equal, X } from 'lucide-react';
 
-import { Separator } from '@/components/ui/separator';
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import PageHeader from '@/components/PageHeader';
 import NumberCard from './NumberCard';
 import BiometricDisplay from './BiometricDisplay';
-import PalCalculator from './PalCalculator';
+import { Separator } from '@/components/ui/separator';
+import { ModalType, useModal } from '@/hooks/useModalStore';
 
 interface DataInsightProps {
   userData: User;
 }
 
 const DataInsight = ({ userData }: DataInsightProps) => {
+  const { onOpen } = useModal();
+
   let amr = 0;
   if (userData.rmr && userData.pal) {
     amr = userData?.rmr * userData?.pal;
   }
+
+  const onAction = (e: React.MouseEvent, action: ModalType) => {
+    e.stopPropagation();
+    onOpen(action, { userData });
+  };
 
   return (
     <div className='flex flex-col gap-8 bg-primary-50 rounded-md p-6 lg:pt-24 xl:p-20'>
@@ -56,28 +62,17 @@ const DataInsight = ({ userData }: DataInsightProps) => {
       </div>
 
       {/* CTA-Button w/ dialog */}
-      <Dialog>
-        <DialogTrigger asChild>
-          <div className='flex flex-col gap-2 bg-primary-700 rounded-md py-3 px-6 mx-auto lg:mt-8 text-neutral-50 hover:bg-primary-800 cursor-pointer transition'>
-            <Bike className='mx-auto' size={22} />
-            <span className='text-center text-xs'>
-              Calculate calorie
-              <br />
-              needs
-            </span>
-          </div>
-        </DialogTrigger>
-        <DialogContent className='sm:max-w-[425px]'>
-          <PageHeader
-            header='Calorie Calculator'
-            subtext='calculate RMR and PAL values'
-          />
-          <Separator />
-          <ScrollArea className='max-h-[450px]'>
-            <PalCalculator userData={userData} />
-          </ScrollArea>
-        </DialogContent>
-      </Dialog>
+      <div
+        className='flex flex-col gap-2 bg-primary-700 rounded-md py-3 px-6 mx-auto lg:mt-8 text-neutral-50 hover:bg-primary-800 cursor-pointer transition'
+        onClick={(e) => onAction(e, 'calculateCalories')}
+      >
+        <Bike className='mx-auto' size={22} />
+        <span className='text-center text-xs'>
+          Calculate calorie
+          <br />
+          needs
+        </span>
+      </div>
     </div>
   );
 };

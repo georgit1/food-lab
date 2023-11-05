@@ -358,7 +358,6 @@ const AddEditForm = ({ initialData, foodId, options }: GeneralFormProps) => {
   const { isSubmitting, isValid } = form.formState;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
     values.isCreator = isFoodCreator;
 
     try {
@@ -387,7 +386,7 @@ const AddEditForm = ({ initialData, foodId, options }: GeneralFormProps) => {
             <Label htmlFor='is-creator'>is Creator</Label>
           </div>
         )}
-        <Button variant={'outline'} onClick={() => router.push('/')}>
+        <Button variant={'outline'} onClick={() => router.back()}>
           Back
         </Button>
       </div>

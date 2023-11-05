@@ -26,7 +26,7 @@ model User {
   age Int?
   height Int?
   weight Float?
-  gender Gender?
+  gender Gender? @default(MALE)
   pal Float?
   rmr Float?
 

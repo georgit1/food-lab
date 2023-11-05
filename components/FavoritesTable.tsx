@@ -1,5 +1,8 @@
+import React, { useState } from 'react';
+import Link from 'next/link';
 import { ArrowUpDown } from 'lucide-react';
-import FavoriteButton from './FavoriteButton';
+import { Category, Food } from '@prisma/client';
+
 import {
   Table,
   TableBody,
@@ -8,27 +11,21 @@ import {
   TableHeader,
   TableRow,
 } from './ui/table';
-import { Category, Food } from '@prisma/client';
+import FavoriteButton from './FavoriteButton';
 
 type FoodWithCategory = Food & { category: Category; preferences: string[] };
 
 interface FoodTableProps {
   favorites: FoodWithCategory[];
+  onClose: () => void;
 }
 
-import React, { useState } from 'react';
 import StackedTextWithImage from './StackedTextWithImage';
 import { ScrollArea } from './ui/scroll-area';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { DialogClose } from './ui/dialog';
 
-const FavoritesTable = ({ favorites }: FoodTableProps) => {
+const FavoritesTable = ({ favorites, onClose }: FoodTableProps) => {
   const [sortOrder, setSortOrder] = useState('asc');
 
-  const router = useRouter();
-
-  // toggle the sort order
   const toggleSortOrder = () => {
     setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
   };
@@ -70,7 +67,8 @@ const FavoritesTable = ({ favorites }: FoodTableProps) => {
                 // }}
               >
                 {/* TODO - close dialog onClick of row in e.g details page */}
-                <Link href={`/details/${favorite.id}`}>
+                {/* <Link href={`/details/${favorite.id}`}> */}
+                <Link href={`/details/${favorite.id}`} onClick={onClose}>
                   <StackedTextWithImage
                     isCreator={favorite.isCreator}
                     imageSrc={favorite.imageUrl || ''}

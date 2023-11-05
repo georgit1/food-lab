@@ -82,3 +82,39 @@ export async function PATCH(
     return new NextResponse('Internal Error', { status: 500 });
   }
 }
+
+export async function DELETE({ params }: { params: { foodId: string } }) {
+  try {
+    const currentUser = await getCurrentUser();
+    const { foodId } = params;
+
+    if (!currentUser?.id || !currentUser?.email) {
+      return new NextResponse('Unauthorized', { status: 401 });
+    }
+
+    const food = await db.food.findUnique({
+      where: {
+        id: foodId,
+      },
+    });
+
+    if (!food) {
+      return new NextResponse('Food item not found', { status: 404 });
+    }
+
+    if (food.userId !== currentUser.id) {
+      return new NextResponse('Permission denied', { status: 403 });
+    }
+
+    const deletedFood = await db.food.delete({
+      where: {
+        id: foodId,
+      },
+    });
+
+    return NextResponse.json(deletedFood);
+  } catch (error) {
+    console.log('[FOOD_ID_DELETE]', error);
+    return new NextResponse('Internal Error', { status: 500 });
+  }
+}

@@ -14,7 +14,8 @@ export function cn(...inputs: ClassValue[]) {
 
 type WholeFood = Food & MainNutrient & Mineral & TraceElement & Vitamin;
 
-export function seperateNutrientData(nutrientData: WholeFood) {
+// make single data blocks of each nutrient subcategory
+export const seperateNutrientData = (nutrientData: WholeFood) => {
   const food = {
     title: nutrientData.title,
     categoryId: nutrientData.categoryId,
@@ -80,4 +81,31 @@ export function seperateNutrientData(nutrientData: WholeFood) {
     traceElements,
     vitamins,
   };
-}
+};
+
+type UnitPrefix = 'mg' | 'µg';
+
+export const convertValueToTargetUnit = <T extends UnitPrefix>(
+  value: number,
+  sourceUnit: T,
+  targetUnit: T
+) => {
+  const unitPrefixes: Record<UnitPrefix, number> = {
+    mg: 0.001,
+    µg: 0.000001,
+  };
+
+  // Convert the value to the base unit
+  let baseValue = value;
+  if (sourceUnit in unitPrefixes) {
+    baseValue = value * unitPrefixes[sourceUnit];
+  }
+
+  // Convert the base value to the target unit
+  let targetValue = baseValue;
+  if (targetUnit in unitPrefixes) {
+    targetValue = baseValue / unitPrefixes[targetUnit];
+  }
+
+  return targetValue;
+};
