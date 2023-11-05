@@ -133,7 +133,12 @@ const SignInForm = () => {
               )}
             />
             <div>
-              <Button disabled={isSubmitting} type='submit' className='w-full'>
+              <Button
+                disabled={isSubmitting}
+                isLoading={isSubmitting}
+                type='submit'
+                className='w-full'
+              >
                 Login
               </Button>
             </div>
@@ -154,7 +159,7 @@ const SignInForm = () => {
             </div>
             <div className='relative flex justify-center text-sm'>
               <span className='bg-white px-2 text-gray-500'>
-                Or continue with
+                or continue with
               </span>
             </div>
           </div>

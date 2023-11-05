@@ -46,7 +46,7 @@ const FavoritesTable = ({ favorites, onClose }: FoodTableProps) => {
           <TableHeader>
             <TableRow>
               <TableHead className='flex items-center'>
-                <span className='mr-2'>Title</span>
+                <span className='mr-2 truncate'>Title</span>
                 <button onClick={toggleSortOrder}>
                   <ArrowUpDown size={20} />
                 </button>

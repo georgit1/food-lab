@@ -35,9 +35,7 @@ import {
 
 const formSchema = z.object({
   title: z.string().min(1, { message: 'Title is required' }),
-  categoryId: z.string({
-    required_error: 'Please select a category.',
-  }),
+  categoryId: z.string().min(1, { message: 'Please select a category' }),
 });
 
 const CreateFoodModal = () => {
@@ -47,27 +45,10 @@ const CreateFoodModal = () => {
   const isModalOpen = isOpen && type === 'createFood';
   const { options } = data;
 
-  // const form = useForm({
-  //   resolver: zodResolver(formSchema),
-  //   defaultValues: {
-  //     name: '',
-  //     type: channelType || ChannelType.TEXT,
-  //   },
-  // });
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    // TODO - set first category
     defaultValues: { title: '', categoryId: '' },
   });
-
-  // useEffect(() => {
-  //   if (channelType) {
-  //     form.setValue('type', channelType);
-  //   } else {
-  //     form.setValue('type', ChannelType.TEXT);
-  //   }
-  // }, [channelType, form]);
 
   const { isSubmitting } = form.formState;
 
@@ -75,6 +56,9 @@ const CreateFoodModal = () => {
     try {
       const response = await axios.post('/api/food', values);
       router.push(`/manage/${response.data.id}`);
+      onClose();
+      router.refresh();
+      form.reset();
       toast.success('Food added');
     } catch {
       toast.error('Something went wrong');
@@ -147,7 +131,11 @@ const CreateFoodModal = () => {
               )}
             />
             <div className='flex items-center gap-x-2 mt-6 float-right'>
-              <Button disabled={isSubmitting} type='submit'>
+              <Button
+                disabled={isSubmitting}
+                isLoading={isSubmitting}
+                type='submit'
+              >
                 Save
               </Button>
             </div>

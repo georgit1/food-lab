@@ -12,6 +12,7 @@ import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
 import { Separator } from './ui/separator';
 import SearchInput from './SearchInput';
 import { useModal, ModalType } from '@/hooks/useModalStore';
+import Link from 'next/link';
 
 type FoodWithCategory = Food & { category: Category };
 
@@ -40,33 +41,27 @@ const getInitials = (fullName: string) => {
 };
 
 export const NavbarRoutes = ({ options, favorites }: NavbarRoutesProps) => {
-  // const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const currentUser = useSession().data?.user;
-  // const { data: session } = useSession({
-  //   required: true,
-  //   onUnauthenticated() {
-  //     redirect('/api/auth/sign-in?callbackUrl=/client');
-  //   },
-  // });
   const { onOpen } = useModal();
   const pathname = usePathname();
   const router = useRouter();
 
   const isHome = pathname === '/';
 
-  // const isSmallScreen = windowWidth <= 768;
+  const isSmallScreen = windowWidth <= 768;
 
-  // useEffect(() => {
-  //   const handleResize = () => {
-  //     setWindowWidth(window.innerWidth);
-  //   };
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
 
-  //   window.addEventListener('resize', handleResize);
+    window.addEventListener('resize', handleResize);
 
-  //   return () => {
-  //     window.removeEventListener('resize', handleResize);
-  //   };
-  // }, []);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   const onActionCreate = (e: React.MouseEvent, action: ModalType) => {
     e.stopPropagation();
@@ -88,14 +83,16 @@ export const NavbarRoutes = ({ options, favorites }: NavbarRoutesProps) => {
 
       <div className='flex gap-x-6 ml-auto'>
         {/* Create Food */}
-        {/* TODO - login alert on signed out */}
         {/* TODO - indicate loading on redirecting to id-page when add food*/}
         {isHome &&
-          // (isSmallScreen ? (
-          (true ? (
+          (isSmallScreen ? (
             <Button
               className='fixed bottom-6 right-6 p-4 h-auto shadow-md rounded-full'
-              onClick={(e) => onActionCreate(e, 'createFood')}
+              onClick={
+                currentUser?.email
+                  ? (e) => onActionCreate(e, 'createFood')
+                  : () => router.push('/sign-in')
+              }
             >
               <PlusCircle className='h-5 w-5' />
             </Button>
@@ -103,7 +100,11 @@ export const NavbarRoutes = ({ options, favorites }: NavbarRoutesProps) => {
             <Button
               variant='outline'
               className='p-2.5 h-auto rounded-full md:static lg:rounded-md'
-              onClick={(e) => onActionCreate(e, 'createFood')}
+              onClick={
+                currentUser?.email
+                  ? (e) => onActionCreate(e, 'createFood')
+                  : () => router.push('/sign-in')
+              }
             >
               <PlusCircle className='h-5 w-5' />
               <span className='hidden lg:inline-block ml-2'>Add Food</span>
@@ -151,16 +152,8 @@ export const NavbarRoutes = ({ options, favorites }: NavbarRoutesProps) => {
             <Button
               variant='ghost'
               onClick={
-                // () => signOut()
-                // () => {
-                //   signOut(), router.push('/sign-in');
-                // }
-
                 currentUser?.email
-                  ? // TODO
-                    // ? () => signOut().then(() => toast.success('Logged out'))
-                    // TODO - on sign out from "/" -> to many redirects
-                    () => signOut()
+                  ? () => signOut()
                   : () => router.push('/sign-in')
               }
               className='w-full flex justify-start'
@@ -168,6 +161,7 @@ export const NavbarRoutes = ({ options, favorites }: NavbarRoutesProps) => {
               <LogOutIcon className='h-4 w-4 mr-2' />
               {currentUser?.email ? 'Log out' : 'Log in'}
             </Button>
+            {/* <Link href='/test'>sign in</Link> */}
           </PopoverContent>
         </Popover>
       </div>

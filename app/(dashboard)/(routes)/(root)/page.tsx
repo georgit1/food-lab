@@ -18,8 +18,6 @@ interface SearchPageProps {
 const SearchPage = async ({ searchParams }: SearchPageProps) => {
   const currentUser = await getCurrentUser();
 
-  // if (!currentUser?.id || !currentUser.email) return redirect('/');
-
   const categories = await db.category.findMany({
     orderBy: {
       name: 'asc',
@@ -47,3 +45,6 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
 };
 
 export default SearchPage;
+
+// on page switch from sign-in to sign-up without open modal
+// sign-in or sign-up meaning and correction in from

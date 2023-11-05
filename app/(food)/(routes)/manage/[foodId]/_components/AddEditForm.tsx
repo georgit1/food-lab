@@ -348,14 +348,26 @@ const AddEditForm = ({ initialData, foodId, options }: GeneralFormProps) => {
   delete flattenedInitialData.traceElements;
   delete flattenedInitialData.vitamins;
 
-  // console.log('flatteer', flattenedInitialData);
+  const requiredFields = [
+    initialData.title,
+    initialData.categoryId,
+    initialData?.mainNutrients?.[0]?.calories,
+    initialData?.mainNutrients?.[0]?.fats,
+    initialData?.mainNutrients?.[0]?.proteins,
+    initialData?.mainNutrients?.[0]?.carbohydrates,
+    initialData?.mainNutrients?.[0]?.sugar,
+    initialData?.mainNutrients?.[0]?.fiber,
+    initialData?.mainNutrients?.[0]?.salt,
+    initialData?.mainNutrients?.[0]?.water,
+  ];
+
+  const isCompletedFields = requiredFields.every(Boolean);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: flattenedInitialData,
   });
-  // console.log(initialData);
-  const { isSubmitting, isValid } = form.formState;
+  const { isSubmitting } = form.formState;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     values.isCreator = isFoodCreator;
@@ -386,7 +398,11 @@ const AddEditForm = ({ initialData, foodId, options }: GeneralFormProps) => {
             <Label htmlFor='is-creator'>is Creator</Label>
           </div>
         )}
-        <Button variant={'outline'} onClick={() => router.back()}>
+        <Button
+          disabled={!isCompletedFields}
+          variant={'outline'}
+          onClick={() => router.back()}
+        >
           Back
         </Button>
       </div>

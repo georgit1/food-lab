@@ -163,7 +163,12 @@ const SignUpForm = () => {
               )}
             />
             <div>
-              <Button disabled={isSubmitting} type='submit' className='w-full'>
+              <Button
+                disabled={isSubmitting}
+                isLoading={isSubmitting}
+                type='submit'
+                className='w-full'
+              >
                 Sign Up
               </Button>
             </div>
@@ -216,7 +221,7 @@ const SignUpForm = () => {
             onClick={() => router.push('/sign-in')}
             className='underline cursor-pointer'
           >
-            Sign up
+            Sign in
           </div>
         </div>
       </div>
