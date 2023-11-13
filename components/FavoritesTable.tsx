@@ -46,28 +46,19 @@ const FavoritesTable = ({ favorites, onClose }: FoodTableProps) => {
           <TableHeader>
             <TableRow>
               <TableHead className='flex items-center'>
-                <span className='mr-2 truncate'>Title</span>
+                <span className='mr-2'>Title</span>
                 <button onClick={toggleSortOrder}>
                   <ArrowUpDown size={20} />
                 </button>
               </TableHead>
               <TableHead className='w-0 sm:w-full'>
-                <span className='hidden sm:block'>Attributes</span>
+                <span className='hidden sm:block'>Preference</span>
               </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {sortedFavorites.map((favorite) => (
-              <TableRow
-                key={favorite.id}
-                // onClick={(e) => {
-                //   e.stopPropagation();
-                //   e.preventDefault();
-                //   router.push(`/details/${favorite.id}`);
-                // }}
-              >
-                {/* TODO - close dialog onClick of row in e.g details page */}
-                {/* <Link href={`/details/${favorite.id}`}> */}
+              <TableRow key={favorite.id}>
                 <Link href={`/details/${favorite.id}`} onClick={onClose}>
                   <StackedTextWithImage
                     isCreator={favorite.isCreator}
@@ -78,14 +69,11 @@ const FavoritesTable = ({ favorites, onClose }: FoodTableProps) => {
                 </Link>
 
                 <TableCell>
-                  {favorite.preferences.map((preferenece) => (
-                    <span
-                      className='whitespace-nowrap text-xs text-primary-600 border border-primary-600 py-1 px-2 rounded-full mr-1 hidden w-0 sm:inline sm:w-full'
-                      key={preferenece}
-                    >
-                      {preferenece}
+                  {favorite.preference ? (
+                    <span className='whitespace-nowrap text-xs text-primary-600 border border-primary-600 py-1 px-2 rounded-full mr-1 hidden w-0 sm:inline sm:w-full'>
+                      {favorite.preference}
                     </span>
-                  ))}
+                  ) : null}
                 </TableCell>
                 <TableCell>
                   <FavoriteButton

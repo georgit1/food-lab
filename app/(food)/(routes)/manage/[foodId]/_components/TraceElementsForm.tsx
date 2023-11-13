@@ -194,7 +194,7 @@ const TraceElementsForm = ({ form, isSubmitting }: GeneralFormProps) => {
               <FormControl>
                 <Input
                   type='text'
-                  unit='µg'
+                  unit='mg'
                   disabled={isSubmitting}
                   placeholder='Enter zinc'
                   {...field}

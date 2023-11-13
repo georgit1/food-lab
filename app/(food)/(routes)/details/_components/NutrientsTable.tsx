@@ -1,3 +1,4 @@
+import { HelpCircle, User } from 'lucide-react';
 import { Mineral, TraceElement, Vitamin } from '@prisma/client';
 
 import {
@@ -7,9 +8,13 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from './ui/table';
-import { IconBadge } from './IconBadge';
-import { User } from 'lucide-react';
+} from '../../../../../components/ui/table';
+import { IconBadge } from '../../../../../components/IconBadge';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '../../../../../components/ui/popover';
 
 interface NutrientsTableProps {
   nutrients: Mineral | TraceElement | Vitamin;
@@ -22,6 +27,8 @@ const NutrientsTable = ({
   nutrientsItems,
   requiredNutrients,
 }: NutrientsTableProps) => {
+  const isRequiredValues = Object.values(requiredNutrients).every(Boolean);
+
   const nutrientsData = nutrientsItems.map((nutrient) => {
     if (nutrient in nutrients) {
       // capitalize + add space between lower and uppercase letters
@@ -47,7 +54,6 @@ const NutrientsTable = ({
 
       return {
         title: nutrientTitle,
-        // amount: `${acutalValue}${nutrientUnit} / ${requiredValue}${nutrientUnit}`,
         amount: `${acutalValue}${nutrientUnit}${
           requiredValue ? `/ ${requiredValue}${nutrientUnit}` : ''
         }`,
@@ -63,18 +69,34 @@ const NutrientsTable = ({
   );
 
   return (
+    // TODO - maybe background image - if not clear whole div
+    // <div className="bg-cover bg-no-repeat bg-center bg-[url('/molecules.jpg')]">
     <Table>
       <TableHeader>
         <TableRow>
           <TableHead>Nutrient</TableHead>
-          <TableHead className='flex items-center gap-2 text-center'>
-            {/* TODO - personal badge */}
-            <span>
-              {requiredNutrients ? 'Amount / Daily Intake' : 'Amount'}
-            </span>
-            {requiredNutrients && <IconBadge icon={User} size='xs' />}
+          <TableHead className='flex items-center gap-2'>
+            <span>{isRequiredValues ? 'Amount / Daily Intake' : 'Amount'}</span>
+            {isRequiredValues && <IconBadge icon={User} size='xs' />}
           </TableHead>
-          <TableHead>daily %</TableHead>
+          {/* TODO - place Iconbadge */}
+          <TableHead className='flex-inline justify-between items-center gap-2'>
+            <span>daily %</span>
+            <Popover>
+              <PopoverTrigger asChild>
+                {!isRequiredValues && (
+                  <IconBadge
+                    icon={HelpCircle}
+                    size='sm'
+                    className='cursor-pointer'
+                  />
+                )}
+              </PopoverTrigger>
+              <PopoverContent side='top' className='w-full'>
+                <p className='text-sm px-1'>login for personalized info</p>
+              </PopoverContent>
+            </Popover>
+          </TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -87,6 +109,7 @@ const NutrientsTable = ({
         ))}
       </TableBody>
     </Table>
+    // </div>
   );
 };
 

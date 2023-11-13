@@ -92,7 +92,7 @@ model Food {
   id String @id @default(uuid())
   title String @db.Text
   imageUrl String? @db.Text
-  preferences Json? @default("[]")
+  preference String?
   characteristics Json?
   isCreator Boolean @default(false)
 

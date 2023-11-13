@@ -8,10 +8,10 @@ import { Separator } from '@/components/ui/separator';
 
 interface CarouselProps {
   imageUrl: string;
-  preferences: string[];
+  preference: string | null;
 }
 
-const Carousel = ({ imageUrl, preferences }: CarouselProps) => {
+const Carousel = ({ imageUrl, preference }: CarouselProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const slides = [
@@ -29,16 +29,11 @@ const Carousel = ({ imageUrl, preferences }: CarouselProps) => {
     <div key='details' className='h-48 p-2 pt-0'>
       <Separator className='mb-2' />
       <h2 className='text-lg text-primary-600 font-semibold'>Attributes</h2>
-      {preferences.length !== 0 ? (
+      {preference ? (
         <div className='mt-3 flex gap-1'>
-          {preferences.map((pref) => (
-            <span
-              key={pref}
-              className='rounded-full border text-primary-600 border-primary-600 py-0.5 px-3 text-sm'
-            >
-              {pref}
-            </span>
-          ))}
+          <span className='rounded-full border text-primary-600 border-primary-600 py-0.5 px-3 text-sm'>
+            {preference}
+          </span>
         </div>
       ) : (
         <p className='text-sm text-center text-primary-600 mt-8'>

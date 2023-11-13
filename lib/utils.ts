@@ -20,7 +20,7 @@ export const seperateNutrientData = (nutrientData: WholeFood) => {
     title: nutrientData.title,
     categoryId: nutrientData.categoryId,
     imageUrl: nutrientData.imageUrl,
-    preferences: nutrientData.preferences,
+    preference: nutrientData.preference,
     isCreator: nutrientData.isCreator,
   };
 
@@ -109,3 +109,63 @@ export const convertValueToTargetUnit = <T extends UnitPrefix>(
 
   return targetValue;
 };
+
+export const truncateString = (str: string, maxLength: number): string => {
+  if (str.length <= maxLength) {
+    return str;
+  }
+
+  return `${str.slice(0, maxLength)}...`;
+};
+
+// type WholeNutrients = MainNutrient[] & {
+//   minerals?: Mineral[];
+//   traceElements?: TraceElement[];
+//   vitamins?: Vitamin[];
+// };
+// type WholeNutrients = MainNutrient[] & {
+//   minerals?: Mineral[];
+//   traceElements?: TraceElement[];
+//   vitamins?: Vitamin[];
+// };
+
+// type MergeArrayToSingleObject<T extends object[]> = T extends [] // Base case: empty array
+//   ? {}
+//   : T extends [infer First, ...infer Rest] // Recursive case: process first element
+//   ? First & MergeArrayToSingleObject<Rest>
+//   : {};
+
+// // Create the final type by merging the arrays into a single object
+// type MergedWholeNutrients = MergeArrayToSingleObject<WholeNutrients[]>;
+
+// export const getFoodCharacteristics = (data: MergedWholeNutrients) => {
+//   const characteristics = [];
+//   const checkRange = (
+//     value: number,
+//     lowThreshold: number,
+//     highThreshold: number
+//   ) => {
+//     if (!isNaN(value) && value >= highThreshold) {
+//       return 'high';
+//     } else if (
+//       !isNaN(value) &&
+//       value <= highThreshold &&
+//       value >= lowThreshold
+//     ) {
+//       return 'low';
+//     }
+
+//     return '';
+//   };
+//   if (checkRange(data.calories, 0, 50) === 'low') {
+//     characteristics.push('low calories');
+//   }
+//   if (checkRange(data.fats, 0, 10) === 'low') {
+//     characteristics.push('low fat');
+//   }
+//   if (checkRange(data.fiber, 5, 20) === 'high') {
+//     characteristics.push('high fiber');
+//   }
+//   // Add more properties and their desired ranges here.
+//   return characteristics;
+// };

@@ -23,7 +23,7 @@ interface GeneralItemProps {
   title: string;
   category: string;
   imageUrl: string;
-  preferences: string[];
+  preference: string | null;
   isCreator: boolean;
 }
 
@@ -34,7 +34,7 @@ const GeneralItem = ({
   title,
   category,
   imageUrl,
-  preferences,
+  preference,
   isCreator,
 }: GeneralItemProps) => {
   const currentUser = useSession().data?.user;
@@ -102,7 +102,7 @@ const GeneralItem = ({
       )}
       {/* </div> */}
       <div className='relative h-40 w-full mt-8'>
-        <Carousel imageUrl={imageUrl} preferences={preferences} />
+        <Carousel imageUrl={imageUrl} preference={preference} />
       </div>
     </div>
   );

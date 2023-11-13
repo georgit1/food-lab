@@ -3,7 +3,7 @@
 import * as z from 'zod';
 import axios from 'axios';
 import { signIn, useSession } from 'next-auth/react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { BsGithub, BsGoogle } from 'react-icons/bs';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
@@ -39,6 +39,8 @@ const formSchema = z.object({
 });
 
 const SignUpForm = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const session = useSession();
   const router = useRouter();
 
@@ -47,8 +49,6 @@ const SignUpForm = () => {
     defaultValues: { name: '', email: '', password: '' },
   });
 
-  const { isSubmitting } = form.formState;
-
   useEffect(() => {
     if (session?.status === 'authenticated') {
       router.push('/');
@@ -56,36 +56,54 @@ const SignUpForm = () => {
   }, [session?.status, router]);
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    axios
-      .post('/api/register', values)
-      .then(() =>
+    try {
+      setIsLoading(true);
+
+      const res = await axios.post('/api/register', values).then(() =>
         signIn('credentials', {
           ...values,
           redirect: false,
         })
-      )
-      .then((callback) => {
-        if (callback?.error) {
-          toast.error('Invalid credentials!');
-        }
+      );
 
-        if (callback?.ok && !callback?.error) {
-          router.push('/');
-        }
-      })
-      .catch(() => toast.error('Something went wrong!'));
-  };
-
-  const socialAction = (action: string) => {
-    signIn(action, { redirect: false }).then((callback) => {
-      if (callback?.error) {
+      if (res?.error) {
         toast.error('Invalid credentials!');
       }
 
-      if (callback?.ok) {
+      if (res?.ok && !res?.error) {
         router.push('/');
       }
-    });
+
+      setIsLoading(false);
+    } catch (error) {
+      toast.error('Something went wrong!');
+      console.log('Error during sign-up:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const socialAction = async (action: string) => {
+    try {
+      setIsLoading(true);
+
+      const res = await signIn(action, { redirect: false });
+
+      if (res?.error) {
+        toast.error('Invalid credentials!');
+      }
+
+      if (res?.ok) {
+        router.push('/');
+      }
+
+      setIsLoading(false);
+    } catch (error) {
+      toast.error('Something went wrong');
+      console.log('Error during sign-in:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -112,7 +130,7 @@ const SignUpForm = () => {
                   </FormLabel>
                   <FormControl>
                     <Input
-                      disabled={isSubmitting}
+                      disabled={isLoading}
                       placeholder='Enter your name'
                       {...field}
                     />
@@ -132,7 +150,7 @@ const SignUpForm = () => {
                   </FormLabel>
                   <FormControl>
                     <Input
-                      disabled={isSubmitting}
+                      disabled={isLoading}
                       placeholder='Enter your email'
                       type='email'
                       {...field}
@@ -152,7 +170,7 @@ const SignUpForm = () => {
                   </FormLabel>
                   <FormControl>
                     <Input
-                      disabled={isSubmitting}
+                      disabled={isLoading}
                       placeholder='Enter your password'
                       type='password'
                       {...field}
@@ -164,8 +182,8 @@ const SignUpForm = () => {
             />
             <div>
               <Button
-                disabled={isSubmitting}
-                isLoading={isSubmitting}
+                disabled={isLoading}
+                isLoading={isLoading}
                 type='submit'
                 className='w-full'
               >
@@ -189,7 +207,7 @@ const SignUpForm = () => {
             </div>
             <div className='relative flex justify-center text-sm'>
               <span className='bg-white px-2 text-gray-500'>
-                Or continue with
+                or continue with
               </span>
             </div>
           </div>

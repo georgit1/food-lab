@@ -1,7 +1,12 @@
 import { Mineral, TraceElement, Vitamin } from '@prisma/client';
 
+import {
+  mineralItems,
+  traceElementItems,
+  vitaminItems,
+} from '@/constants/nutrients';
 import NutrientsBarChart from './NutrientsBarChart';
-import NutrientsTable from '@/components/NutrientsTable';
+import NutrientsTable from '@/app/(food)/(routes)/details/_components/NutrientsTable';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
@@ -15,42 +20,6 @@ interface SubNutrientsItemProps {
   vitamins: Vitamin & NutrientData;
   requiredNutrients: Record<string, number>;
 }
-
-const mineralItems = [
-  'potassium',
-  'sodium',
-  'calcium',
-  'magnesium',
-  'chloride',
-  'sulfur',
-  'phosphorus',
-];
-
-const traceElementItems = [
-  'copper',
-  'fluoride',
-  'iron',
-  'iodine',
-  'manganese',
-  'zinc',
-  'selenium',
-];
-
-const vitaminItems = [
-  'vitaminA',
-  'vitaminB1',
-  'vitaminB2',
-  'vitaminB3',
-  'vitaminB5',
-  'vitaminB6',
-  'vitaminB7',
-  'vitaminB9',
-  'vitaminB12',
-  'vitaminC',
-  'vitaminD',
-  'vitaminE',
-  'vitaminK',
-];
 
 const SubNutrientsItem = ({
   minerals,
@@ -70,7 +39,7 @@ const SubNutrientsItem = ({
 
   return (
     <div className='row-span-3 col-span-3 order-6 lg:order-3 bg-primary-50 rounded-md p-2 overflow-hidden'>
-      <Tabs defaultValue='account'>
+      <Tabs defaultValue='minerals'>
         <TabsList className='w-full'>
           <TabsTrigger value='minerals'>Minerals</TabsTrigger>
           <TabsTrigger value='traceElements'>Trace Elements</TabsTrigger>

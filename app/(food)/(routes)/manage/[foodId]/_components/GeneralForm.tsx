@@ -17,8 +17,9 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import PillCheckbox from '@/components/PillCheckbox';
+import { preferences } from '@/constants/preferences';
 
 interface GeneralFormProps {
   initialData?: Food | null;
@@ -33,35 +34,23 @@ const GeneralForm = ({
   isSubmitting,
   options,
 }: GeneralFormProps) => {
-  const [selectedPreferences, setSelectedPreferences] = useState<string[]>(
-    initialData?.preferences || []
+  const [selectedPreference, setSelectedPreference] = useState<string | null>(
+    initialData?.preference || null
   );
 
-  const preferences = [
-    'vegetarian',
-    'vegan',
-    'gluten-free',
-    'low-carb',
-    'paelo',
-    'ketogenic',
-  ];
+  useEffect(() => {
+    // Update form value whenever selectedPreference changes
+    form.setValue('preference', selectedPreference);
+  }, [selectedPreference, form]);
 
-  const handleCategoryChange = (category: string) => {
-    let updatedPreferences;
-
-    if (selectedPreferences.includes(category)) {
-      // remove existing preference
-      updatedPreferences = selectedPreferences.filter(
-        (item) => item !== category
-      );
-    } else {
-      // add prefernce
-      updatedPreferences = [...selectedPreferences, category];
-    }
-
-    setSelectedPreferences(updatedPreferences);
-
-    form.setValue('preferences', updatedPreferences);
+  const handlePreferenceChange = (preference: string) => {
+    setSelectedPreference((prevPreference) => {
+      if (prevPreference === preference) {
+        return null;
+      } else {
+        return preference;
+      }
+    });
   };
 
   return (
@@ -132,15 +121,15 @@ const GeneralForm = ({
               <PillCheckbox
                 key={preference}
                 label={preference}
-                checked={selectedPreferences.includes(preference)}
-                onChange={() => handleCategoryChange(preference)}
+                checked={selectedPreference === preference}
+                onChange={() => handlePreferenceChange(preference)}
               />
             ))}
           </div>
         </div>
 
         {/* HIDDEN */}
-        <FormField
+        {/* <FormField
           control={form.control}
           name='preferences'
           render={({ field }) => (
@@ -155,7 +144,7 @@ const GeneralForm = ({
               <FormMessage className='text-sm' />
             </FormItem>
           )}
-        />
+        /> */}
       </div>
     </div>
   );

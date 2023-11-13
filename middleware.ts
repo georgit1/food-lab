@@ -7,7 +7,7 @@ export default withAuth({
 });
 
 export const config = {
-  matcher: ['/profile/:path*'],
+  matcher: ['/manage/:path*', '/profile/:path*', '/calculator'],
 };
 
 // export { default } from 'next-auth/middleware';

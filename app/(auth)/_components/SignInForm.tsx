@@ -2,7 +2,7 @@
 
 import * as z from 'zod';
 import { signIn, useSession } from 'next-auth/react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { BsGithub, BsGoogle } from 'react-icons/bs';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
@@ -35,6 +35,8 @@ const formSchema = z.object({
 });
 
 const SignInForm = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const session = useSession();
   const router = useRouter();
 
@@ -43,8 +45,6 @@ const SignInForm = () => {
     defaultValues: { email: '', password: '' },
   });
 
-  const { isSubmitting } = form.formState;
-
   useEffect(() => {
     if (session?.status === 'authenticated') {
       router.push('/');
@@ -52,30 +52,50 @@ const SignInForm = () => {
   }, [session?.status, router]);
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    signIn('credentials', {
-      ...values,
-      redirect: false,
-    }).then((callback) => {
-      if (callback?.error) {
+    try {
+      setIsLoading(true);
+      const res = await signIn('credentials', {
+        ...values,
+        redirect: false,
+      });
+
+      if (res?.error) {
         toast.error('Invalid credentials!');
       }
 
-      if (callback?.ok) {
+      if (res?.ok) {
         router.push('/');
       }
-    });
+      setIsLoading(false);
+    } catch (error) {
+      toast.error('Something went wrong');
+      console.log('Error during sign-in:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const socialAction = (action: string) => {
-    signIn(action, { redirect: false }).then((callback) => {
-      if (callback?.error) {
+  const socialAction = async (action: string) => {
+    try {
+      setIsLoading(true);
+
+      const res = await signIn(action, { redirect: false });
+
+      if (res?.error) {
         toast.error('Invalid credentials!');
       }
 
-      if (callback?.ok) {
+      if (res?.ok) {
         router.push('/');
       }
-    });
+
+      setIsLoading(false);
+    } catch (error) {
+      toast.error('Something went wrong');
+      console.log('Error during sign-in:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -102,7 +122,7 @@ const SignInForm = () => {
                   </FormLabel>
                   <FormControl>
                     <Input
-                      disabled={isSubmitting}
+                      disabled={isLoading}
                       placeholder='Enter your email'
                       type='email'
                       {...field}
@@ -122,7 +142,7 @@ const SignInForm = () => {
                   </FormLabel>
                   <FormControl>
                     <Input
-                      disabled={isSubmitting}
+                      disabled={isLoading}
                       placeholder='Enter your password'
                       type='password'
                       {...field}
@@ -134,8 +154,8 @@ const SignInForm = () => {
             />
             <div>
               <Button
-                disabled={isSubmitting}
-                isLoading={isSubmitting}
+                disabled={isLoading}
+                isLoading={isLoading}
                 type='submit'
                 className='w-full'
               >
@@ -186,6 +206,7 @@ const SignInForm = () => {
             text-gray-500
           '
         >
+          {/* TODO - try to reach to page instead of modal */}
           <div>New to FoodLab?</div>
           <div
             onClick={() => router.push('/sign-up')}

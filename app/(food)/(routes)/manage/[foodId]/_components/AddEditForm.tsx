@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import {
+  Category,
   Food,
   MainNutrient,
   Mineral,
@@ -30,16 +31,18 @@ import TraceElementsForm from './TraceElementsForm';
 import VitaminsForm from './VitaminsForm';
 import { isAdmin } from '@/lib/admin';
 import PageHeader from '@/components/PageHeader';
+// import { getFoodCharacteristics } from '@/lib/utils';
+import { WholeFoodWithCategory } from '@/types/types';
 
-type WholeFood = Food & {
-  mainNutrients?: MainNutrient[];
-  minerals?: Mineral[];
-  traceElements?: TraceElement[];
-  vitamins?: Vitamin[];
-};
+// type WholeFood = Food & {
+//   mainNutrients?: MainNutrient[];
+//   minerals?: Mineral[];
+//   traceElements?: TraceElement[];
+//   vitamins?: Vitamin[];
+// };
 
 interface GeneralFormProps {
-  initialData: WholeFood;
+  initialData: Omit<WholeFoodWithCategory, 'category'>;
   foodId: string;
   options: { label: string; value: string }[];
 }
@@ -49,7 +52,7 @@ const formSchema = z.object({
   categoryId: z.string({
     required_error: 'Please select a category.',
   }),
-  preferences: z.unknown(),
+  preference: z.string().nullable(),
   isCreator: z.boolean(),
   // TODO add zero or below one, also edit error message "or zero"
   calories: z.number().min(1, {
@@ -372,6 +375,8 @@ const AddEditForm = ({ initialData, foodId, options }: GeneralFormProps) => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     values.isCreator = isFoodCreator;
 
+    // TODO - decide if remain or not and how
+    // const characteristics = getFoodCharacteristics(values);
     try {
       await axios.patch(`/api/food/${foodId}`, values);
       toast.success('Food updated');

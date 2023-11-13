@@ -7,10 +7,20 @@ import { usePathname, useRouter } from 'next/navigation';
 interface SidebarItemProps {
   icon: LucideIcon;
   label: string;
-  href: string;
+  href?: string;
+  variant?: 'default' | 'ghost';
+  className?: string;
+  onLogout?: () => void;
 }
 
-export const SidebarItem = ({ icon: Icon, label, href }: SidebarItemProps) => {
+export const SidebarItem = ({
+  icon: Icon,
+  label,
+  href,
+  variant = 'default',
+  className,
+  onLogout,
+}: SidebarItemProps) => {
   const pathname = usePathname();
   const router = useRouter();
 
@@ -19,17 +29,22 @@ export const SidebarItem = ({ icon: Icon, label, href }: SidebarItemProps) => {
     pathname === href ||
     pathname?.startsWith(`${href}/`);
 
-  const onClick = () => {
-    router.push(href);
+  const handleRoute = () => {
+    router.push(href || '');
   };
 
   return (
     <button
-      onClick={onClick}
+      onClick={onLogout ? onLogout : handleRoute}
       type='button'
       className={cn(
-        'flex items-center gap-x-2 text-slate-500 text-sm font-[500] pl-6 transition-all hover:text-slate-600 hover:bg-slate-300/20',
+        `flex items-center gap-x-2 text-slate-500 text-sm font-[500] pl-6 transition-all ${
+          variant === 'default'
+            ? 'hover:text-slate-600 hover:bg-slate-300/20'
+            : ''
+        } ${className}`,
         isActive &&
+          variant === 'default' &&
           'text-sky-700 bg-sky-200/20 hover:bg-sky-200/20 hover:text-sky-700'
       )}
     >

@@ -1,10 +1,7 @@
 // import csvData from '@/public/';
 import csvData from '../public/data_who.csv';
 
-enum Gender {
-  Male = 'male',
-  Female = 'female',
-}
+type Gender = 'MALE' | 'FEMALE';
 
 export const calculateNutrientRequirements = (
   palValue: number,
@@ -71,7 +68,7 @@ export const getCsvValue = (age: number, gender: Gender, item: string) => {
         csvItem === item &&
         age >= parseInt(minAge, 10) &&
         (maxAge === ' years' || age < parseInt(maxAge, 10)) &&
-        (gender === 'male' ? valueMale : valueFemale)
+        (gender === 'MALE' ? valueMale : valueFemale)
       );
     }
     return false;
@@ -80,7 +77,7 @@ export const getCsvValue = (age: number, gender: Gender, item: string) => {
   // Extract the value based on gender
   if (matchingRow) {
     const [_, __, valueMale, valueFemale] = matchingRow;
-    return gender === 'male' ? valueMale : valueFemale;
+    return gender === 'MALE' ? valueMale : valueFemale;
   }
 
   return null;

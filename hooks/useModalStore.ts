@@ -1,12 +1,14 @@
-import { Category, Favorite, Food, User } from '@prisma/client';
+import { Category, Food, User } from '@prisma/client';
 import { create } from 'zustand';
 
 export type ModalType =
   | 'createFood'
   | 'editFood'
   | 'deleteFood'
+  | 'createMeal'
   | 'favorites'
-  | 'calculateCalories';
+  | 'calculateCalories'
+  | 'chooseFood';
 
 type FoodWithCategory = Food & { category: Category };
 
@@ -14,6 +16,7 @@ interface ModalData {
   userData?: User;
   options?: { label: string; value: string }[];
   favorites?: FoodWithCategory[];
+  foodData?: FoodWithCategory[];
   title?: string;
   foodId?: string;
   apiUrl?: string;

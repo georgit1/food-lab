@@ -12,23 +12,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import { Form } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
-import PalForm from './PalForm';
-import BiometricForm from './BiometricForm';
 
 interface CalculatorProps {
-  userData: User;
-  onClose: () => void;
+  // userData: User;
+  // onClose: () => void;
 }
 
-type HoursData = {
-  hours_sleep: number;
-  hours_profession: number;
-  hours_sport: number;
-  hours_leisure_time: number;
-};
-
 const formSchema = z.object({
-  // gender: z.string().min(1, { message: 'Gender is required' }),
   gender: z.nativeEnum(Gender),
   age: z.number().min(1, { message: 'Age is required' }),
   height: z.number().min(1, { message: 'Height is required' }),
@@ -50,24 +40,8 @@ const formSchema = z.object({
     required_error: 'Please select an option.',
   }),
 });
-// TODO - try this way
-// .refine(
-//   (data) => {
-//     console.log(data);
-//     const sum =
-//       data.hours_sleep +
-//       data.hours_profession +
-//       data.hours_sport +
-//       data.hours_leisure_time;
 
-//     return sum === 24;
-//   },
-//   {
-//     message: 'Hours must sum up to 24',
-//   }
-// );
-
-const PalCalculator = ({ userData, onClose }: CalculatorProps) => {
+const CreateMealForm = ({ userData, onClose }: CalculatorProps) => {
   const [error, setError] = useState<boolean>(false);
 
   const router = useRouter();
@@ -137,14 +111,14 @@ const PalCalculator = ({ userData, onClose }: CalculatorProps) => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <BiometricForm form={form} isSubmitting={isSubmitting} />
+        {/* <BiometricForm form={form} isSubmitting={isSubmitting} />
         <PalForm form={form} isSubmitting={isSubmitting} />
         {error && (
           <p className='flex items-center gap-1 text-red-500 text-sm'>
             <Info size={18} />
             <span>hours must sum up to 24</span>
           </p>
-        )}
+        )} */}
         <Button disabled={isSubmitting} type='submit' className='w-full mt-6'>
           Save
         </Button>
@@ -153,4 +127,4 @@ const PalCalculator = ({ userData, onClose }: CalculatorProps) => {
   );
 };
 
-export default PalCalculator;
+export default CreateMealForm;

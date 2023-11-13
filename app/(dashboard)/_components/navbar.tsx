@@ -1,9 +1,8 @@
+import { db } from '@/lib/db';
+import getCurrentUser from '@/lib/getCurrentUser';
 import { NavbarRoutes } from '@/components/NavbarRoutes';
 import { MobileSidebar } from './MobileSidebar';
-import { db } from '@/lib/db';
 import { getFavorites } from '@/actions/get-favorites';
-import getCurrentUser from '@/lib/getCurrentUser';
-import { getFood } from '@/actions/get-food';
 
 export const Navbar = async () => {
   const currentUser = await getCurrentUser();
@@ -13,7 +12,6 @@ export const Navbar = async () => {
     },
   });
 
-  // const food = await getFood({ userId: currentUser?.id || '' });
   const favorites = await getFavorites(currentUser?.id || '');
 
   return (

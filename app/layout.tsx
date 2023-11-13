@@ -5,6 +5,7 @@ import { Inter } from 'next/font/google';
 import { ToasterProvider } from '@/components/providers/ToasterProvider';
 import AuthProvider from '@/components/providers/AuthProvider';
 import { ModalProvider } from '@/components/providers/ModalProvider';
+import { CalculatorProvider } from '@/context/calculatorContext';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -20,13 +21,20 @@ export default function RootLayout({
 }) {
   return (
     <html lang='en'>
-      <body className={inter.className}>
-        <AuthProvider>
-          <ToasterProvider />
-          <ModalProvider />
-          {children}
-        </AuthProvider>
-      </body>
+      <AuthProvider>
+        <CalculatorProvider>
+          <body className={inter.className}>
+            <ToasterProvider />
+            <ModalProvider />
+            {children}
+          </body>
+        </CalculatorProvider>
+      </AuthProvider>
     </html>
   );
 }
+
+// TODO
+// update context on add or delete food on database
+// change preferences to only one string
+// signal user to add profile before go on

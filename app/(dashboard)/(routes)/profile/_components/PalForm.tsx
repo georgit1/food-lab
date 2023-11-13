@@ -3,7 +3,6 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
@@ -21,7 +20,7 @@ interface PalFormProps {
   isSubmitting: boolean;
 }
 
-const hoursSleepOptions = [{ value: 0.95, label: 'asleep' }];
+const hoursSleepOptions = [{ value: 0.95, label: 'sleep' }];
 const hoursProfessionOptions = [
   { value: 1.45, label: 'exclusively sitting' },
   { value: 1.65, label: 'partially walking/standing' },

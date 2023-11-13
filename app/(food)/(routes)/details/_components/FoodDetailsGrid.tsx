@@ -11,17 +11,18 @@ import FoodDensityItem from './FoodDensityItem';
 import SubNutrientsItem from './SubnutrientsItem';
 import DataItem from './DataItem';
 import MainNutrientsItem from './MainNutrientsItem';
+import { WholeFoodWithCategory } from '@/types/types';
 
-type WholeFood = Food & {
-  category: Category;
-  mainNutrients?: MainNutrient[];
-  minerals?: Mineral[];
-  traceElements?: TraceElement[];
-  vitamins?: Vitamin[];
-};
+// type WholeFood = Food & {
+//   category: Category;
+//   mainNutrients?: MainNutrient[];
+//   minerals?: Mineral[];
+//   traceElements?: TraceElement[];
+//   vitamins?: Vitamin[];
+// };
 
 interface FoodDetailsGridProps {
-  foodData: WholeFood;
+  foodData: WholeFoodWithCategory;
   userId: string;
   requiredNutrients: Record<string, number>;
 }
@@ -40,7 +41,7 @@ const FoodDetailsGrid = ({
         title={foodData.title}
         category={foodData.category.name}
         imageUrl={foodData.imageUrl || ''}
-        preferences={foodData.preferences as string[]}
+        preference={foodData.preference}
         isCreator={foodData.isCreator}
       />
       {foodData?.mainNutrients?.[0] && (
@@ -50,11 +51,11 @@ const FoodDetailsGrid = ({
         foodData?.traceElements?.[0] &&
         foodData?.vitamins?.[0] && (
           <SubNutrientsItem
-            // @ts-ignore
+            // @ts-expect-error
             minerals={foodData?.minerals?.[0]}
-            // @ts-ignore
+            // @ts-expect-error
             traceElements={foodData?.traceElements?.[0]}
-            // @ts-ignore
+            // @ts-expect-error
             vitamins={foodData?.vitamins?.[0]}
             requiredNutrients={requiredNutrients}
           />

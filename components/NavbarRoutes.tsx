@@ -1,9 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 import { Category, Food } from '@prisma/client';
 import { signOut, useSession } from 'next-auth/react';
-import { redirect, usePathname, useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { Heart, LogOutIcon, PlusCircle } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
@@ -12,7 +13,7 @@ import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
 import { Separator } from './ui/separator';
 import SearchInput from './SearchInput';
 import { useModal, ModalType } from '@/hooks/useModalStore';
-import Link from 'next/link';
+import { useSmallScreen } from '@/hooks/useSmallScreen';
 
 type FoodWithCategory = Food & { category: Category };
 
@@ -41,7 +42,6 @@ const getInitials = (fullName: string) => {
 };
 
 export const NavbarRoutes = ({ options, favorites }: NavbarRoutesProps) => {
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const currentUser = useSession().data?.user;
   const { onOpen } = useModal();
   const pathname = usePathname();
@@ -49,19 +49,22 @@ export const NavbarRoutes = ({ options, favorites }: NavbarRoutesProps) => {
 
   const isHome = pathname === '/';
 
-  const isSmallScreen = windowWidth <= 768;
+  const isSmallScreen = useSmallScreen();
 
-  useEffect(() => {
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
+  // const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  // const isSmallScreen = windowWidth <= 768;
 
-    window.addEventListener('resize', handleResize);
+  // useEffect(() => {
+  //   const handleResize = () => {
+  //     setWindowWidth(window.innerWidth);
+  //   };
 
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
+  //   window.addEventListener('resize', handleResize);
+
+  //   return () => {
+  //     window.removeEventListener('resize', handleResize);
+  //   };
+  // }, []);
 
   const onActionCreate = (e: React.MouseEvent, action: ModalType) => {
     e.stopPropagation();
@@ -83,7 +86,6 @@ export const NavbarRoutes = ({ options, favorites }: NavbarRoutesProps) => {
 
       <div className='flex gap-x-6 ml-auto'>
         {/* Create Food */}
-        {/* TODO - indicate loading on redirecting to id-page when add food*/}
         {isHome &&
           (isSmallScreen ? (
             <Button
@@ -110,15 +112,21 @@ export const NavbarRoutes = ({ options, favorites }: NavbarRoutesProps) => {
               <span className='hidden lg:inline-block ml-2'>Add Food</span>
             </Button>
           ))}
-
+        {/* TODO - button bump - 580 */}
         {/* Favorites */}
         <Button
+          //         {/* <motion.button
+
+          // key={favorites.length}
+          // animate={{ scale: [1, 1.8, 1] }}
+          // transition={{ duration: 0.3 }}
           variant='outline'
-          className='rounded-full p-2 bg-primary-50 hover:bg-primary-100 border-primary-200 transition duration-300'
+          className='rounded-full p-2 bg-primary-50 hover:bg-primary-100 border border-primary-200 transition duration-300'
           onClick={(e) => onActionFavorites(e, 'favorites')}
         >
           <Heart className='text-primary-600' fill='#0284c7' />
         </Button>
+        {/* </motion.button> */}
 
         {/* Avatar */}
         <Popover>
@@ -161,7 +169,6 @@ export const NavbarRoutes = ({ options, favorites }: NavbarRoutesProps) => {
               <LogOutIcon className='h-4 w-4 mr-2' />
               {currentUser?.email ? 'Log out' : 'Log in'}
             </Button>
-            {/* <Link href='/test'>sign in</Link> */}
           </PopoverContent>
         </Popover>
       </div>
