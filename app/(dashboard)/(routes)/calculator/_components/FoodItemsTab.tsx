@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Category, Food } from '@prisma/client';
+import { ArrowUpDown } from 'lucide-react';
 
 import {
   Table,
@@ -12,17 +12,16 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { ArrowUpDown, Plus } from 'lucide-react';
 import StackedTextWithImage from '@/components/StackedTextWithImage';
 import ToggleFoodButton from './ToggleFoodButton';
-
-type FoodWithCategory = Food & { category: Category };
+import { WholeFoodWithCategory } from '@/types/types';
 
 interface FoodItemsTabProps {
-  foodData: FoodWithCategory[];
+  foodData: WholeFoodWithCategory[];
+  useCase?: string;
 }
 
-const FoodItemsTab = ({ foodData }: FoodItemsTabProps) => {
+const FoodItemsTab = ({ foodData, useCase }: FoodItemsTabProps) => {
   const [sortOrder, setSortOrder] = useState('asc');
 
   const toggleSortOrder = () => {
@@ -76,7 +75,7 @@ const FoodItemsTab = ({ foodData }: FoodItemsTabProps) => {
                   ) : null}
                 </TableCell>
                 <TableCell>
-                  <ToggleFoodButton foodData={item} />
+                  <ToggleFoodButton foodData={item} useCase={useCase} />
                 </TableCell>
               </TableRow>
             ))}

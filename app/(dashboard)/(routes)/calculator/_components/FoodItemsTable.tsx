@@ -1,6 +1,11 @@
-import { ChangeEvent, useState } from 'react';
-import { Edit, MoreHorizontal, Trash } from 'lucide-react';
-import { Category, Food } from '@prisma/client';
+'use client';
+
+import { ChangeEvent, useEffect, useState } from 'react';
+import { BookmarkPlus, MoreHorizontal, Trash } from 'lucide-react';
+
+import { FoodEntry } from '@/types/types';
+import { useCalculator } from '@/context/calculatorContext';
+import { ModalType, useModal } from '@/hooks/useModalStore';
 
 import {
   Table,
@@ -17,24 +22,30 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import StackedTextWithImage from '@/components/StackedTextWithImage';
-import { Input } from '@/components/ui/input';
-import { useCalculator } from '@/context/calculatorContext';
-import { cn, truncateString } from '@/lib/utils';
-
-type FoodWithCategory = Food & {
-  category: Category;
-};
+import { useMeal } from '@/context/mealContext';
 
 interface FoodItemsTableProps {
-  choosenFood: FoodWithCategory[];
+  foodEntries: FoodEntry[];
 }
 
-const FoodItemsTable = ({ choosenFood }: FoodItemsTableProps) => {
-  const { updateFoodEntry, toggleEnable } = useCalculator();
+const FoodItemsTable = ({ foodEntries }: FoodItemsTableProps) => {
+  const [isMounted, setIsMounted] = useState(false);
   const [disabledRows, setDisabledRows] = useState<string[]>([]);
-  const { clearAll } = useCalculator();
+  const { onOpen } = useModal();
+  const { updateFoodEntry, toggleEnableFood, clearAll } = useCalculator();
+  const { updateMealEntry } = useMeal();
+
+  // prevent hydration error
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return null;
+  }
 
   const handleChangeQuantity = (
     event: ChangeEvent<HTMLInputElement>,
@@ -42,10 +53,14 @@ const FoodItemsTable = ({ choosenFood }: FoodItemsTableProps) => {
   ) => {
     const quantity = Number(event.target.value);
     updateFoodEntry(foodId, quantity);
+
+    // update in meal if user wants to save as meal
+    // (data is present beacause was also added on ToogleFoodButton)
+    updateMealEntry(foodId, quantity);
   };
 
   const handleCheckboxChange = (foodId: string) => {
-    toggleEnable(foodId);
+    toggleEnableFood(foodId);
     setDisabledRows((prevRows) =>
       prevRows.includes(foodId)
         ? prevRows.filter((rowId) => rowId !== foodId)
@@ -53,56 +68,58 @@ const FoodItemsTable = ({ choosenFood }: FoodItemsTableProps) => {
     );
   };
 
+  const onAction = (e: React.MouseEvent, action: ModalType) => {
+    e.stopPropagation();
+    onOpen(action);
+  };
+
   return (
     <>
-      {choosenFood.length != 0 && (
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Title</TableHead>
-              <TableHead>Quantity(g)</TableHead>
-              <TableHead className='w-0 sm:w-max'>
-                <span className='hidden sm:block'>Preference</span>
-              </TableHead>
-              <TableHead className='text-xl font-bold mb-2 cursor-pointer'>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <div className='absolute top-3 right-1 p-1 rounded-full bg-primary-50 hover:bg-primary-100 transition'>
-                      <MoreHorizontal
-                        size={20}
-                        className='text-primary-600 cursor-pointer hover'
-                      />
-                    </div>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent side='left'>
-                    <DropdownMenuItem
-                      // onClick={onClick}
-                      className='cursor-pointer text-primary-800'
-                    >
-                      <Edit className='mr-2 h-4 w-4' />
-                      <span>Edit</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem
-                      onClick={clearAll}
-                      className='cursor-pointer text-red-600'
-                    >
-                      <Trash className='mr-2 h-4 w-4' />
-                      <span>Clear List</span>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </TableHead>
-            </TableRow>
-          </TableHeader>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Foods</TableHead>
+            <TableHead>Quantity(g)</TableHead>
+            <TableHead className='text-xl font-bold mb-2 cursor-pointer'>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <div className='absolute top-3 right-4 p-1 rounded-full bg-primary-50 hover:bg-primary-100 transition'>
+                    <MoreHorizontal
+                      size={20}
+                      className='text-primary-600 cursor-pointer hover'
+                    />
+                  </div>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent side='left'>
+                  <DropdownMenuItem
+                    onClick={(e) => onAction(e, 'createMeal')}
+                    className='cursor-pointer text-primary-800'
+                  >
+                    <BookmarkPlus className='mr-2 h-4 w-4' />
+                    <span>Add Meal</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    onClick={clearAll}
+                    className='cursor-pointer text-red-600'
+                  >
+                    <Trash className='mr-2 h-4 w-4' />
+                    <span>Clear List</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </TableHead>
+          </TableRow>
+        </TableHeader>
+        {foodEntries.length != 0 && (
           <TableBody>
-            {choosenFood.map((item) => (
+            {foodEntries.map((item) => (
               <TableRow key={item.id}>
                 <StackedTextWithImage
                   isCreator={item.isCreator}
                   imageSrc={item.imageUrl || ''}
-                  title={truncateString(item.title, 7)}
-                  subtext={item.category.name}
+                  title={item.title}
+                  subtext={item.category}
                   variant={
                     disabledRows.includes(item.id) ? 'disabled' : 'default'
                   }
@@ -110,29 +127,11 @@ const FoodItemsTable = ({ choosenFood }: FoodItemsTableProps) => {
                 <TableCell>
                   <Input
                     type='number'
-                    defaultValue={100}
                     onChange={(e) => handleChangeQuantity(e, item.id)}
                     disabled={disabledRows.includes(item.id)}
                     className='max-w-[80px]'
+                    defaultValue={item.quantity}
                   />
-                  {/* <FavoriteButton
-                    favoriteIds={favorites.map((favorite) => favorite.id)}
-                    foodId={favorite.id}
-                    size='sm'
-                  /> */}
-                </TableCell>
-                <TableCell>
-                  {item.preference ? (
-                    <span
-                      className={cn(
-                        'whitespace-nowrap text-xs text-primary-600 border border-primary-600 py-1 px-2 rounded-full mr-1 hidden w-0 sm:inline sm:w-full',
-                        disabledRows.includes(item.id) &&
-                          ' text-neutral-400 border border-neutral-400'
-                      )}
-                    >
-                      {item.preference}
-                    </span>
-                  ) : null}
                 </TableCell>
                 <TableCell>
                   <Checkbox
@@ -143,13 +142,17 @@ const FoodItemsTable = ({ choosenFood }: FoodItemsTableProps) => {
               </TableRow>
             ))}
           </TableBody>
-        </Table>
-      )}
-      {choosenFood.length === 0 && (
-        <div className='text-center text-sm text-muted-foreground mt-6'>
-          No Food items
-        </div>
-      )}
+        )}
+        {foodEntries.length === 0 && (
+          <TableBody>
+            <TableCell />
+            <TableCell className='text-sm text-neutral-400'>
+              no Food items
+            </TableCell>
+            <TableCell />
+          </TableBody>
+        )}
+      </Table>
     </>
   );
 };

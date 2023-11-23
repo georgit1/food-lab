@@ -3,10 +3,10 @@
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { Edit, Lock, MoreVertical, Trash, User } from 'lucide-react';
-import Carousel from './Carousel';
 
-import { isAdmin } from '@/lib/admin';
+import { isAdmin } from '@/utils/admin';
 import { ModalType, useModal } from '@/hooks/useModalStore';
+import Carousel from './Carousel';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,7 +14,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { IconBadge } from '@/components/IconBadge';
+import IconBadge from '@/components/IconBadge';
 
 interface GeneralItemProps {
   foodId: string;
@@ -52,17 +52,18 @@ const GeneralItem = ({
 
   return (
     <div className='relative col-span-2 sm:col-span-1 order-1 bg-primary-50 rounded-md p-2 overflow-hidden'>
-      {/* <div className='flex justify-between p-2'> */}
       <div className='flex flex-col'>
         <span className='flex gap-1.5 items-center'>
-          <h3 className='text-xl text-primary-600 font-bold truncate'>
+          <h3 className='lg:max-w-[110px] xl:max-w-[155px] text-xl text-primary-800 font-bold truncate'>
             {title}
           </h3>
           {!isCreator && currentUser?.email && (
             <IconBadge icon={User} size={'sm'} />
           )}
         </span>
-        <span className='text-md text-neutral-400'>{category}</span>
+        <span className='text-sm text-primary-500 font-semibold'>
+          {category}
+        </span>
       </div>
 
       {/* Menu Button */}
@@ -100,7 +101,6 @@ const GeneralItem = ({
           size={18}
         />
       )}
-      {/* </div> */}
       <div className='relative h-40 w-full mt-8'>
         <Carousel imageUrl={imageUrl} preference={preference} />
       </div>

@@ -21,8 +21,8 @@ const FavoritesModal = () => {
     <Dialog open={isModalOpen} onOpenChange={onClose}>
       <DialogContent className='sm:max-w-md'>
         <DialogHeader>
-          <DialogTitle className='text-primary-600'>Favorites</DialogTitle>
-          <DialogDescription className='text-primary-400'>
+          <DialogTitle className='text-primary-800'>Favorites</DialogTitle>
+          <DialogDescription className='text-neutral-500'>
             Browse your favorite foods
           </DialogDescription>
         </DialogHeader>

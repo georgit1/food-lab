@@ -6,6 +6,7 @@ import { ToasterProvider } from '@/components/providers/ToasterProvider';
 import AuthProvider from '@/components/providers/AuthProvider';
 import { ModalProvider } from '@/components/providers/ModalProvider';
 import { CalculatorProvider } from '@/context/calculatorContext';
+import { MealProvider } from '@/context/mealContext';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -23,18 +24,15 @@ export default function RootLayout({
     <html lang='en'>
       <AuthProvider>
         <CalculatorProvider>
-          <body className={inter.className}>
-            <ToasterProvider />
-            <ModalProvider />
-            {children}
-          </body>
+          <MealProvider>
+            <body className={inter.className}>
+              <ToasterProvider />
+              <ModalProvider />
+              {children}
+            </body>
+          </MealProvider>
         </CalculatorProvider>
       </AuthProvider>
     </html>
   );
 }
-
-// TODO
-// update context on add or delete food on database
-// change preferences to only one string
-// signal user to add profile before go on

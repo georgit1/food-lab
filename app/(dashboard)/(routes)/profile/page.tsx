@@ -1,7 +1,7 @@
 import { db } from '@/lib/db';
 import { redirect } from 'next/navigation';
 
-import getCurrentUser from '@/lib/getCurrentUser';
+import getCurrentUser from '@/utils/getCurrentUser';
 import InfoBoard from './_components/InfoBoard';
 import PageHeader from '@/components/PageHeader';
 import DataInsight from './_components/DataInsight';

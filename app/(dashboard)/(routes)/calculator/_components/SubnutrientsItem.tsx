@@ -40,7 +40,7 @@ const SubnutrientsItem = ({
   );
 
   return (
-    <div className='lg:col-span-2 bg-primary-50 rounded-md p-2 mb-6 overflow-hidden'>
+    <div className='lg:col-span-2 min-h-[280px] bg-primary-50 rounded-md p-2 mb-6 overflow-hidden'>
       <Tabs defaultValue='minerals'>
         <TabsList>
           <TabsTrigger value='minerals'>Minerals</TabsTrigger>
@@ -65,7 +65,7 @@ const SubnutrientsItem = ({
               />
             </div>
           ) : (
-            <p className='text-sm text-neutral-600 font-semibold text-center lg:mt-56'>
+            <p className='text-sm text-neutral-400 font-semibold text-center mt-16'>
               no data available
             </p>
           )}
@@ -88,7 +88,7 @@ const SubnutrientsItem = ({
               />
             </div>
           ) : (
-            <p className='text-sm text-neutral-600 font-semibold text-center lg:mt-56'>
+            <p className='text-sm text-neutral-400 font-semibold text-center mt-16'>
               no data available
             </p>
           )}
@@ -111,7 +111,7 @@ const SubnutrientsItem = ({
               />
             </div>
           ) : (
-            <p className='text-sm text-neutral-600 font-semibold text-center lg:mt-56'>
+            <p className='text-sm text-neutral-400 font-semibold text-center mt-16'>
               no data available
             </p>
           )}

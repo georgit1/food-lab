@@ -1,5 +1,5 @@
 import { db } from '@/lib/db';
-import getCurrentUser from '@/lib/getCurrentUser';
+import getCurrentUser from '@/utils/getCurrentUser';
 import { NavbarRoutes } from '@/components/NavbarRoutes';
 import { MobileSidebar } from './MobileSidebar';
 import { getFavorites } from '@/actions/get-favorites';

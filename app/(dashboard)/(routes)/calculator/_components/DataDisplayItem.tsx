@@ -15,7 +15,7 @@ const DataDisplayItem = ({
 }: DataDisplayItemProps) => {
   return (
     <div className='flex justify-center bg-primary-50 rounded-md p-2'>
-      <div className='flex flex-col flex-grow gap-4 items-center px-6'>
+      <div className='flex flex-col flex-grow gap-4 items-center px-6 pb-2'>
         <RadialProgess
           label='calories'
           value={totalNutrients.calories?.toFixed(0) || 0}

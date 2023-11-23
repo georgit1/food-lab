@@ -11,6 +11,7 @@ export const calculateNutrientRequirements = (
   weight: number
 ) => {
   const calories = rmr * palValue;
+  console.log('RENDER');
 
   const nutrients: Record<string, number> = {
     calories,

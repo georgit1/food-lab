@@ -1,6 +1,5 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Category, Food } from '@prisma/client';
 import { signOut, useSession } from 'next-auth/react';
@@ -48,27 +47,30 @@ export const NavbarRoutes = ({ options, favorites }: NavbarRoutesProps) => {
   const router = useRouter();
 
   const isHome = pathname === '/';
+  const isMeals = pathname === '/meals';
 
   const isSmallScreen = useSmallScreen();
 
-  // const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  // const isSmallScreen = windowWidth <= 768;
+  const handleButtonClick = (e: React.MouseEvent) => {
+    if (currentUser?.email) {
+      if (isHome) {
+        onActionCreateFood(e, 'createFood');
+      } else if (isMeals) {
+        onActionCreateMeal(e, 'createMeal');
+      }
+    } else {
+      router.push('/sign-in');
+    }
+  };
 
-  // useEffect(() => {
-  //   const handleResize = () => {
-  //     setWindowWidth(window.innerWidth);
-  //   };
-
-  //   window.addEventListener('resize', handleResize);
-
-  //   return () => {
-  //     window.removeEventListener('resize', handleResize);
-  //   };
-  // }, []);
-
-  const onActionCreate = (e: React.MouseEvent, action: ModalType) => {
+  const onActionCreateFood = (e: React.MouseEvent, action: ModalType) => {
     e.stopPropagation();
     onOpen(action, { options });
+  };
+
+  const onActionCreateMeal = (e: React.MouseEvent, action: ModalType) => {
+    e.stopPropagation();
+    onOpen(action);
   };
 
   const onActionFavorites = (e: React.MouseEvent, action: ModalType) => {
@@ -85,47 +87,46 @@ export const NavbarRoutes = ({ options, favorites }: NavbarRoutesProps) => {
       )}
 
       <div className='flex gap-x-6 ml-auto'>
-        {/* Create Food */}
-        {isHome &&
+        {/* Create Food/Meal */}
+        {(isHome || isMeals) &&
           (isSmallScreen ? (
             <Button
               className='fixed bottom-6 right-6 p-4 h-auto shadow-md rounded-full'
-              onClick={
-                currentUser?.email
-                  ? (e) => onActionCreate(e, 'createFood')
-                  : () => router.push('/sign-in')
-              }
+              onClick={(e) => handleButtonClick(e)}
             >
               <PlusCircle className='h-5 w-5' />
             </Button>
           ) : (
             <Button
               variant='outline'
-              className='p-2.5 h-auto rounded-full md:static lg:rounded-md'
-              onClick={
-                currentUser?.email
-                  ? (e) => onActionCreate(e, 'createFood')
-                  : () => router.push('/sign-in')
-              }
+              className={`p-2.5 h-auto md:static rounded-full ${
+                isMeals ? 'md:rounded-md' : 'lg:rounded-md'
+              }`}
+              onClick={(e) => handleButtonClick(e)}
             >
               <PlusCircle className='h-5 w-5' />
-              <span className='hidden lg:inline-block ml-2'>Add Food</span>
+              <span
+                className={`${!isMeals ? 'hidden lg:inline-block' : ''} ml-2`}
+              >{`${isHome ? 'Add Food' : isMeals ? 'Add Meal' : ''}`}</span>
             </Button>
           ))}
+
         {/* TODO - button bump - 580 */}
         {/* Favorites */}
-        <Button
-          //         {/* <motion.button
+        {currentUser?.email && (
+          <Button
+            //         {/* <motion.button
 
-          // key={favorites.length}
-          // animate={{ scale: [1, 1.8, 1] }}
-          // transition={{ duration: 0.3 }}
-          variant='outline'
-          className='rounded-full p-2 bg-primary-50 hover:bg-primary-100 border border-primary-200 transition duration-300'
-          onClick={(e) => onActionFavorites(e, 'favorites')}
-        >
-          <Heart className='text-primary-600' fill='#0284c7' />
-        </Button>
+            // key={favorites.length}
+            // animate={{ scale: [1, 1.8, 1] }}
+            // transition={{ duration: 0.3 }}
+            variant='outline'
+            className='rounded-full p-2 bg-primary-50 hover:bg-primary-100 border border-primary-200 transition duration-300'
+            onClick={(e) => onActionFavorites(e, 'favorites')}
+          >
+            <Heart className='text-primary-600' fill='#0284c7' />
+          </Button>
+        )}
         {/* </motion.button> */}
 
         {/* Avatar */}

@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation';
 
 import { db } from '@/lib/db';
-import getCurrentUser from '@/lib/getCurrentUser';
+import getCurrentUser from '@/utils/getCurrentUser';
 import SearchInput from '@/components/SearchInput';
 import { getFood } from '@/actions/get-food';
 import FoodList from '@/app/(dashboard)/(routes)/(root)/_components/FoodList';
@@ -9,13 +9,13 @@ import FoodList from '@/app/(dashboard)/(routes)/(root)/_components/FoodList';
 import Categories from '@/app/(dashboard)/(routes)/(root)/_components/Categories';
 import { getFavorites } from '@/actions/get-favorites';
 
-interface SearchPageProps {
+interface RootPageProps {
   searchParams: {
     title: string;
     categoryId: string;
   };
 }
-const SearchPage = async ({ searchParams }: SearchPageProps) => {
+const RootPage = async ({ searchParams }: RootPageProps) => {
   const currentUser = await getCurrentUser();
 
   const categories = await db.category.findMany({
@@ -44,7 +44,15 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
   );
 };
 
-export default SearchPage;
+export default RootPage;
 
+// TODO
+// prevent creating food with no main nutrients -> error in details page
+// update context on add or delete food on database
+// signal user to add profile before go on
+// double check all personal nutrients with excel
+// check vitamins barchart
 // on page switch from sign-in to sign-up without open modal
-// sign-in or sign-up meaning and correction in from
+// tailwind sort classes
+// - check for google login
+// - check that api works correctly for isCreator and non isCreator

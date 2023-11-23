@@ -6,15 +6,16 @@ import { Pencil, PlusCircle, ImageIcon } from 'lucide-react';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
-import { Food } from '@prisma/client';
+import { Food, Meal } from '@prisma/client';
 import Image from 'next/image';
 
 import { Button } from '@/components/ui/button';
 import { FileUpload } from '@/components/FileUpload';
 
 interface ImageFormProps {
-  initialData: Food;
-  foodId: string;
+  initialData: Food | Meal;
+  endpoint: string;
+  label: string;
 }
 
 const formSchema = z.object({
@@ -23,7 +24,7 @@ const formSchema = z.object({
   }),
 });
 
-const ImageForm = ({ initialData, foodId }: ImageFormProps) => {
+const ImageForm = ({ initialData, endpoint, label }: ImageFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
 
   const toggleEdit = () => setIsEditing((current) => !current);
@@ -31,10 +32,9 @@ const ImageForm = ({ initialData, foodId }: ImageFormProps) => {
   const router = useRouter();
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
     try {
-      await axios.patch(`/api/food/${foodId}`, values);
-      toast.success('Food updated');
+      await axios.patch(endpoint, values);
+      toast.success(`${label} updated`);
       toggleEdit();
       router.refresh();
     } catch {
@@ -45,7 +45,7 @@ const ImageForm = ({ initialData, foodId }: ImageFormProps) => {
   return (
     <div className='border bg-primary-50 rounded-md p-4'>
       <div className='font-medium flex items-center justify-between'>
-        Course image
+        {`${label} image`}
         <Button onClick={toggleEdit} variant='ghost' type='button'>
           {isEditing && <>Cancel</>}
           {!isEditing && !initialData?.imageUrl && (

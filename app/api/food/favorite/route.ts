@@ -1,5 +1,5 @@
 import { db } from '@/lib/db';
-import getCurrentUser from '@/lib/getCurrentUser';
+import getCurrentUser from '@/utils/getCurrentUser';
 import { NextResponse } from 'next/server';
 
 export async function POST(req: Request) {
@@ -20,6 +20,7 @@ export async function POST(req: Request) {
     }
 
     const newFavorite = await db.favorite.create({
+      // TODO
       data: {
         userId: currentUser?.id,
         foodId: foodId,

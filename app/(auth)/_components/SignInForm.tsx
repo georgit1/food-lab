@@ -99,14 +99,14 @@ const SignInForm = () => {
   };
 
   return (
-    <div className='mt-8 sm:mx-auto sm:w-full sm:max-w-md'>
+    <div className='mt-8 sm:mx-auto sm:w-full sm:max-w-md '>
       <div
         className='
-        bg-white
+         bg-white
           px-4
           py-8
           shadow
-          sm:rounded-lg
+          rounded-lg
           sm:px-10
         '
       >

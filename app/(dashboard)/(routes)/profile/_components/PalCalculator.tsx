@@ -14,6 +14,7 @@ import { Form } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import PalForm from './PalForm';
 import BiometricForm from './BiometricForm';
+import Loader from '@/components/Loader';
 
 interface CalculatorProps {
   userData: User;
@@ -145,8 +146,12 @@ const PalCalculator = ({ userData, onClose }: CalculatorProps) => {
             <span>hours must sum up to 24</span>
           </p>
         )}
-        <Button disabled={isSubmitting} type='submit' className='w-full mt-6'>
-          Save
+        <Button
+          disabled={isSubmitting}
+          type='submit'
+          className='w-full mt-6 bg-primary-800'
+        >
+          {isSubmitting ? <Loader /> : 'Calculate'}
         </Button>
       </form>
     </Form>

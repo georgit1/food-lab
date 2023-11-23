@@ -1,4 +1,5 @@
 import { db } from '@/lib/db';
+import { MainNutrient } from '@prisma/client';
 
 type GetFood = {
   userId: string | undefined;
@@ -6,9 +7,11 @@ type GetFood = {
   categoryId?: string;
 };
 
+// TODO - add condition that food item has nutrients
 interface WhereProps {
   title: { contains: string | undefined };
   categoryId: string | undefined;
+  // mainNutrients: MainNutrient;
   isCreator: boolean;
   userId?: string;
 }
@@ -66,6 +69,7 @@ export const getFood = async ({ userId, title, categoryId }: GetFood) => {
         contains: title,
       },
       categoryId,
+      // TODO
       OR: [
         {
           isCreator: true,

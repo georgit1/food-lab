@@ -1,5 +1,5 @@
-import { db } from './db';
-import getSession from './getSession';
+import { db } from '../lib/db';
+import getSession from '../lib/getSession';
 
 const getCurrentUser = async () => {
   try {

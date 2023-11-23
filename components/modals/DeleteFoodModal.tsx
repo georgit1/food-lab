@@ -1,6 +1,5 @@
 'use client';
 
-import qs from 'query-string';
 import axios from 'axios';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -16,9 +15,14 @@ import {
 import { useModal } from '@/hooks/useModalStore';
 import { Button } from '@/components/ui/button';
 import toast from 'react-hot-toast';
+import { useCalculator } from '@/context/calculatorContext';
+import Loader from '../Loader';
+import { useMeal } from '@/context/mealContext';
 
 const DeleteFoodModal = () => {
   const { isOpen, onClose, type, data } = useModal();
+  const { deleteFoodEntry } = useCalculator();
+  const { deleteMealEntry } = useMeal();
   const router = useRouter();
 
   const isModalOpen = isOpen && type === 'deleteFood';
@@ -27,10 +31,11 @@ const DeleteFoodModal = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const onClick = async () => {
-    console.log('delte');
     try {
       setIsLoading(true);
       await axios.delete(`/api/food/${foodId}`);
+      deleteFoodEntry(foodId || '');
+      deleteMealEntry(foodId || '');
       toast.success('Food deleted');
       onClose();
       router.refresh();
@@ -40,6 +45,7 @@ const DeleteFoodModal = () => {
       toast.error('Something went wrong');
     } finally {
       setIsLoading(false);
+      onClose();
     }
   };
 
@@ -47,12 +53,12 @@ const DeleteFoodModal = () => {
     <Dialog open={isModalOpen} onOpenChange={onClose}>
       <DialogContent className='bg-white text-black p-0 overflow-hidden'>
         <DialogHeader className='pt-8 px-6'>
-          <DialogTitle className='text-2xl text-center font-bold'>
+          <DialogTitle className='text-2xl text-primary-800 text-center font-bold'>
             Delete Food
           </DialogTitle>
-          <DialogDescription className='text-center text-zinc-500'>
+          <DialogDescription className='text-center text-neutral-500'>
             Are you sure you want to do this? <br />
-            <span className='text-primary-600 font-semibold'>
+            <span className='text-primary-800 font-semibold'>
               #{title}
             </span>{' '}
             will be permanently deleted.
@@ -63,8 +69,8 @@ const DeleteFoodModal = () => {
             <Button disabled={isLoading} onClick={onClose} variant='ghost'>
               Cancel
             </Button>
-            <Button disabled={isLoading} onClick={onClick}>
-              Confirm
+            <Button disabled={isLoading} onClick={onClick} className='w-[85px]'>
+              {isLoading ? <Loader /> : 'Confirm'}
             </Button>
           </div>
         </DialogFooter>

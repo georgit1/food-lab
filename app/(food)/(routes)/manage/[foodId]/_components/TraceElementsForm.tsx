@@ -10,7 +10,8 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { IconBadge } from '@/components/IconBadge';
+import IconBadge from '@/components/IconBadge';
+import IconHeader from '@/components/IconHeader';
 
 interface GeneralFormProps {
   form: any;
@@ -20,33 +21,24 @@ interface GeneralFormProps {
 const TraceElementsForm = ({ form, isSubmitting }: GeneralFormProps) => {
   return (
     <div>
-      <div className='flex items-center gap-x-2'>
-        <IconBadge icon={Microscope} />
-        <h2 className='text-xl text-primary-600 font-semibold'>
-          Trace Elements
-        </h2>
-      </div>
+      <IconHeader icon={Microscope} title='Trace Elements' size={'md'} />
+
       <div className='grid sm:grid-cols-2 border bg-primary-50 rounded-md p-4 gap-2 mt-5'>
         <FormField
           control={form.control}
           name='iron'
           render={({ field }) => (
             <FormItem className='w-full'>
-              <FormLabel className='text-primary-600 font-semibold'>
+              <FormLabel className='text-primary-800 font-semibold'>
                 Iron
               </FormLabel>
               <FormControl>
                 <Input
-                  type='text'
                   unit='mg'
                   disabled={isSubmitting}
                   placeholder='Enter iron'
                   {...field}
                   value={field.value || ''}
-                  onChange={(e) => {
-                    const parsedValue = parseFloat(e.target.value);
-                    field.onChange(parsedValue);
-                  }}
                 />
               </FormControl>
               <FormMessage />
@@ -58,21 +50,16 @@ const TraceElementsForm = ({ form, isSubmitting }: GeneralFormProps) => {
           name='fluoride'
           render={({ field }) => (
             <FormItem className='w-full'>
-              <FormLabel className='text-primary-600 font-semibold'>
+              <FormLabel className='text-primary-800 font-semibold'>
                 Fluoride
               </FormLabel>
               <FormControl>
                 <Input
-                  type='text'
                   unit='mg'
                   disabled={isSubmitting}
                   placeholder='Enter fluoride'
                   {...field}
                   value={field.value || ''}
-                  onChange={(e) => {
-                    const parsedValue = parseFloat(e.target.value);
-                    field.onChange(parsedValue);
-                  }}
                 />
               </FormControl>
               <FormMessage />
@@ -84,21 +71,16 @@ const TraceElementsForm = ({ form, isSubmitting }: GeneralFormProps) => {
           name='copper'
           render={({ field }) => (
             <FormItem className='w-full'>
-              <FormLabel className='text-primary-600 font-semibold'>
+              <FormLabel className='text-primary-800 font-semibold'>
                 Copper
               </FormLabel>
               <FormControl>
                 <Input
-                  type='text'
                   unit='mg'
                   disabled={isSubmitting}
                   placeholder='Enter copper'
                   {...field}
                   value={field.value || ''}
-                  onChange={(e) => {
-                    const parsedValue = parseFloat(e.target.value);
-                    field.onChange(parsedValue);
-                  }}
                 />
               </FormControl>
               <FormMessage />
@@ -110,21 +92,16 @@ const TraceElementsForm = ({ form, isSubmitting }: GeneralFormProps) => {
           name='manganese'
           render={({ field }) => (
             <FormItem className='w-full'>
-              <FormLabel className='text-primary-600 font-semibold'>
+              <FormLabel className='text-primary-800 font-semibold'>
                 Manganese
               </FormLabel>
               <FormControl>
                 <Input
-                  type='text'
                   unit='mg'
                   disabled={isSubmitting}
                   placeholder='Enter manganese'
                   {...field}
                   value={field.value || ''}
-                  onChange={(e) => {
-                    const parsedValue = parseFloat(e.target.value);
-                    field.onChange(parsedValue);
-                  }}
                 />
               </FormControl>
               <FormMessage />
@@ -136,21 +113,16 @@ const TraceElementsForm = ({ form, isSubmitting }: GeneralFormProps) => {
           name='selenium'
           render={({ field }) => (
             <FormItem className='w-full'>
-              <FormLabel className='text-primary-600 font-semibold'>
+              <FormLabel className='text-primary-800 font-semibold'>
                 Selenium
               </FormLabel>
               <FormControl>
                 <Input
-                  type='text'
                   unit='µg'
                   disabled={isSubmitting}
                   placeholder='Enter selenium'
                   {...field}
                   value={field.value || ''}
-                  onChange={(e) => {
-                    const parsedValue = parseFloat(e.target.value);
-                    field.onChange(parsedValue);
-                  }}
                 />
               </FormControl>
               <FormMessage />
@@ -162,21 +134,16 @@ const TraceElementsForm = ({ form, isSubmitting }: GeneralFormProps) => {
           name='iodine'
           render={({ field }) => (
             <FormItem className='w-full'>
-              <FormLabel className='text-primary-600 font-semibold'>
+              <FormLabel className='text-primary-800 font-semibold'>
                 Iodine
               </FormLabel>
               <FormControl>
                 <Input
-                  type='text'
                   unit='µg'
                   disabled={isSubmitting}
                   placeholder='Enter iodine'
                   {...field}
                   value={field.value || ''}
-                  onChange={(e) => {
-                    const parsedValue = parseFloat(e.target.value);
-                    field.onChange(parsedValue);
-                  }}
                 />
               </FormControl>
               <FormMessage />
@@ -188,21 +155,16 @@ const TraceElementsForm = ({ form, isSubmitting }: GeneralFormProps) => {
           name='zinc'
           render={({ field }) => (
             <FormItem className='w-full'>
-              <FormLabel className='text-primary-600 font-semibold'>
+              <FormLabel className='text-primary-800 font-semibold'>
                 Zinc
               </FormLabel>
               <FormControl>
                 <Input
-                  type='text'
                   unit='mg'
                   disabled={isSubmitting}
                   placeholder='Enter zinc'
                   {...field}
                   value={field.value || ''}
-                  onChange={(e) => {
-                    const parsedValue = parseFloat(e.target.value);
-                    field.onChange(parsedValue);
-                  }}
                 />
               </FormControl>
               <FormMessage />

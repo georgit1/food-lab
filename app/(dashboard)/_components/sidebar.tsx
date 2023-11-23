@@ -1,4 +1,4 @@
-import getCurrentUser from '@/lib/getCurrentUser';
+import getCurrentUser from '@/utils/getCurrentUser';
 import { SidebarRoutes } from './SidebarRoutes';
 import { Logo } from '../../../components/Logo';
 
@@ -10,7 +10,7 @@ export const Sidebar = async () => {
       <div className='p-6'>
         <Logo />
       </div>
-      <div className='flex flex-col w-full h-full'>
+      <div className='flex flex-col w-full h-full px-2'>
         <SidebarRoutes currentUser={currentUser} />
       </div>
     </div>

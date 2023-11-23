@@ -1,5 +1,5 @@
 import { Food, Category, MainNutrient } from '@prisma/client';
-import FoodCard from '@/app/(dashboard)/(routes)/(root)/_components/FoodCard';
+import FoodCard from './FoodCard';
 
 type FoodWithCategory = Food & {
   category: Category | null;
@@ -11,22 +11,8 @@ interface FoodListProps {
 }
 
 const FoodList = ({ items }: FoodListProps) => {
-  const colorMap: Record<Category['name'], string> = {
-    Vegetables: 'category-vegetables',
-    Legumes: 'category-leguems',
-    'Oils & Fats': 'category-oils_fats',
-    Herbs: 'category-herbs',
-    Fruits: 'category-fruits',
-    Dairy: 'category-dairy',
-    Grains: 'category-grains',
-    Beverages: 'category-beverages',
-    'Nuts & Seeds': 'category-nuts_seeds',
-  };
-
   return (
     <div>
-      {/* <div className='grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4 gap-4'> */}
-      {/* TODO- following */}
       <div className='grid gap-4 grid-cols-[repeat(auto-fill,minmax(260px,1fr))]'>
         {items.map((item) => (
           <FoodCard
@@ -40,7 +26,6 @@ const FoodList = ({ items }: FoodListProps) => {
             carbohydrates={item.mainNutrients[0]?.carbohydrates}
             fats={item.mainNutrients[0]?.fats}
             fiber={item.mainNutrients[0]?.fiber}
-            color={colorMap[item.category?.name as Category['name']]}
             isCreator={item.isCreator}
           />
         ))}

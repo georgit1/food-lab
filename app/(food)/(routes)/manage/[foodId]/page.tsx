@@ -1,7 +1,7 @@
 import { db } from '@/lib/db';
 import { redirect } from 'next/navigation';
 import AddEditForm from './_components/AddEditForm';
-import getCurrentUser from '@/lib/getCurrentUser';
+import getCurrentUser from '@/utils/getCurrentUser';
 
 // TODO - only admin can edit admin food
 const AddEditFoodPage = async ({ params }: { params: { foodId: string } }) => {

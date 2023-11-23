@@ -6,7 +6,7 @@ import { Heart } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import { cva, type VariantProps } from 'class-variance-authority';
-import { cn } from '@/lib/utils';
+import { cn } from '@/utils/utils';
 
 const backgroundVariants = cva(
   'w-max cursor-pointer bg-primary-100 rounded-full flex justify-center items-center transition duration-300',
@@ -64,6 +64,7 @@ const FavoriteButton = ({
     async (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
       e.preventDefault();
 
+      // TODO - favorite iteam should dissappear when removing
       try {
         if (isFavorite) {
           await axios.delete('/api/food/favorite', { data: { foodId } });

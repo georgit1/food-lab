@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { Apple, ChevronDown, ChevronUp } from 'lucide-react';
 
 import {
@@ -10,9 +11,8 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { IconBadge } from '@/components/IconBadge';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import IconBadge from '@/components/IconBadge';
+import IconHeader from '@/components/IconHeader';
 
 interface GeneralFormProps {
   form: any;
@@ -21,21 +21,15 @@ interface GeneralFormProps {
 
 const MainNutrientsForm = ({ form, isSubmitting }: GeneralFormProps) => {
   const [showDetails, setShowDetails] = useState<boolean>(false);
-  const router = useRouter();
 
-  // TODO - no prefilled on uncollapse
   const toggleShowDetails = () => {
     setShowDetails((d) => !d);
   };
 
   return (
     <div>
-      <div className='flex items-center gap-x-2'>
-        <IconBadge icon={Apple} />
-        <h2 className='text-xl text-primary-600 font-semibold'>
-          Main Nutrients
-        </h2>
-      </div>
+      <IconHeader icon={Apple} title='Main Nutrients' size={'md'} />
+
       <div className='border bg-primary-50 rounded-md p-4 mt-5'>
         <div className='grid sm:grid-cols-2 gap-2'>
           <FormField
@@ -43,7 +37,7 @@ const MainNutrientsForm = ({ form, isSubmitting }: GeneralFormProps) => {
             name='calories'
             render={({ field }) => (
               <FormItem className='w-full'>
-                <FormLabel className='text-primary-600 font-semibold'>
+                <FormLabel className='text-primary-800 font-semibold'>
                   Calories
                 </FormLabel>
                 <FormControl>
@@ -54,10 +48,10 @@ const MainNutrientsForm = ({ form, isSubmitting }: GeneralFormProps) => {
                     placeholder='Enter calories'
                     {...field}
                     value={field.value || ''}
-                    onChange={(e) => {
-                      const parsedValue = parseFloat(e.target.value);
-                      field.onChange(parsedValue);
-                    }}
+                    // onChange={(e) => {
+                    //   const parsedValue = parseFloat(e.target.value);
+                    //   field.onChange(parsedValue);
+                    // }}
                   />
                 </FormControl>
                 <FormMessage />
@@ -69,7 +63,7 @@ const MainNutrientsForm = ({ form, isSubmitting }: GeneralFormProps) => {
             name='fats'
             render={({ field }) => (
               <FormItem className='w-full'>
-                <FormLabel className='text-primary-600 font-semibold'>
+                <FormLabel className='text-primary-800 font-semibold'>
                   Fats
                 </FormLabel>
                 <FormControl>
@@ -80,10 +74,6 @@ const MainNutrientsForm = ({ form, isSubmitting }: GeneralFormProps) => {
                     placeholder='Enter fats'
                     {...field}
                     value={field.value || ''}
-                    onChange={(e) => {
-                      const parsedValue = parseFloat(e.target.value);
-                      field.onChange(parsedValue);
-                    }}
                   />
                 </FormControl>
                 <FormMessage />
@@ -95,7 +85,7 @@ const MainNutrientsForm = ({ form, isSubmitting }: GeneralFormProps) => {
             name='proteins'
             render={({ field }) => (
               <FormItem className='w-full'>
-                <FormLabel className='text-primary-600 font-semibold'>
+                <FormLabel className='text-primary-800 font-semibold'>
                   Proteins
                 </FormLabel>
                 <FormControl>
@@ -106,10 +96,6 @@ const MainNutrientsForm = ({ form, isSubmitting }: GeneralFormProps) => {
                     placeholder='Enter proteins'
                     {...field}
                     value={field.value || ''}
-                    onChange={(e) => {
-                      const parsedValue = parseFloat(e.target.value);
-                      field.onChange(parsedValue);
-                    }}
                   />
                 </FormControl>
                 <FormMessage />
@@ -121,7 +107,7 @@ const MainNutrientsForm = ({ form, isSubmitting }: GeneralFormProps) => {
             name='carbohydrates'
             render={({ field }) => (
               <FormItem className='w-full'>
-                <FormLabel className='text-primary-600 font-semibold'>
+                <FormLabel className='text-primary-800 font-semibold'>
                   Carbohydrates
                 </FormLabel>
                 <FormControl>
@@ -132,10 +118,6 @@ const MainNutrientsForm = ({ form, isSubmitting }: GeneralFormProps) => {
                     placeholder='Enter carbohydrates'
                     {...field}
                     value={field.value || ''}
-                    onChange={(e) => {
-                      const parsedValue = parseFloat(e.target.value);
-                      field.onChange(parsedValue);
-                    }}
                   />
                 </FormControl>
                 <FormMessage />
@@ -147,7 +129,7 @@ const MainNutrientsForm = ({ form, isSubmitting }: GeneralFormProps) => {
             name='sugar'
             render={({ field }) => (
               <FormItem className='w-full'>
-                <FormLabel className='text-primary-600 font-semibold'>
+                <FormLabel className='text-primary-800 font-semibold'>
                   Sugar
                 </FormLabel>
                 <FormControl>
@@ -158,10 +140,6 @@ const MainNutrientsForm = ({ form, isSubmitting }: GeneralFormProps) => {
                     placeholder='Enter sugar'
                     {...field}
                     value={field.value || ''}
-                    onChange={(e) => {
-                      const parsedValue = parseFloat(e.target.value);
-                      field.onChange(parsedValue);
-                    }}
                   />
                 </FormControl>
                 <FormMessage />
@@ -173,7 +151,7 @@ const MainNutrientsForm = ({ form, isSubmitting }: GeneralFormProps) => {
             name='fiber'
             render={({ field }) => (
               <FormItem className='w-full'>
-                <FormLabel className='text-primary-600 font-semibold'>
+                <FormLabel className='text-primary-800 font-semibold'>
                   Fiber
                 </FormLabel>
                 <FormControl>
@@ -184,10 +162,6 @@ const MainNutrientsForm = ({ form, isSubmitting }: GeneralFormProps) => {
                     placeholder='Enter fiber'
                     {...field}
                     value={field.value || ''}
-                    onChange={(e) => {
-                      const parsedValue = parseFloat(e.target.value);
-                      field.onChange(parsedValue);
-                    }}
                   />
                 </FormControl>
                 <FormMessage />
@@ -199,7 +173,7 @@ const MainNutrientsForm = ({ form, isSubmitting }: GeneralFormProps) => {
             name='salt'
             render={({ field }) => (
               <FormItem className='w-full'>
-                <FormLabel className='text-primary-600 font-semibold'>
+                <FormLabel className='text-primary-800 font-semibold'>
                   Salt
                 </FormLabel>
                 <FormControl>
@@ -210,10 +184,6 @@ const MainNutrientsForm = ({ form, isSubmitting }: GeneralFormProps) => {
                     placeholder='Enter salt'
                     {...field}
                     value={field.value || ''}
-                    onChange={(e) => {
-                      const parsedValue = parseFloat(e.target.value);
-                      field.onChange(parsedValue);
-                    }}
                   />
                 </FormControl>
                 <FormMessage />
@@ -225,7 +195,7 @@ const MainNutrientsForm = ({ form, isSubmitting }: GeneralFormProps) => {
             name='water'
             render={({ field }) => (
               <FormItem className='w-full'>
-                <FormLabel className='text-primary-600 font-semibold'>
+                <FormLabel className='text-primary-800 font-semibold'>
                   Water
                 </FormLabel>
                 <FormControl>
@@ -236,10 +206,6 @@ const MainNutrientsForm = ({ form, isSubmitting }: GeneralFormProps) => {
                     placeholder='Enter water'
                     {...field}
                     value={field.value || ''}
-                    onChange={(e) => {
-                      const parsedValue = parseFloat(e.target.value);
-                      field.onChange(parsedValue);
-                    }}
                   />
                 </FormControl>
                 <FormMessage />
@@ -254,7 +220,7 @@ const MainNutrientsForm = ({ form, isSubmitting }: GeneralFormProps) => {
                 name='saturated'
                 render={({ field }) => (
                   <FormItem className='w-full'>
-                    <FormLabel className='text-primary-600 font-semibold'>
+                    <FormLabel className='text-primary-800 font-semibold'>
                       Saturated Fats
                     </FormLabel>
                     <FormControl>
@@ -265,10 +231,6 @@ const MainNutrientsForm = ({ form, isSubmitting }: GeneralFormProps) => {
                         placeholder='Enter saturated fats'
                         {...field}
                         value={field.value || ''}
-                        onChange={(e) => {
-                          const parsedValue = parseFloat(e.target.value);
-                          field.onChange(parsedValue);
-                        }}
                       />
                     </FormControl>
                     <FormMessage />
@@ -280,7 +242,7 @@ const MainNutrientsForm = ({ form, isSubmitting }: GeneralFormProps) => {
                 name='unsaturated'
                 render={({ field }) => (
                   <FormItem className='w-full'>
-                    <FormLabel className='text-primary-600 font-semibold'>
+                    <FormLabel className='text-primary-800 font-semibold'>
                       Unsaturated Fats
                     </FormLabel>
                     <FormControl>
@@ -291,10 +253,6 @@ const MainNutrientsForm = ({ form, isSubmitting }: GeneralFormProps) => {
                         placeholder='Enter unsaturated fats'
                         {...field}
                         value={field.value || ''}
-                        onChange={(e) => {
-                          const parsedValue = parseFloat(e.target.value);
-                          field.onChange(parsedValue);
-                        }}
                       />
                     </FormControl>
                     <FormMessage />
@@ -306,7 +264,7 @@ const MainNutrientsForm = ({ form, isSubmitting }: GeneralFormProps) => {
                 name='polyunsaturated'
                 render={({ field }) => (
                   <FormItem className='w-full'>
-                    <FormLabel className='text-primary-600 font-semibold'>
+                    <FormLabel className='text-primary-800 font-semibold'>
                       Polyunsaturated Fats
                     </FormLabel>
                     <FormControl>
@@ -317,10 +275,6 @@ const MainNutrientsForm = ({ form, isSubmitting }: GeneralFormProps) => {
                         placeholder='Enter polyunsaturated fats'
                         {...field}
                         value={field.value || ''}
-                        onChange={(e) => {
-                          const parsedValue = parseFloat(e.target.value);
-                          field.onChange(parsedValue);
-                        }}
                       />
                     </FormControl>
                     <FormMessage />

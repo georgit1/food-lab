@@ -1,8 +1,8 @@
 import { redirect } from 'next/navigation';
 
 import { db } from '@/lib/db';
-import getCurrentUser from '@/lib/getCurrentUser';
-import { calculateNutrientRequirements } from '@/lib/calcPersonalNutrients';
+import { calculateNutrientRequirements } from '@/utils/calcPersonalNutrients';
+import getCurrentUser from '@/utils/getCurrentUser';
 
 import CalculatorGrid from './_components/CalculatorGrid';
 import CalculatorHeader from './_components/CalculatorHeader';
@@ -49,7 +49,27 @@ const CalculatorPage = async () => {
     return redirect('/');
   }
 
-  // TODO - memoize
+  const meals = await db.meal.findMany({
+    where: {
+      userId: currentUser.id,
+    },
+    include: {
+      mealFoods: {
+        include: {
+          food: {
+            include: {
+              category: true,
+              mainNutrients: true,
+              minerals: true,
+              traceElements: true,
+              vitamins: true,
+            },
+          },
+        },
+      },
+    },
+  });
+
   const requiredNutrients = calculateNutrientRequirements(
     currentUser?.pal,
     currentUser?.rmr,
@@ -60,7 +80,7 @@ const CalculatorPage = async () => {
 
   return (
     <div>
-      <CalculatorHeader foodData={food} />
+      <CalculatorHeader foodData={food} mealData={meals} />
       <CalculatorGrid foodData={food} requiredNutrients={requiredNutrients} />
     </div>
   );

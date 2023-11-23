@@ -10,7 +10,8 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { IconBadge } from '@/components/IconBadge';
+import IconBadge from '@/components/IconBadge';
+import IconHeader from '@/components/IconHeader';
 
 interface GeneralFormProps {
   form: any;
@@ -20,31 +21,24 @@ interface GeneralFormProps {
 const MineralsForm = ({ form, isSubmitting }: GeneralFormProps) => {
   return (
     <div>
-      <div className='flex items-center gap-x-2'>
-        <IconBadge icon={Sprout} />
-        <h2 className='text-xl text-primary-600 font-semibold'>Minerals</h2>
-      </div>
+      <IconHeader icon={Sprout} title='Minerals' size={'md'} />
+
       <div className='grid sm:grid-cols-2 border bg-primary-50 rounded-md p-4 gap-2 mt-5'>
         <FormField
           control={form.control}
           name='potassium'
           render={({ field }) => (
             <FormItem className='w-full'>
-              <FormLabel className='text-primary-600 font-semibold'>
+              <FormLabel className='text-primary-800 font-semibold'>
                 Potassium
               </FormLabel>
               <FormControl>
                 <Input
-                  type='text'
                   unit='mg'
                   disabled={isSubmitting}
                   placeholder='Enter potassium'
                   {...field}
                   value={field.value || ''}
-                  onChange={(e) => {
-                    const parsedValue = parseFloat(e.target.value);
-                    field.onChange(parsedValue);
-                  }}
                 />
               </FormControl>
               <FormMessage />
@@ -56,21 +50,16 @@ const MineralsForm = ({ form, isSubmitting }: GeneralFormProps) => {
           name='sodium'
           render={({ field }) => (
             <FormItem className='w-full'>
-              <FormLabel className='text-primary-600 font-semibold'>
+              <FormLabel className='text-primary-800 font-semibold'>
                 Sodium
               </FormLabel>
               <FormControl>
                 <Input
-                  type='text'
                   unit='mg'
                   disabled={isSubmitting}
                   placeholder='Enter sodium'
                   {...field}
                   value={field.value || ''}
-                  onChange={(e) => {
-                    const parsedValue = parseFloat(e.target.value);
-                    field.onChange(parsedValue);
-                  }}
                 />
               </FormControl>
               <FormMessage />
@@ -82,21 +71,16 @@ const MineralsForm = ({ form, isSubmitting }: GeneralFormProps) => {
           name='calcium'
           render={({ field }) => (
             <FormItem className='w-full'>
-              <FormLabel className='text-primary-600 font-semibold'>
+              <FormLabel className='text-primary-800 font-semibold'>
                 Calcium
               </FormLabel>
               <FormControl>
                 <Input
-                  type='text'
                   unit='mg'
                   disabled={isSubmitting}
                   placeholder='Enter calcium'
                   {...field}
                   value={field.value || ''}
-                  onChange={(e) => {
-                    const parsedValue = parseFloat(e.target.value);
-                    field.onChange(parsedValue);
-                  }}
                 />
               </FormControl>
               <FormMessage />
@@ -108,21 +92,16 @@ const MineralsForm = ({ form, isSubmitting }: GeneralFormProps) => {
           name='magnesium'
           render={({ field }) => (
             <FormItem className='w-full'>
-              <FormLabel className='text-primary-600 font-semibold'>
+              <FormLabel className='text-primary-800 font-semibold'>
                 Magnesium
               </FormLabel>
               <FormControl>
                 <Input
-                  type='text'
                   unit='mg'
                   disabled={isSubmitting}
                   placeholder='Enter magnesium'
                   {...field}
                   value={field.value || ''}
-                  onChange={(e) => {
-                    const parsedValue = parseFloat(e.target.value);
-                    field.onChange(parsedValue);
-                  }}
                 />
               </FormControl>
               <FormMessage />
@@ -134,21 +113,16 @@ const MineralsForm = ({ form, isSubmitting }: GeneralFormProps) => {
           name='chloride'
           render={({ field }) => (
             <FormItem className='w-full'>
-              <FormLabel className='text-primary-600 font-semibold'>
+              <FormLabel className='text-primary-800 font-semibold'>
                 Chloride
               </FormLabel>
               <FormControl>
                 <Input
-                  type='text'
                   unit='mg'
                   disabled={isSubmitting}
                   placeholder='Enter chloride'
                   {...field}
                   value={field.value || ''}
-                  onChange={(e) => {
-                    const parsedValue = parseFloat(e.target.value);
-                    field.onChange(parsedValue);
-                  }}
                 />
               </FormControl>
               <FormMessage />
@@ -160,21 +134,16 @@ const MineralsForm = ({ form, isSubmitting }: GeneralFormProps) => {
           name='sulfur'
           render={({ field }) => (
             <FormItem className='w-full'>
-              <FormLabel className='text-primary-600 font-semibold'>
+              <FormLabel className='text-primary-800 font-semibold'>
                 Sulfur
               </FormLabel>
               <FormControl>
                 <Input
-                  type='text'
                   unit='mg'
                   disabled={isSubmitting}
                   placeholder='Enter sulfur'
                   {...field}
                   value={field.value || ''}
-                  onChange={(e) => {
-                    const parsedValue = parseFloat(e.target.value);
-                    field.onChange(parsedValue);
-                  }}
                 />
               </FormControl>
               <FormMessage />
@@ -186,21 +155,16 @@ const MineralsForm = ({ form, isSubmitting }: GeneralFormProps) => {
           name='phosphorus'
           render={({ field }) => (
             <FormItem className='w-full'>
-              <FormLabel className='text-primary-600 font-semibold'>
+              <FormLabel className='text-primary-800 font-semibold'>
                 Phosphorus
               </FormLabel>
               <FormControl>
                 <Input
-                  type='text'
                   unit='mg'
                   disabled={isSubmitting}
                   placeholder='Enter phosphorus'
                   {...field}
                   value={field.value || ''}
-                  onChange={(e) => {
-                    const parsedValue = parseFloat(e.target.value);
-                    field.onChange(parsedValue);
-                  }}
                 />
               </FormControl>
               <FormMessage />

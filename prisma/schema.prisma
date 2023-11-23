@@ -122,10 +122,10 @@ model MealFood {
   quantity Float
 
   mealId String
-  meal Meal @relation(fields: [mealId], references: [id])
+  meal Meal @relation(fields: [mealId], references: [id], onDelete: Cascade)
 
   foodId String
-  food Food @relation(fields: [foodId], references: [id])
+  food Food @relation(fields: [foodId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

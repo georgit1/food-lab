@@ -61,7 +61,7 @@ const GeneralForm = ({
           name='title'
           render={({ field }) => (
             <FormItem className='w-full'>
-              <FormLabel className='text-primary-600 font-semibold'>
+              <FormLabel className='text-primary-800 font-semibold'>
                 Title
               </FormLabel>
               <FormControl>
@@ -76,19 +76,12 @@ const GeneralForm = ({
             </FormItem>
           )}
         />
-
-        {/* <Combobox
-                    options={...options}
-                    {...field}
-                    value={field.value || undefined}
-                  /> */}
-
         <FormField
           control={form.control}
           name='categoryId'
           render={({ field }) => (
             <FormItem className=' w-full'>
-              <FormLabel className='text-primary-600 font-semibold'>
+              <FormLabel className='text-primary-800 font-semibold'>
                 Category
               </FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
@@ -110,10 +103,9 @@ const GeneralForm = ({
           )}
         />
       </div>
-      {/* TODO - only vegan OR vegetarian */}
       <div className='mt-5'>
         <div>
-          <FormLabel className='text-primary-600 font-semibold'>
+          <FormLabel className='text-primary-800 font-semibold'>
             Preferences
           </FormLabel>
           <div className='flex whitespace-nowrap overflow-x-auto sm:flex sm:items-start sm:flex-wrap gap-1 mt-2'>
@@ -127,24 +119,6 @@ const GeneralForm = ({
             ))}
           </div>
         </div>
-
-        {/* HIDDEN */}
-        {/* <FormField
-          control={form.control}
-          name='preferences'
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input
-                  type='hidden'
-                  {...field}
-                  value={JSON.stringify(selectedPreferences || [])}
-                />
-              </FormControl>
-              <FormMessage className='text-sm' />
-            </FormItem>
-          )}
-        /> */}
       </div>
     </div>
   );

@@ -8,8 +8,8 @@ import {
 import DataDisplayItem from './DataDisplayItem';
 import FoodTableItem from './FoodTableItem';
 import SubnutrientsItem from './SubnutrientsItem';
-import { SubNutrient, useCalculator } from '@/context/calculatorContext';
-import { WholeFoodWithCategory } from '@/types/types';
+import { useCalculator } from '@/context/calculatorContext';
+import { FoodEntry, MealEntry, WholeFoodWithCategory } from '@/types/types';
 import { Mineral, TraceElement, Vitamin } from '@prisma/client';
 
 interface CalculatorGridProps {
@@ -21,10 +21,22 @@ const CalculatorGrid = ({
   foodData,
   requiredNutrients,
 }: CalculatorGridProps) => {
-  const { foodEntries } = useCalculator();
-  const foodIds = foodEntries.map((entry) => entry.id);
-  const choosenFood = foodData.filter((food) => foodIds.includes(food.id));
-  const { totalNutrients }: { totalNutrients: SubNutrient } = useCalculator();
+  const {
+    totalNutrients,
+    foodEntries,
+    mealEntries,
+  }: {
+    totalNutrients: { [key: string]: number };
+    foodEntries: FoodEntry[];
+    mealEntries: MealEntry[];
+  } = useCalculator();
+
+  // TODO - is this neccessarry - why??
+  // NOTE - chosenFood was passed to FoodTableItem belwo!!
+  // const foodIds = foodEntries.map((entry) => entry.id);
+  // const choosenFood = foodData.filter((food) => foodIds.includes(food.id));
+  // console.log('#1', foodEntries); --> takes quantity into account
+  // console.log('#2', choosenFood);
 
   // extract nutrient values based on what mentioned in the items arrays
   // and also extract associated units from the foodData of the database
@@ -57,11 +69,12 @@ const CalculatorGrid = ({
 
   return (
     <div className='grid grid-cols-1 lg:grid-cols-2 gap-4 mt-8'>
-      <FoodTableItem choosenFood={choosenFood} />
+      <FoodTableItem foodEntries={foodEntries} mealEntries={mealEntries} />
       <DataDisplayItem
         totalNutrients={totalNutrients}
         requiredNutrients={requiredNutrients}
       />
+
       <SubnutrientsItem
         minerals={minerals}
         traceElements={traceElements}

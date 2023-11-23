@@ -1,6 +1,6 @@
 import { db } from '@/lib/db';
-import getCurrentUser from '@/lib/getCurrentUser';
-import { seperateNutrientData } from '@/lib/utils';
+import getCurrentUser from '@/utils/getCurrentUser';
+import { seperateNutrientData } from '@/utils/utils';
 import { NextResponse } from 'next/server';
 
 export async function PATCH(
@@ -12,6 +12,25 @@ export async function PATCH(
     const { foodId } = params;
     const values = await req.json();
 
+    if (!currentUser?.id || !currentUser?.email) {
+      return new NextResponse('Unauthorized', { status: 401 });
+    }
+
+    // only update imageUrl
+    if (Object.keys(values).length === 1 && 'imageUrl' in values) {
+      const food = await db.food.update({
+        where: {
+          id: foodId,
+          userId: currentUser.id,
+        },
+        data: {
+          ...values,
+        },
+      });
+
+      return NextResponse.json(food);
+    }
+
     const {
       food: foodData,
       mainNutrients: mainNutrientsData,
@@ -20,19 +39,13 @@ export async function PATCH(
       vitamins: vitaminsData,
     } = seperateNutrientData(values);
 
-    if (!currentUser?.id || !currentUser?.email) {
-      return new NextResponse('Unauthorized', { status: 401 });
-    }
-
     const food = await db.food.update({
       where: {
         id: foodId,
         userId: currentUser.id,
       },
-      // TODO - right type for preferences
       data: {
         ...foodData,
-        // preferences: ['vegan'],
       },
     });
 
@@ -83,7 +96,10 @@ export async function PATCH(
   }
 }
 
-export async function DELETE({ params }: { params: { foodId: string } }) {
+export async function DELETE(
+  req: Request,
+  { params }: { params: { foodId: string } }
+) {
   try {
     const currentUser = await getCurrentUser();
     const { foodId } = params;

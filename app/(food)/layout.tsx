@@ -14,8 +14,3 @@ const ManageFoodLayout = ({ children }: { children: React.ReactNode }) => {
 };
 
 export default ManageFoodLayout;
-
-// TODO
-// - check for google login
-// - check that api works correctly for isCreator and non isCreator
-// add image in form fails

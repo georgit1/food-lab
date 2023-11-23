@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
+import React, { useState } from 'react';
 import { ArrowUpDown } from 'lucide-react';
 import { Category, Food } from '@prisma/client';
 
@@ -11,17 +12,15 @@ import {
   TableHeader,
   TableRow,
 } from './ui/table';
+import { ScrollArea } from './ui/scroll-area';
 import FavoriteButton from './FavoriteButton';
-
-type FoodWithCategory = Food & { category: Category; preferences: string[] };
+import StackedTextWithImage from './StackedTextWithImage';
+import { WholeFoodWithCategory } from '@/types/types';
 
 interface FoodTableProps {
-  favorites: FoodWithCategory[];
+  favorites: WholeFoodWithCategory[];
   onClose: () => void;
 }
-
-import StackedTextWithImage from './StackedTextWithImage';
-import { ScrollArea } from './ui/scroll-area';
 
 const FavoritesTable = ({ favorites, onClose }: FoodTableProps) => {
   const [sortOrder, setSortOrder] = useState('asc');
@@ -48,7 +47,7 @@ const FavoritesTable = ({ favorites, onClose }: FoodTableProps) => {
               <TableHead className='flex items-center'>
                 <span className='mr-2'>Title</span>
                 <button onClick={toggleSortOrder}>
-                  <ArrowUpDown size={20} />
+                  <ArrowUpDown size={16} />
                 </button>
               </TableHead>
               <TableHead className='w-0 sm:w-full'>
@@ -88,8 +87,16 @@ const FavoritesTable = ({ favorites, onClose }: FoodTableProps) => {
         </Table>
       )}
       {sortedFavorites.length === 0 && (
-        <div className='text-center text-sm text-muted-foreground mt-6'>
-          No Favorites
+        <div className='h-[200px] text-neutral-400 text-center text-sm text-muted-foreground mt-6'>
+          {/* <img src='/burger.jpg' height={20} width={20} /> */}
+          <Image
+            src='/burger.jpg'
+            height={150}
+            width={150}
+            alt='Illustration'
+            className='mx-auto'
+          />
+          <span>Favorites are empty</span>
         </div>
       )}
     </ScrollArea>

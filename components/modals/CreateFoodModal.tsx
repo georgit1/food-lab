@@ -32,6 +32,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { useModal } from '@/hooks/useModalStore';
+import Loader from '../Loader';
 
 const formSchema = z.object({
   title: z.string().min(1, { message: 'Title is required' }),
@@ -74,8 +75,8 @@ const CreateFoodModal = () => {
     <Dialog open={isModalOpen} onOpenChange={handleClose}>
       <DialogContent className='sm:max-w-[425px]'>
         <DialogHeader>
-          <DialogTitle>Add a new food</DialogTitle>
-          <DialogDescription>
+          <DialogTitle className='text-primary-800'>Add a new food</DialogTitle>
+          <DialogDescription className='text-neutral-500'>
             Fill out the fields to insert nutrition data.
           </DialogDescription>
         </DialogHeader>
@@ -86,7 +87,7 @@ const CreateFoodModal = () => {
               name='title'
               render={({ field }) => (
                 <FormItem className='w-full'>
-                  <FormLabel className='text-primary-600 font-semibold'>
+                  <FormLabel className='text-primary-800 font-semibold'>
                     Title
                   </FormLabel>
                   <FormControl>
@@ -106,7 +107,7 @@ const CreateFoodModal = () => {
               name='categoryId'
               render={({ field }) => (
                 <FormItem className=' w-full mt-3'>
-                  <FormLabel className='text-primary-600 font-semibold'>
+                  <FormLabel className='text-primary-800 font-semibold'>
                     Category
                   </FormLabel>
                   <Select
@@ -130,13 +131,13 @@ const CreateFoodModal = () => {
                 </FormItem>
               )}
             />
-            <div className='flex items-center gap-x-2 mt-6 float-right'>
+            <div className='flex items-center gap-x-2 mt-6'>
               <Button
                 disabled={isSubmitting}
-                isLoading={isSubmitting}
                 type='submit'
+                className='w-full sm:w-[80px] sm:ml-auto bg-primary-600'
               >
-                Save
+                {isSubmitting ? <Loader /> : 'Save'}
               </Button>
             </div>
           </form>

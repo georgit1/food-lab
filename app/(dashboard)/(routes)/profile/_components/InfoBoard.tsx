@@ -1,5 +1,6 @@
-import { IconBadge } from '@/components/IconBadge';
 import { Info } from 'lucide-react';
+
+import IconBadge from '@/components/IconBadge';
 
 const InfoBoard = () => {
   return (

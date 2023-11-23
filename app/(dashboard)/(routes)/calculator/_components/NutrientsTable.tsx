@@ -15,7 +15,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import { IconBadge } from '@/components/IconBadge';
+import IconBadge from '@/components/IconBadge';
 import {
   MineralItemsType,
   TraceElementItemsType,
@@ -23,6 +23,7 @@ import {
 } from '@/constants/nutrients';
 import { useCalculator } from '@/context/calculatorContext';
 import Attention from './Attention';
+import { string } from 'zod';
 
 interface NutrientsTableProps {
   nutrients: MineralItemsType | TraceElementItemsType | VitaminItemsType;
@@ -80,8 +81,6 @@ const NutrientsTable = ({
   );
 
   return (
-    // TODO - maybe background image - if not clear whole div
-    // <div className="bg-cover bg-no-repeat bg-center bg-[url('/molecules.jpg')]">
     <Table className='flex-shrink-0'>
       <TableHeader>
         <TableRow>
@@ -90,36 +89,33 @@ const NutrientsTable = ({
             <span>{isRequiredValues ? 'Amount / Daily Intake' : 'Amount'}</span>
             {isRequiredValues && <IconBadge icon={User} size='xs' />}
           </TableHead>
-          {/* TODO - place Iconbadge */}
           <TableHead className='flex-inline justify-between items-center gap-2'>
             <span>daily %</span>
-            <Popover>
-              <PopoverTrigger asChild>
-                {!isRequiredValues && (
-                  <IconBadge
-                    icon={HelpCircle}
-                    size='sm'
-                    className='cursor-pointer'
-                  />
-                )}
-              </PopoverTrigger>
-              <PopoverContent side='top' className='w-full'>
-                <p className='text-sm px-1'>login for personalized info</p>
-              </PopoverContent>
-            </Popover>
           </TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
+        {/* TODO - ts error */}
         {filteredNutrientsData.map((nutrient) => {
           if (!nutrient?.amount.includes('undefined')) {
+            const missingNutrient = missingNutrients.find(
+              (item) => item[nutrient?.nutrient]!
+            );
+
             return (
               <TableRow key={nutrient?.title} className='p-1'>
                 <TableCell>
                   <span className='flex items-center gap-1'>
-                    {nutrient?.title}{' '}
-                    {missingNutrients.includes(nutrient?.nutrient || '') ? (
-                      <Attention missingItem={nutrient?.title || ''} />
+                    {nutrient?.title}
+                    {missingNutrients.some(
+                      (item) => item[nutrient?.nutrient]
+                    ) ? (
+                      // TODO on scroll Attention should dissappear
+                      <Attention
+                        title={nutrient?.title || ''}
+                        // @ts-expect-error
+                        missingItems={Object.values(missingNutrient || '')[0]}
+                      />
                     ) : (
                       ''
                     )}
@@ -133,7 +129,6 @@ const NutrientsTable = ({
         })}
       </TableBody>
     </Table>
-    // </div>
   );
 };
 

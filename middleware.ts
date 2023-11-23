@@ -7,12 +7,11 @@ export default withAuth({
 });
 
 export const config = {
-  matcher: ['/manage/:path*', '/profile/:path*', '/calculator'],
+  matcher: [
+    '/manage/:path*',
+    '/meal/:path*',
+    '/profile/:path*',
+    '/calculator',
+    '/meals',
+  ],
 };
-
-// export { default } from 'next-auth/middleware';
-
-// export const config = {
-//   // matcher: ['/details/:path*', '/manage/:path*', '/profile'],
-//   matcher: ['/details/:path*', '/manage/:path*', '/profile'],
-// };

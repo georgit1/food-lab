@@ -43,7 +43,9 @@ const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
   if (active && payload && payload.length) {
     return (
       <div className='bg-white border text-neutral-600 border-neutral-300 rounded p-2'>
-        <p className='text-xs font-semibold'>{`${label}: ${payload[0]?.payload?.density}%`}</p>
+        <p className='text-xs font-semibold'>{`${label}: ${payload[0]?.payload?.density?.toFixed(
+          0
+        )}%`}</p>
       </div>
     );
   }

@@ -42,10 +42,10 @@ const hoursLeisureTimeOptions = [
 const PalForm = ({ form, isSubmitting }: PalFormProps) => {
   return (
     <div className='mt-6'>
-      <IconHeader icon={Activity} title='Calculate Pal' />
+      <IconHeader icon={Activity} title='Calculate Pal' size={'sm'} />
 
       <div className='flex flex-col gap-2 p-2 mt-3'>
-        <span className='font-semibold'>Sleep</span>
+        <span className='font-semibold text-sm text-primary-800'>Sleep</span>
         <div className='flex gap-2'>
           <FormField
             control={form.control}
@@ -102,7 +102,9 @@ const PalForm = ({ form, isSubmitting }: PalFormProps) => {
       </div>
 
       <div className='flex flex-col gap-2 p-2 mt-3'>
-        <span className='font-semibold'>Profession</span>
+        <span className='font-semibold text-sm text-primary-800'>
+          Profession
+        </span>
         <div className='flex gap-2'>
           <FormField
             control={form.control}
@@ -159,7 +161,7 @@ const PalForm = ({ form, isSubmitting }: PalFormProps) => {
       </div>
 
       <div className='flex flex-col gap-2 p-2 mt-3'>
-        <span className='font-semibold'>Sport</span>
+        <span className='font-semibold text-sm text-primary-800'>Sport</span>
         <div className='flex gap-2'>
           <FormField
             control={form.control}
@@ -216,7 +218,9 @@ const PalForm = ({ form, isSubmitting }: PalFormProps) => {
       </div>
 
       <div className='flex flex-col gap-2 p-2 mt-3'>
-        <span className='font-semibold'>Leisure Time</span>
+        <span className='font-semibold text-sm text-primary-800'>
+          Leisure Time
+        </span>
         <div className='flex gap-2'>
           <FormField
             control={form.control}

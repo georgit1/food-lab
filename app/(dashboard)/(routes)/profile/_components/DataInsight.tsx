@@ -34,14 +34,14 @@ const DataInsight = ({ userData }: DataInsightProps) => {
           value={parseFloat(userData?.rmr?.toFixed(1) || '0')}
           unit='kcal'
         />
-        <X className='text-primary-400' />
+        <X className='text-neutral-400' />
         <NumberCard
           title='PAL'
           value={parseFloat(userData?.pal?.toFixed(2) || '0')}
           unit='PAL'
           icon={CircleSlash2}
         />
-        <Equal className='text-primary-400' />
+        <Equal className='text-neutral-400' />
         <NumberCard
           title='AMR'
           value={parseFloat(amr.toFixed(1))}

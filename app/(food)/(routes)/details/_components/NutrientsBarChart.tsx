@@ -12,7 +12,7 @@ import {
   YAxis,
   CartesianGrid,
 } from 'recharts';
-import { convertValueToTargetUnit } from '@/lib/utils';
+import { convertValueToTargetUnit } from '@/utils/utils';
 
 interface NutrientsBarChartProps {
   nutrients: MainNutrient | Mineral | TraceElement | Vitamin;
@@ -53,7 +53,7 @@ const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
   }
 };
 
-// TODO - maybe optional chart for other unit eg. micro grams
+// TODO - Gradient
 const NutrientsBarChart = ({
   nutrients,
   nutrientsItems,

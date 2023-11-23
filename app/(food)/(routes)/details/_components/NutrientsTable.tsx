@@ -8,13 +8,13 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '../../../../../components/ui/table';
-import { IconBadge } from '../../../../../components/IconBadge';
+} from '@/components/ui/table';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '../../../../../components/ui/popover';
+} from '@/components/ui/popover';
+import IconBadge from '@/components/IconBadge';
 
 interface NutrientsTableProps {
   nutrients: Mineral | TraceElement | Vitamin;
@@ -44,8 +44,11 @@ const NutrientsTable = ({
         nutrient as keyof typeof nutrients
       ] as unknown as number;
 
+      console.log(requiredValue);
+
       const nutrientUnit = (nutrients as any)[nutrient + 'Unit'];
 
+      // TODO - ts error
       const percentage = requiredValue
         ? ((parseFloat(acutalValue) / parseFloat(requiredValue)) * 100).toFixed(
             1
@@ -69,8 +72,6 @@ const NutrientsTable = ({
   );
 
   return (
-    // TODO - maybe background image - if not clear whole div
-    // <div className="bg-cover bg-no-repeat bg-center bg-[url('/molecules.jpg')]">
     <Table>
       <TableHeader>
         <TableRow>
@@ -79,8 +80,7 @@ const NutrientsTable = ({
             <span>{isRequiredValues ? 'Amount / Daily Intake' : 'Amount'}</span>
             {isRequiredValues && <IconBadge icon={User} size='xs' />}
           </TableHead>
-          {/* TODO - place Iconbadge */}
-          <TableHead className='flex-inline justify-between items-center gap-2'>
+          <TableHead>
             <span>daily %</span>
             <Popover>
               <PopoverTrigger asChild>
@@ -88,7 +88,7 @@ const NutrientsTable = ({
                   <IconBadge
                     icon={HelpCircle}
                     size='sm'
-                    className='cursor-pointer'
+                    className='cursor-pointer float-right'
                   />
                 )}
               </PopoverTrigger>
@@ -109,7 +109,6 @@ const NutrientsTable = ({
         ))}
       </TableBody>
     </Table>
-    // </div>
   );
 };
 

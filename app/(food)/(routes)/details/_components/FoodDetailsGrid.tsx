@@ -33,7 +33,7 @@ const FoodDetailsGrid = ({
   requiredNutrients,
 }: FoodDetailsGridProps) => {
   return (
-    <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 grid-rows-[1fr, 0.3fr, 1fr] gap-4 mt-8'>
+    <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 grid-rows-[1fr, 0.3fr, 1fr] gap-4 mt-8 mb-2'>
       <GeneralItem
         foodId={foodData.id}
         userId={userId}

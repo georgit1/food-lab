@@ -52,6 +52,7 @@ const SubNutrientsItem = ({
                 nutrients={minerals}
                 nutrientsItems={mineralItems}
                 targetUnit='mg'
+                requiredNutrients={requiredNutrients}
               />
               <ScrollArea className='h-[300px]'>
                 <NutrientsTable
@@ -74,6 +75,7 @@ const SubNutrientsItem = ({
                 nutrients={traceElements}
                 nutrientsItems={traceElementItems}
                 targetUnit='mg'
+                requiredNutrients={requiredNutrients}
               />
               <ScrollArea className='h-[300px]'>
                 <NutrientsTable
@@ -96,6 +98,7 @@ const SubNutrientsItem = ({
                 nutrients={vitamins}
                 nutrientsItems={vitaminItems}
                 targetUnit='mg'
+                requiredNutrients={requiredNutrients}
               />
               <ScrollArea className='h-[300px]'>
                 <NutrientsTable

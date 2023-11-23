@@ -29,7 +29,7 @@ const gender = [
 const BiometricForm = ({ form, isSubmitting }: BiometricFormProps) => {
   return (
     <>
-      <IconHeader icon={Fingerprint} title='Biometric Profile' />
+      <IconHeader icon={Fingerprint} title='Biometric Profile' size={'sm'} />
 
       <div className='grid grid-cols-1 sm:grid-cols-2 gap-2 p-2 mt-3'>
         <FormField
@@ -37,7 +37,7 @@ const BiometricForm = ({ form, isSubmitting }: BiometricFormProps) => {
           name='gender'
           render={({ field }) => (
             <FormItem className=' w-full'>
-              <FormLabel className='text-primary-600 font-semibold'>
+              <FormLabel className='text-primary-800 font-semibold'>
                 Gender
               </FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
@@ -63,7 +63,7 @@ const BiometricForm = ({ form, isSubmitting }: BiometricFormProps) => {
           name='age'
           render={({ field }) => (
             <FormItem className='w-full'>
-              <FormLabel className='text-primary-600 font-semibold'>
+              <FormLabel className='text-primary-800 font-semibold'>
                 Age
               </FormLabel>
               <FormControl>
@@ -88,7 +88,7 @@ const BiometricForm = ({ form, isSubmitting }: BiometricFormProps) => {
           name='height'
           render={({ field }) => (
             <FormItem className='w-full'>
-              <FormLabel className='text-primary-600 font-semibold'>
+              <FormLabel className='text-primary-800 font-semibold'>
                 Height
               </FormLabel>
               <FormControl>
@@ -113,7 +113,7 @@ const BiometricForm = ({ form, isSubmitting }: BiometricFormProps) => {
           name='weight'
           render={({ field }) => (
             <FormItem className='w-full'>
-              <FormLabel className='text-primary-600 font-semibold'>
+              <FormLabel className='text-primary-800 font-semibold'>
                 Weight
               </FormLabel>
               <FormControl>

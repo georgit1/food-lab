@@ -22,13 +22,13 @@ const NumberCard = ({
     <div className='flex flex-col text-center font-semibold bg-primary-100 p-2 rounded-sm w-20 sm:w-32 md:w-24 xl:w-32'>
       <span
         className={`text-lg md:text-xl ${
-          variant === 'secondary' ? 'text-primary-400' : 'text-primary-700'
+          variant === 'secondary' ? 'text-primary-600' : 'text-primary-800'
         }`}
       >
         {title}
       </span>
       <span className='md:text-lg text-primary-600'>{value}</span>
-      <span className='text-xs flex justify-center items-center gap-1 md:text-md text-primary-400'>
+      <span className='text-xs flex justify-center items-center gap-1 md:text-md text-neutral-400'>
         {Icon && <Icon size={12} />} {unit}
       </span>
     </div>
