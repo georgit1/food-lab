@@ -4,7 +4,7 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import { ArrowUpDown } from 'lucide-react';
 import { Meal, MealFood } from '@prisma/client';
 
-import { useMeal } from '@/context/mealContext';
+import { useMeal } from '@/context/MealContext';
 import {
   Table,
   TableBody,
@@ -133,6 +133,7 @@ const MealFoodItemsTable = ({ initialData }: MealFoodItemsTableProps) => {
                   <TableCell>
                     <Input
                       type='number'
+                      // TODO
                       defaultValue={item.quantity}
                       onChange={(e) => handleChangeQuantity(e, item.id)}
                       className='max-w-[80px]'

@@ -3,8 +3,8 @@
 import { Check, Plus } from 'lucide-react';
 import { useCallback, useMemo } from 'react';
 
-import { useMeal } from '@/context/mealContext';
-import { useCalculator } from '@/context/calculatorContext';
+import { useMeal } from '@/context/MealContext';
+import { useCalculator } from '@/context/CalculatorContext';
 import { WholeFoodWithCategory } from '@/types/types';
 import IconBadge from '@/components/IconBadge';
 

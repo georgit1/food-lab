@@ -1,5 +1,5 @@
 import qs from 'query-string';
-import { cn } from '@/utils/utils';
+import { cn } from '@/lib/utils';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 interface CategoryItemProps {

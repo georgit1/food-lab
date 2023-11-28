@@ -24,7 +24,7 @@ export type WholeFoodWithCategoryWithEnable = WholeFoodWithCategory & {
   isEnabled: boolean;
 };
 
-const initialValue: {
+const initialValues: {
   foodEntries: FoodEntry[];
   mealEntries: MealEntry[];
   originalValues: Record<string, { [key: string]: string | number }>;
@@ -56,7 +56,7 @@ const initialValue: {
   clearAll: () => {},
 };
 
-const CalculatorContext = createContext(initialValue);
+const CalculatorContext = createContext(initialValues);
 
 const CalculatorProvider = ({ children }: { children: React.ReactNode }) => {
   const [foodEntries, setFoodEntries] = useState<FoodEntry[]>([]);

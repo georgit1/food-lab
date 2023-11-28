@@ -1,6 +1,6 @@
 'use client';
 
-import { useMeal } from '@/context/mealContext';
+import { useMeal } from '@/context/MealContext';
 import DonutChart from '@/app/(food)/(routes)/meal/[mealId]/_components/DonutChart';
 import { useEffect, useState } from 'react';
 
@@ -14,7 +14,7 @@ const DataVisualization = () => {
 
   if (!isMounted) {
     return (
-      <div className='flex justify-center items-center'>
+      <div className='flex justify-center items-center mb-5'>
         <div className='relative inline-flex'>
           <div className='w-4 h-4 bg-primary-600 rounded-full'></div>
           <div className='w-4 h-4 bg-primary-600 rounded-full absolute top-0 left-0 animate-ping'></div>
@@ -57,7 +57,7 @@ const DataVisualization = () => {
       <DonutChart data={data} calories={totalNutrients.calories} />
 
       <div className='flex flex-col font-semibold'>
-        <span className='teext-xs text-primary-500'>
+        <span className='text-sm text-primary-500'>
           {carbsPercentage?.toFixed(1)}%
         </span>
         <span className='text-sm text-primary-700'>
@@ -67,7 +67,7 @@ const DataVisualization = () => {
       </div>
 
       <div className='flex flex-col font-semibold'>
-        <span className='teext-xs text-primary-300'>
+        <span className='text-sm text-primary-300'>
           {fatsPercentage?.toFixed(1)}%
         </span>
         <span className='text-sm text-primary-700'>
@@ -77,7 +77,7 @@ const DataVisualization = () => {
       </div>
 
       <div className='flex flex-col font-semibold'>
-        <span className='teext-xs text-primary-600'>
+        <span className='text-sm text-primary-600'>
           {proteinsPercentage?.toFixed(1)}%
         </span>
         <span className='text-sm text-primary-700'>

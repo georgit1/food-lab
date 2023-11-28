@@ -6,7 +6,7 @@ import { Heart } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import { cva, type VariantProps } from 'class-variance-authority';
-import { cn } from '@/utils/utils';
+import { cn } from '@/lib/utils';
 
 const backgroundVariants = cva(
   'w-max cursor-pointer bg-primary-100 rounded-full flex justify-center items-center transition duration-300',

@@ -7,8 +7,6 @@ export async function POST(req: Request) {
     const currentUser = await getCurrentUser();
     const { foodId } = await req.json();
 
-    console.log(currentUser?.email, foodId);
-
     const existingFood = await db.food.findUnique({
       where: {
         id: foodId,

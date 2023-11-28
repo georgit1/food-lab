@@ -15,11 +15,13 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import IconBadge from '@/components/IconBadge';
+import { NutrientData } from '@/utils/calcPersonalNutrients';
+import { parseDecimal } from '@/lib/utils';
 
 interface NutrientsTableProps {
   nutrients: Mineral | TraceElement | Vitamin;
   nutrientsItems: string[];
-  requiredNutrients: Record<string, number>;
+  requiredNutrients: NutrientData;
 }
 
 const NutrientsTable = ({
@@ -44,15 +46,14 @@ const NutrientsTable = ({
         nutrient as keyof typeof nutrients
       ] as unknown as number;
 
-      console.log(requiredValue);
-
       const nutrientUnit = (nutrients as any)[nutrient + 'Unit'];
 
       // TODO - ts error
       const percentage = requiredValue
-        ? ((parseFloat(acutalValue) / parseFloat(requiredValue)) * 100).toFixed(
-            1
-          )
+        ? (
+            (parseDecimal(acutalValue || '') / parseDecimal(requiredValue)) *
+            100
+          ).toFixed(1)
         : '-';
 
       return {

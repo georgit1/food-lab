@@ -2,7 +2,7 @@
 
 import { Trash } from 'lucide-react';
 
-import { useMeal } from '@/context/mealContext';
+import { useMeal } from '@/context/MealContext';
 import IconBadge from '@/components/IconBadge';
 
 interface DeleteMealButtonProps {
@@ -17,7 +17,7 @@ const DeleteMealButton = ({ mealId }: DeleteMealButtonProps) => {
       <IconBadge
         icon={Trash}
         size='sm'
-        className='cursor-pointer hover:bg-primary-200 transition'
+        className='w-fit cursor-pointer hover:bg-primary-200 transition'
       />
     </div>
   );

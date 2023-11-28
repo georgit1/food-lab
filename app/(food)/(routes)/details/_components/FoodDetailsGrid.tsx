@@ -12,6 +12,7 @@ import SubNutrientsItem from './SubnutrientsItem';
 import DataItem from './DataItem';
 import MainNutrientsItem from './MainNutrientsItem';
 import { WholeFoodWithCategory } from '@/types/types';
+import { NutrientData } from '@/utils/calcPersonalNutrients';
 
 // type WholeFood = Food & {
 //   category: Category;
@@ -24,7 +25,7 @@ import { WholeFoodWithCategory } from '@/types/types';
 interface FoodDetailsGridProps {
   foodData: WholeFoodWithCategory;
   userId: string;
-  requiredNutrients: Record<string, number>;
+  requiredNutrients: NutrientData;
 }
 
 const FoodDetailsGrid = ({

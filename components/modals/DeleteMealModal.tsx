@@ -16,7 +16,7 @@ import {
 import { useModal } from '@/hooks/useModalStore';
 import { Button } from '@/components/ui/button';
 import toast from 'react-hot-toast';
-import { useCalculator } from '@/context/calculatorContext';
+import { useCalculator } from '@/context/CalculatorContext';
 import Loader from '../Loader';
 
 const DeleteMealModal = () => {

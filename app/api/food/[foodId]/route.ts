@@ -1,6 +1,6 @@
 import { db } from '@/lib/db';
 import getCurrentUser from '@/utils/getCurrentUser';
-import { seperateNutrientData } from '@/utils/utils';
+import { seperateNutrientData } from '@/lib/utils';
 import { NextResponse } from 'next/server';
 
 export async function PATCH(

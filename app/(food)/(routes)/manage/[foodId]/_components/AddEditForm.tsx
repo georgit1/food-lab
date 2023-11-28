@@ -2,10 +2,10 @@
 
 import * as z from 'zod';
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { Brush } from 'lucide-react';
@@ -107,9 +107,7 @@ const AddEditForm = ({ initialData, foodId, options }: AddEditFormProps) => {
   const { isSubmitting } = form.formState;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
     const parsedValues = parseValuesToNumber(values);
-    console.log(parsedValues);
 
     values.isCreator = isFoodCreator;
 

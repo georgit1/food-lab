@@ -21,6 +21,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import Loader from '@/components/Loader';
 
 const formSchema = z.object({
   email: z
@@ -153,13 +154,8 @@ const SignInForm = () => {
               )}
             />
             <div>
-              <Button
-                disabled={isLoading}
-                isLoading={isLoading}
-                type='submit'
-                className='w-full'
-              >
-                Login
+              <Button disabled={isLoading} type='submit' className='w-full'>
+                {isLoading ? <Loader /> : 'Login'}
               </Button>
             </div>
           </form>

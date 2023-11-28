@@ -11,16 +11,17 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import NutrientsBarChart from './NutrientsBarChart';
 import NutrientsTable from './NutrientsTable';
 import { Separator } from '@/components/ui/separator';
+import { NutrientData } from '@/utils/calcPersonalNutrients';
 
-interface NutrientData {
+interface NutrientIndex {
   [key: string]: number | null;
 }
 
 interface SubNutrientsItemProps {
-  minerals: MineralItemsType & NutrientData;
-  traceElements: TraceElementItemsType & NutrientData;
-  vitamins: VitaminItemsType & NutrientData;
-  requiredNutrients: Record<string, number>;
+  minerals: MineralItemsType & NutrientIndex;
+  traceElements: TraceElementItemsType & NutrientIndex;
+  vitamins: VitaminItemsType & NutrientIndex;
+  requiredNutrients: NutrientData;
 }
 
 const SubnutrientsItem = ({

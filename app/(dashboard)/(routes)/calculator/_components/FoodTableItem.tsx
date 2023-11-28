@@ -1,7 +1,7 @@
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Category, Food } from '@prisma/client';
 import FoodItemsTable from './FoodItemsTable';
-import { WholeFoodWithCategoryWithEnable } from '@/context/calculatorContext';
+import { WholeFoodWithCategoryWithEnable } from '@/context/CalculatorContext';
 import { FoodEntry, MealEntry } from '@/types/types';
 import MealItemsTable from './MealItemsTable';
 

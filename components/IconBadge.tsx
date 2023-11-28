@@ -1,7 +1,7 @@
 import { LucideIcon } from 'lucide-react';
 import { cva, type VariantProps } from 'class-variance-authority';
 
-import { cn } from '@/utils/utils';
+import { cn } from '@/lib/utils';
 
 const backgroundVariants = cva(
   'rounded-full flex items-center justify-center',
@@ -9,7 +9,7 @@ const backgroundVariants = cva(
     variants: {
       variant: {
         default: 'bg-sky-100',
-        success: 'bg-emerald-100',
+        success: 'bg-[#FDE047]',
       },
       size: {
         default: 'p-2',

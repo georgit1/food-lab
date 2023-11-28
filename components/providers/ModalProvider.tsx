@@ -9,6 +9,7 @@ import CalculateCaloriesModal from '@/components/modals/CalculateCaloriesModal';
 import ChooseFoodModal from '@/components/modals/ChooseFoodModal';
 import CreateMealModal from '@/components/modals/CreateMealModal';
 import DeleteMealModal from '@/components/modals/DeleteMealModal';
+import AdjustWeightModal from '../modals/AdjustWeightModal';
 
 export const ModalProvider = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -30,6 +31,7 @@ export const ModalProvider = () => {
       <DeleteMealModal />
       <FavoritesModal />
       <CalculateCaloriesModal />
+      <AdjustWeightModal />
     </>
   );
 };

@@ -4,7 +4,7 @@ import { ChangeEvent, useState } from 'react';
 
 import { MealEntry } from '@/types/types';
 import { useModal } from '@/hooks/useModalStore';
-import { useCalculator } from '@/context/calculatorContext';
+import { useCalculator } from '@/context/CalculatorContext';
 
 import {
   Table,

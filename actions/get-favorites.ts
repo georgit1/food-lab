@@ -10,6 +10,10 @@ export const getFavorites = async (userId: string) => {
         food: {
           include: {
             category: true,
+            mainNutrients: true,
+            minerals: true,
+            traceElements: true,
+            vitamins: true,
           },
         },
       },

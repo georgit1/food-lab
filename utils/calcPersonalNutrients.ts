@@ -1,7 +1,12 @@
 // import csvData from '@/public/';
+import { parseDecimal } from '@/lib/utils';
 import csvData from '../public/data_who.csv';
 
 type Gender = 'MALE' | 'FEMALE';
+
+export type NutrientData = {
+  [key: string]: string | number;
+};
 
 export const calculateNutrientRequirements = (
   palValue: number,
@@ -11,7 +16,6 @@ export const calculateNutrientRequirements = (
   weight: number
 ) => {
   const calories = rmr * palValue;
-  console.log('RENDER');
 
   const nutrients: Record<string, number> = {
     calories,
@@ -55,7 +59,16 @@ export const calculateNutrientRequirements = (
     vitaminK: getCsvValue(age, gender, 'vitaminK'),
   };
 
-  return nutrients;
+  // parse string values from csv to float
+  const parsedNutrients: NutrientData = {};
+
+  for (const key in nutrients) {
+    if (Object.prototype.hasOwnProperty.call(nutrients, key)) {
+      parsedNutrients[key] = parseDecimal(nutrients[key]);
+    }
+  }
+
+  return parsedNutrients;
 };
 
 export const getCsvValue = (age: number, gender: Gender, item: string) => {

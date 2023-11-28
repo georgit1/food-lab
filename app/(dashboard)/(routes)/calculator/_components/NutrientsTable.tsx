@@ -21,14 +21,15 @@ import {
   TraceElementItemsType,
   VitaminItemsType,
 } from '@/constants/nutrients';
-import { useCalculator } from '@/context/calculatorContext';
+import { useCalculator } from '@/context/CalculatorContext';
 import Attention from './Attention';
-import { string } from 'zod';
+import { parseDecimal } from '@/lib/utils';
+import { NutrientData } from '@/utils/calcPersonalNutrients';
 
 interface NutrientsTableProps {
   nutrients: MineralItemsType | TraceElementItemsType | VitaminItemsType;
   nutrientsItems: string[];
-  requiredNutrients: Record<string, number>;
+  requiredNutrients: NutrientData;
 }
 
 const NutrientsTable = ({
@@ -51,16 +52,17 @@ const NutrientsTable = ({
         nutrient as keyof typeof nutrients
       ] as unknown as number;
 
-      const requiredValue = requiredNutrients[
-        nutrient as keyof typeof nutrients
-      ] as unknown as number;
+      const requiredValue = parseDecimal(
+        requiredNutrients[nutrient as keyof typeof nutrients]
+      ) as unknown as number;
 
       const nutrientUnit = (nutrients as any)[nutrient + 'Unit'];
 
       const percentage = requiredValue
-        ? ((parseFloat(acutalValue) / parseFloat(requiredValue)) * 100).toFixed(
-            1
-          )
+        ? (
+            (parseDecimal(acutalValue || '') / parseDecimal(requiredValue)) *
+            100
+          ).toFixed(1)
         : '-';
 
       return {

@@ -20,7 +20,7 @@ import {
 import { Input } from '@/components/ui/input';
 import ImageForm from '@/components/ImageForm';
 import { Textarea } from '@/components/ui/textarea';
-import { useMeal } from '@/context/mealContext';
+import { useMeal } from '@/context/MealContext';
 import { ModalType, useModal } from '@/hooks/useModalStore';
 
 interface CreateMealProps {

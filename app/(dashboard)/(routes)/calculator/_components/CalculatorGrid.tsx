@@ -8,13 +8,14 @@ import {
 import DataDisplayItem from './DataDisplayItem';
 import FoodTableItem from './FoodTableItem';
 import SubnutrientsItem from './SubnutrientsItem';
-import { useCalculator } from '@/context/calculatorContext';
+import { useCalculator } from '@/context/CalculatorContext';
 import { FoodEntry, MealEntry, WholeFoodWithCategory } from '@/types/types';
 import { Mineral, TraceElement, Vitamin } from '@prisma/client';
+import { NutrientData } from '@/utils/calcPersonalNutrients';
 
 interface CalculatorGridProps {
   foodData: WholeFoodWithCategory[];
-  requiredNutrients: Record<string, number>;
+  requiredNutrients: NutrientData;
 }
 
 const CalculatorGrid = ({
@@ -37,7 +38,6 @@ const CalculatorGrid = ({
   // const choosenFood = foodData.filter((food) => foodIds.includes(food.id));
   // console.log('#1', foodEntries); --> takes quantity into account
   // console.log('#2', choosenFood);
-
   // extract nutrient values based on what mentioned in the items arrays
   // and also extract associated units from the foodData of the database
   const minerals = mineralItems.reduce((acc, item) => {

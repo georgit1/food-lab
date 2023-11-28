@@ -1,7 +1,7 @@
 import React from 'react';
 import { ImageIcon, User } from 'lucide-react';
 
-import { cn } from '@/utils/utils';
+import { cn } from '@/lib/utils';
 import IconBadge from './IconBadge';
 import { Avatar, AvatarImage } from './ui/avatar';
 

@@ -5,8 +5,10 @@ import { Inter } from 'next/font/google';
 import { ToasterProvider } from '@/components/providers/ToasterProvider';
 import AuthProvider from '@/components/providers/AuthProvider';
 import { ModalProvider } from '@/components/providers/ModalProvider';
-import { CalculatorProvider } from '@/context/calculatorContext';
-import { MealProvider } from '@/context/mealContext';
+import { CalculatorProvider } from '@/context/CalculatorContext';
+import { MealProvider } from '@/context/MealContext';
+import { WeightProvider } from '@/context/WeightContext';
+// import { RouteChangeListener } from '@/utils/routeChangeListener';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -25,11 +27,14 @@ export default function RootLayout({
       <AuthProvider>
         <CalculatorProvider>
           <MealProvider>
-            <body className={inter.className}>
-              <ToasterProvider />
-              <ModalProvider />
-              {children}
-            </body>
+            <WeightProvider>
+              <body className={inter.className}>
+                {/* <RouteChangeListener /> */}
+                <ToasterProvider />
+                <ModalProvider />
+                {children}
+              </body>
+            </WeightProvider>
           </MealProvider>
         </CalculatorProvider>
       </AuthProvider>

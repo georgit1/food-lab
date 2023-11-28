@@ -4,7 +4,7 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import { BookmarkPlus, MoreHorizontal, Trash } from 'lucide-react';
 
 import { FoodEntry } from '@/types/types';
-import { useCalculator } from '@/context/calculatorContext';
+import { useCalculator } from '@/context/CalculatorContext';
 import { ModalType, useModal } from '@/hooks/useModalStore';
 
 import {
@@ -25,7 +25,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import StackedTextWithImage from '@/components/StackedTextWithImage';
-import { useMeal } from '@/context/mealContext';
+import { useMeal } from '@/context/MealContext';
 
 interface FoodItemsTableProps {
   foodEntries: FoodEntry[];

@@ -26,7 +26,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { useModal } from '@/hooks/useModalStore';
-import { useMeal } from '@/context/mealContext';
+import { useMeal } from '@/context/MealContext';
 import Loader from '../Loader';
 
 const formSchema = z.object({

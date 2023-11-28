@@ -12,10 +12,14 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-type WholeFood = Food & MainNutrient & Mineral & TraceElement & Vitamin;
+// TODO - zu utils verlegen
+
+export type WholeFood = Food & MainNutrient & Mineral & TraceElement & Vitamin;
 
 // make single data blocks of each nutrient subcategory
 export const seperateNutrientData = (nutrientData: WholeFood) => {
+  if (!nutrientData) return null;
+
   const food = {
     title: nutrientData.title,
     categoryId: nutrientData.categoryId,
@@ -108,6 +112,12 @@ export const convertValueToTargetUnit = <T extends UnitPrefix>(
   }
 
   return targetValue;
+};
+
+export const parseDecimal = (input: string | number): number => {
+  const inputString = typeof input === 'number' ? input.toString() : input;
+  const parsedValue = parseFloat(inputString?.replace(',', '.'));
+  return isNaN(parsedValue) ? 0 : parsedValue;
 };
 
 // export const truncateString = (str: string, maxLength: number): string => {

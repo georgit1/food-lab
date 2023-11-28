@@ -12,13 +12,14 @@ import {
   YAxis,
   CartesianGrid,
 } from 'recharts';
-import { convertValueToTargetUnit } from '@/utils/utils';
+import { convertValueToTargetUnit } from '@/lib/utils';
+import { NutrientData } from '@/utils/calcPersonalNutrients';
 
 interface NutrientsBarChartProps {
   nutrients: MainNutrient | Mineral | TraceElement | Vitamin;
   nutrientsItems: string[];
   targetUnit: string;
-  requiredNutrients?: Record<string, number>;
+  requiredNutrients?: NutrientData;
 }
 
 interface CustomTooltipProps {

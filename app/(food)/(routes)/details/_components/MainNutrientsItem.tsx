@@ -1,9 +1,11 @@
 import { MainNutrient } from '@prisma/client';
+
 import NutrientsBarChart from './NutrientsBarChart';
+import { NutrientData } from '@/utils/calcPersonalNutrients';
 
 interface MainNutrientsItemProps {
   mainNutrients: MainNutrient;
-  requiredNutrients: Record<string, number>;
+  requiredNutrients: NutrientData;
 }
 
 const mainNutrientItems = [

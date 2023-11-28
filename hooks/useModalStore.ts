@@ -14,7 +14,8 @@ export type ModalType =
   | 'deleteMeal'
   | 'favorites'
   | 'calculateCalories'
-  | 'chooseFood';
+  | 'chooseFood'
+  | 'adjustWeight';
 
 export type ModalUseCase = 'saveMeal' | 'meal';
 

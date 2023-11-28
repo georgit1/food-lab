@@ -23,7 +23,7 @@ const FavoritesModal = () => {
         <DialogHeader>
           <DialogTitle className='text-primary-800'>Favorites</DialogTitle>
           <DialogDescription className='text-neutral-500'>
-            Browse your favorite foods
+            List of your favorite foods
           </DialogDescription>
         </DialogHeader>
         {favorites && (

@@ -16,7 +16,7 @@ import {
   vitaminItems,
 } from '@/constants/nutrients';
 import IconBadge from '@/components/IconBadge';
-import { useCalculator } from '@/context/calculatorContext';
+import { useCalculator } from '@/context/CalculatorContext';
 
 type NutrientsArray = MainNutrient | Mineral | TraceElement | Vitamin;
 

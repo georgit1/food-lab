@@ -1,7 +1,10 @@
 'use client';
 
+import { useState } from 'react';
 import { User } from '@prisma/client';
 import { signOut } from 'next-auth/react';
+import { usePathname } from 'next/navigation';
+
 import {
   Compass,
   UserCircle,
@@ -9,22 +12,19 @@ import {
   LogOut,
   Calculator,
   Banana,
-  Soup,
   Salad,
+  GitCompare,
 } from 'lucide-react';
 
 import { SidebarItem } from './SidebarItem';
 import {
   Accordion,
+  AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import { cn } from '@/utils/utils';
-import { AccordionContent } from '@radix-ui/react-accordion';
-import { Button } from '@/components/ui/button';
-import { usePathname, useRouter } from 'next/navigation';
+import { cn } from '@/lib/utils';
 import AccordionButton from './AccordionButton';
-import { useState } from 'react';
 
 interface SidebarRoutesProps {
   currentUser: User | null;
@@ -44,20 +44,20 @@ const browseRoutes = [
 ];
 
 const routes = [
-  // {
-  //   icon: Compass,
-  //   label: 'Browse',
-  //   href: '/',
-  // },
-  {
-    icon: UserCircle,
-    label: 'User Profile',
-    href: '/profile',
-  },
   {
     icon: Calculator,
     label: 'Meal Calculator',
     href: '/calculator',
+  },
+  {
+    icon: GitCompare,
+    label: 'Compare Food',
+    href: '/compare',
+  },
+  {
+    icon: UserCircle,
+    label: 'User Profile',
+    href: '/profile',
   },
 ];
 
@@ -106,7 +106,7 @@ export const SidebarRoutes = ({ currentUser }: SidebarRoutesProps) => {
             </span>
             {/* <SidebarItem key='browse' icon={Compass} label='Browse' href='/' /> */}
           </AccordionTrigger>
-          <AccordionContent className='text-neutral-700 px-2'>
+          <AccordionContent className='text-neutral-700 px-2 pb-0'>
             {browseRoutes.map((route) => (
               <AccordionButton
                 key={route.href}

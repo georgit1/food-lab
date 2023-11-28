@@ -26,7 +26,7 @@
 import React from 'react';
 import { LucideIcon } from 'lucide-react';
 
-import { cn } from '@/utils/utils';
+import { cn } from '@/lib/utils';
 import IconBadge from './IconBadge';
 import { VariantProps, cva } from 'class-variance-authority';
 

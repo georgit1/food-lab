@@ -9,16 +9,17 @@ import NutrientsBarChart from './NutrientsBarChart';
 import NutrientsTable from '@/app/(food)/(routes)/details/_components/NutrientsTable';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { NutrientData } from '@/utils/calcPersonalNutrients';
 
-interface NutrientData {
+interface NutrientIndex {
   [key: string]: number | null;
 }
 
 interface SubNutrientsItemProps {
-  minerals: Mineral & NutrientData;
-  traceElements: TraceElement & NutrientData;
-  vitamins: Vitamin & NutrientData;
-  requiredNutrients: Record<string, number>;
+  minerals: Mineral & NutrientIndex;
+  traceElements: TraceElement & NutrientIndex;
+  vitamins: Vitamin & NutrientIndex;
+  requiredNutrients: NutrientData;
 }
 
 const SubNutrientsItem = ({

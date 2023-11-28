@@ -12,14 +12,15 @@ import {
   YAxis,
   CartesianGrid,
 } from 'recharts';
-import { convertValueToTargetUnit } from '@/utils/utils';
+import { convertValueToTargetUnit, parseDecimal } from '@/lib/utils';
 import { MineralItemsType } from '@/constants/nutrients';
+import { NutrientData } from '@/utils/calcPersonalNutrients';
 
 interface NutrientsBarChartProps {
   nutrients: MainNutrient | MineralItemsType | TraceElement | Vitamin;
   nutrientsItems: string[];
   targetUnit: string;
-  requiredNutrients?: Record<string, number>;
+  requiredNutrients?: NutrientData;
 }
 
 interface CustomTooltipProps {
@@ -71,9 +72,11 @@ const NutrientsBarChart = ({
       ] as unknown as number;
 
       const requiredValue = requiredNutrients
-        ? (requiredNutrients[
-            nutrient as keyof typeof nutrients
-          ] as unknown as number)
+        ? parseDecimal(
+            requiredNutrients[
+              nutrient as keyof typeof nutrients
+            ] as unknown as number
+          )
         : null;
 
       const nutrientUnit = (nutrients as any)[nutrient + 'Unit'];

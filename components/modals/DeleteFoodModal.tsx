@@ -15,9 +15,9 @@ import {
 import { useModal } from '@/hooks/useModalStore';
 import { Button } from '@/components/ui/button';
 import toast from 'react-hot-toast';
-import { useCalculator } from '@/context/calculatorContext';
+import { useCalculator } from '@/context/CalculatorContext';
 import Loader from '../Loader';
-import { useMeal } from '@/context/mealContext';
+import { useMeal } from '@/context/MealContext';
 
 const DeleteFoodModal = () => {
   const { isOpen, onClose, type, data } = useModal();
