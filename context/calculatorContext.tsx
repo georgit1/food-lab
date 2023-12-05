@@ -1,20 +1,21 @@
-'use client';
+"use client";
 
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState } from "react";
 
 import {
   FoodEntry,
   MealEntry,
   PreparedMeal,
   WholeFoodWithCategory,
-} from '@/types/types';
+  WholeFoodWithCategoryWithQuantity,
+} from "@/types/types";
 import {
   mainNutrientItems,
   mineralItems,
   nutrients,
   traceElementItems,
   vitaminItems,
-} from '../constants/nutrients';
+} from "../constants/nutrients";
 
 export type SubNutrient = {
   [key: string]: number;
@@ -26,10 +27,12 @@ export type WholeFoodWithCategoryWithEnable = WholeFoodWithCategory & {
 
 const initialValues: {
   foodEntries: FoodEntry[];
+  initialEntries: WholeFoodWithCategoryWithQuantity[] | FoodEntry[];
   mealEntries: MealEntry[];
   originalValues: Record<string, { [key: string]: string | number }>;
   totalNutrients: Record<string, number>;
   missingNutrients: { [key: string]: number[] }[];
+  initiateEntries: () => void;
   addFoodEntry: (foodItem: WholeFoodWithCategory) => void;
   deleteFoodEntry: (foodId: string) => void;
   updateFoodEntry: (foodId: string, quntity: number) => void;
@@ -39,12 +42,15 @@ const initialValues: {
   toggleEnableFood: (foodId: string) => void;
   toggleEnableMeal: (mealId: string) => void;
   clearAll: () => void;
+  clearInitialEntries: () => void;
 } = {
   foodEntries: [],
+  initialEntries: [],
   mealEntries: [],
   originalValues: {},
   totalNutrients: {},
   missingNutrients: [],
+  initiateEntries: () => {},
   addFoodEntry: () => {},
   deleteFoodEntry: () => {},
   updateFoodEntry: () => {},
@@ -54,6 +60,7 @@ const initialValues: {
   toggleEnableFood: () => {},
   toggleEnableMeal: () => {},
   clearAll: () => {},
+  clearInitialEntries: () => {},
 };
 
 const CalculatorContext = createContext(initialValues);
@@ -64,6 +71,9 @@ const CalculatorProvider = ({ children }: { children: React.ReactNode }) => {
   const [originalValues, setOriginalValues] = useState<
     Record<string, { [key: string]: string | number }>
   >({});
+  const [initialEntries, setInitialEntries] = useState<
+    WholeFoodWithCategoryWithQuantity[] | FoodEntry[]
+  >([]);
 
   const missingNutrients: { [key: string]: number[] }[] = [];
 
@@ -85,6 +95,14 @@ const CalculatorProvider = ({ children }: { children: React.ReactNode }) => {
       ...prevValues,
       [foodItem.id]: { ...preparedNutrients },
     }));
+  };
+
+  const initiateEntries = () => {
+    setInitialEntries(foodEntries);
+  };
+
+  const clearInitialEntries = () => {
+    setInitialEntries([]);
   };
 
   const addMealEntry = (mealItem: PreparedMeal) => {
@@ -130,24 +148,6 @@ const CalculatorProvider = ({ children }: { children: React.ReactNode }) => {
     });
   };
 
-  // const updateNutrientArray = (
-  //   nutrientArray: SubNutrient[],
-  //   quantity: number,
-  //   originalValues: SubNutrient,
-  //   nutrientList: string[]
-  // ): SubNutrient[] => {
-  //   return nutrientArray.map((nutrient) => {
-  //     const updatedNutrient: SubNutrient = { ...nutrient };
-  //     nutrientList.forEach((item) => {
-  //       if (updatedNutrient[item] !== undefined) {
-  //         const baseValue = originalValues[item] || 0;
-  //         updatedNutrient[item] = (baseValue / 100) * quantity;
-  //       }
-  //     });
-  //     return updatedNutrient;
-  //   });
-  // };
-
   const updateFoodEntry = (foodId: string, quantity: number) => {
     setFoodEntries((prevFoodEntries) =>
       prevFoodEntries.map((entry) => {
@@ -160,37 +160,9 @@ const CalculatorProvider = ({ children }: { children: React.ReactNode }) => {
               entry.nutrients[item] = (baseValue / 100) * quantity;
             }
           });
-
-          // entry.mainNutrients = updateNutrientArray(
-          //   entry.mainNutrients,
-          //   quantity,
-          //   originalValues[foodId]?.mainNutrients?.[0],
-          //   mainNutrientItems
-          // );
-
-          // entry.minerals = updateNutrientArray(
-          //   entry.minerals,
-          //   quantity,
-          //   originalValues[foodId]?.minerals?.[0] || {},
-          //   mineralItems
-          // );
-
-          // entry.vitamins = updateNutrientArray(
-          //   entry.vitamins,
-          //   quantity,
-          //   originalValues[foodId]?.vitamins?.[0] || {},
-          //   vitaminItems
-          // );
-
-          // entry.traceElements = updateNutrientArray(
-          //   entry.traceElements,
-          //   quantity,
-          //   originalValues[foodId]?.traceElements?.[0] || {},
-          //   traceElementItems
-          // );
         }
         return entry;
-      })
+      }),
     );
   };
 
@@ -208,12 +180,12 @@ const CalculatorProvider = ({ children }: { children: React.ReactNode }) => {
           });
         }
         return entry;
-      })
+      }),
     );
   };
 
   const sumMatchingNutrients = (
-    entries: WholeFoodWithCategory[]
+    entries: WholeFoodWithCategory[],
   ): SubNutrient => {
     const totalNutrients: SubNutrient = {};
 
@@ -266,16 +238,16 @@ const CalculatorProvider = ({ children }: { children: React.ReactNode }) => {
           // create an array of objects with nutrient as key and array with missing titles
           // if it already exist append title otherwise create new
           const existingNutrientIndex = missingNutrients.findIndex(
-            (item) => item[nutrient]
+            (item) => item[nutrient],
           );
           if (
             existingNutrientIndex !== -1 &&
             !missingNutrients[existingNutrientIndex][nutrient].includes(
-              nutrientData.title
+              nutrientData.title,
             )
           ) {
             missingNutrients[existingNutrientIndex][nutrient].push(
-              nutrientData.title
+              nutrientData.title,
             );
           } else {
             missingNutrients.push({ [nutrient]: [nutrientData.title] });
@@ -290,16 +262,16 @@ const CalculatorProvider = ({ children }: { children: React.ReactNode }) => {
   const toggleEnableFood = (foodId: string) => {
     setFoodEntries((prevFoodEntries) =>
       prevFoodEntries.map((entry) =>
-        entry.id === foodId ? { ...entry, isEnabled: !entry.isEnabled } : entry
-      )
+        entry.id === foodId ? { ...entry, isEnabled: !entry.isEnabled } : entry,
+      ),
     );
   };
 
   const toggleEnableMeal = (mealId: string) => {
     setMealEntries((prevMealEntries) =>
       prevMealEntries.map((entry) =>
-        entry.id === mealId ? { ...entry, isEnabled: !entry.isEnabled } : entry
-      )
+        entry.id === mealId ? { ...entry, isEnabled: !entry.isEnabled } : entry,
+      ),
     );
   };
 
@@ -310,6 +282,9 @@ const CalculatorProvider = ({ children }: { children: React.ReactNode }) => {
 
   const contextValues = {
     foodEntries,
+    initialEntries,
+    initiateEntries,
+    clearInitialEntries,
     mealEntries,
     originalValues,
     missingNutrients,
@@ -342,7 +317,7 @@ const CalculatorProvider = ({ children }: { children: React.ReactNode }) => {
 const useCalculator = () => {
   const context = useContext(CalculatorContext);
   if (context === undefined)
-    throw new Error('CalculatorContext was used outside of CalculatorProvider');
+    throw new Error("CalculatorContext was used outside of CalculatorProvider");
   return context;
 };
 

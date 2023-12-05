@@ -1,10 +1,10 @@
-import { WholeFoodWithCategory } from '@/types/types';
-import RadialProgess from '@/components/RadialProgess';
-import { Separator } from '@/components/ui/separator';
-import LabeledProgess from './LabeledProgress.tsx';
-import { SubNutrient } from '@/context/CalculatorContext.jsx';
-import { parseDecimal } from '@/lib/utils';
-import { NutrientData } from '@/utils/calcPersonalNutrients.js';
+import { parseDecimal } from "@/utils/convertUtils";
+import { NutrientData } from "@/utils/calcPersonalNutrients.js";
+import { SubNutrient } from "@/context/CalculatorContext.jsx";
+
+import LabeledProgess from "./LabeledProgress.tsx";
+import RadialProgess from "@/components/RadialProgess";
+import { Separator } from "@/components/ui/separator";
 
 interface DataDisplayItemProps {
   totalNutrients: SubNutrient;
@@ -16,59 +16,59 @@ const DataDisplayItem = ({
   requiredNutrients,
 }: DataDisplayItemProps) => {
   return (
-    <div className='flex justify-center bg-primary-50 rounded-md p-2'>
-      <div className='flex flex-col flex-grow gap-4 items-center px-6 pb-2'>
+    <div className="flex justify-center rounded-md bg-primary-50 p-2">
+      <div className="flex flex-grow flex-col items-center gap-4 pb-4">
         <RadialProgess
-          label='calories'
-          value={totalNutrients.calories?.toFixed(0) || 0}
-          maxValue={parseDecimal(requiredNutrients.calories).toFixed(0)}
+          label="Calories"
+          value={totalNutrients.calories}
+          maxValue={parseDecimal(requiredNutrients.calories)}
         />
-        <div className='w-full space-y-2'>
+        <div className="w-full space-y-2">
           <LabeledProgess
-            label='Proteins'
+            label="Proteins"
             value={totalNutrients.proteins?.toFixed(1) || 0}
             maxValue={parseDecimal(requiredNutrients.proteins).toFixed(1)}
-            unit='g'
+            unit="g"
           />
           <LabeledProgess
-            label='Carbs'
+            label="Carbs"
             value={totalNutrients.carbohydrates?.toFixed(1) || 0}
             maxValue={parseDecimal(requiredNutrients.carbohydrates).toFixed(1)}
-            unit='g'
+            unit="g"
           />
           <LabeledProgess
-            label='Fats'
+            label="Fats"
             value={totalNutrients.fats?.toFixed(1) || 0}
             maxValue={parseDecimal(requiredNutrients.fats).toFixed(1)}
-            unit='g'
+            unit="g"
           />
         </div>
       </div>
-      <Separator orientation='vertical' />
-      <div className='flex flex-col flex-grow gap-4 items-center px-4'>
+      <Separator orientation="vertical" />
+      <div className="flex flex-grow flex-col items-center gap-4 px-4">
         <RadialProgess
-          label='water'
-          value={totalNutrients.water?.toFixed(0) || 0}
-          maxValue={parseDecimal(requiredNutrients.water).toFixed(0)}
+          label="Water"
+          value={totalNutrients.water}
+          maxValue={parseDecimal(requiredNutrients.water)}
         />
-        <div className='w-full space-y-2'>
+        <div className="w-full space-y-2">
           <LabeledProgess
-            label='Fiber'
+            label="Fiber"
             value={totalNutrients.fiber?.toFixed(1) || 0}
             maxValue={parseDecimal(requiredNutrients.fiber).toFixed(1)}
-            unit='g'
+            unit="g"
           />
           <LabeledProgess
-            label='Sugar'
+            label="Sugar"
             value={totalNutrients.sugar?.toFixed(1) || 0}
             maxValue={parseDecimal(requiredNutrients.sugar).toFixed(1)}
-            unit='g'
+            unit="g"
           />
           <LabeledProgess
-            label='Salt'
+            label="Salt"
             value={totalNutrients.salt?.toFixed(1) || 0}
             maxValue={parseDecimal(requiredNutrients.salt).toFixed(1)}
-            unit='g'
+            unit="g"
           />
         </div>
       </div>
@@ -79,6 +79,6 @@ const DataDisplayItem = ({
 export default DataDisplayItem;
 
 export const removeTrailingZeros = (num: number): string => {
-  const trimmedNum = num.toFixed(2).replace(/\.?0*$/, '');
+  const trimmedNum = num.toFixed(2).replace(/\.?0*$/, "");
   return trimmedNum;
 };

@@ -1,10 +1,9 @@
-'use client';
+"use client";
 
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useState } from "react";
 
-import { MealEntry } from '@/types/types';
-import { useModal } from '@/hooks/useModalStore';
-import { useCalculator } from '@/context/CalculatorContext';
+import { MealEntry } from "@/types/types";
+import { useCalculator } from "@/context/CalculatorContext";
 
 import {
   Table,
@@ -13,10 +12,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
-import { Input } from '@/components/ui/input';
-import { Checkbox } from '@/components/ui/checkbox';
-import StackedTextWithImage from '@/components/StackedTextWithImage';
+} from "@/components/ui/table";
+import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
+import StackedTextWithImage from "@/components/StackedTextWithImage";
 
 interface FoodItemsTableProps {
   mealEntries: MealEntry[];
@@ -28,7 +27,7 @@ const MealItemsTable = ({ mealEntries }: FoodItemsTableProps) => {
 
   const handleChangeQuantity = (
     event: ChangeEvent<HTMLInputElement>,
-    mealId: string
+    mealId: string,
   ) => {
     const quantity = Number(event.target.value);
     updateMealEntry(mealId, quantity);
@@ -39,7 +38,7 @@ const MealItemsTable = ({ mealEntries }: FoodItemsTableProps) => {
     setDisabledRows((prevRows) =>
       prevRows.includes(foodId)
         ? prevRows.filter((rowId) => rowId !== foodId)
-        : [...prevRows, foodId]
+        : [...prevRows, foodId],
     );
   };
 
@@ -56,18 +55,18 @@ const MealItemsTable = ({ mealEntries }: FoodItemsTableProps) => {
         <TableBody key={item.id}>
           <TableRow>
             <StackedTextWithImage
-              imageSrc={item.imageUrl || ''}
+              imageSrc={item.imageUrl || ""}
               title={item.title}
-              subtext={item.ingredients.join(', ')}
-              variant={disabledRows.includes(item.id) ? 'disabled' : 'default'}
+              subtext={item.ingredients.join(", ")}
+              variant={disabledRows.includes(item.id) ? "disabled" : "default"}
               isMeal={true}
             />
             <TableCell>
               <Input
-                type='number'
+                type="number"
                 onChange={(e) => handleChangeQuantity(e, item.id)}
                 disabled={disabledRows.includes(item.id)}
-                className='max-w-[80px]'
+                className="max-w-[80px]"
                 defaultValue={item.servings}
               />
             </TableCell>

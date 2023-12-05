@@ -1,9 +1,8 @@
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Category, Food } from '@prisma/client';
-import FoodItemsTable from './FoodItemsTable';
-import { WholeFoodWithCategoryWithEnable } from '@/context/CalculatorContext';
-import { FoodEntry, MealEntry } from '@/types/types';
-import MealItemsTable from './MealItemsTable';
+import { FoodEntry, MealEntry } from "@/types/types";
+
+import MealItemsTable from "./MealItemsTable";
+import FoodItemsTable from "./FoodItemsTable";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface FoodTableItemProps {
   foodEntries: FoodEntry[];
@@ -12,8 +11,8 @@ interface FoodTableItemProps {
 
 const FoodTableItem = ({ foodEntries, mealEntries }: FoodTableItemProps) => {
   return (
-    <div className='bg-primary-50 rounded-md p-2'>
-      <ScrollArea className='h-[300px]'>
+    <div className="rounded-md bg-primary-50 p-2">
+      <ScrollArea className="h-[300px]">
         <FoodItemsTable foodEntries={foodEntries} />
         {mealEntries.length > 0 && <MealItemsTable mealEntries={mealEntries} />}
       </ScrollArea>

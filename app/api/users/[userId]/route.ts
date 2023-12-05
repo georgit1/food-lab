@@ -1,6 +1,7 @@
-import { db } from '@/lib/db';
-import { NextResponse } from 'next/server';
-import getCurrentUser from '@/utils/getCurrentUser';
+import { NextResponse } from "next/server";
+
+import { db } from "@/lib/db";
+import getCurrentUser from "@/utils/getCurrentUser";
 
 export async function PATCH(req: Request) {
   try {
@@ -8,7 +9,7 @@ export async function PATCH(req: Request) {
     const values = await req.json();
 
     if (!currentUser?.id || !currentUser?.email) {
-      return new NextResponse('Unauthorized', { status: 401 });
+      return new NextResponse("Unauthorized", { status: 401 });
     }
 
     const user = await db.user.update({
@@ -22,7 +23,7 @@ export async function PATCH(req: Request) {
 
     return NextResponse.json(user);
   } catch (error) {
-    console.log('[USER_ID]', error);
-    return new NextResponse('Internal Error', { status: 500 });
+    console.log("[USER_ID]", error);
+    return new NextResponse("Internal Error", { status: 500 });
   }
 }

@@ -1,6 +1,7 @@
-import qs from 'query-string';
-import { cn } from '@/lib/utils';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import qs from "query-string";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+
+import { cn } from "@/lib/utils";
 
 interface CategoryItemProps {
   label: string;
@@ -12,8 +13,8 @@ const CategoryItem = ({ label, value }: CategoryItemProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const currentCategoryId = searchParams.get('categoryId');
-  const currentTitle = searchParams.get('title');
+  const currentCategoryId = searchParams.get("categoryId");
+  const currentTitle = searchParams.get("title");
 
   const isSelected = currentCategoryId === value;
 
@@ -26,7 +27,7 @@ const CategoryItem = ({ label, value }: CategoryItemProps) => {
           categoryId: isSelected ? null : value,
         },
       },
-      { skipNull: true, skipEmptyString: true }
+      { skipNull: true, skipEmptyString: true },
     );
 
     router.push(url);
@@ -36,12 +37,12 @@ const CategoryItem = ({ label, value }: CategoryItemProps) => {
     <button
       onClick={onClick}
       className={cn(
-        'py-1.5 px-3 text-sm border border-neutral-200 rounded-lg flex items-center gap-x-1 hover:border-primary-700 transition',
-        isSelected && 'border-primary-700 bg-neutral-200/20 text-primary-800'
+        "flex items-center gap-x-1 rounded-lg border border-neutral-200 px-3 py-1.5 text-sm transition hover:border-primary-700",
+        isSelected && "border-primary-700 bg-neutral-200/20 text-primary-800",
       )}
-      type='button'
+      type="button"
     >
-      <div className='truncate'>{label}</div>
+      <div className="truncate">{label}</div>
     </button>
   );
 };

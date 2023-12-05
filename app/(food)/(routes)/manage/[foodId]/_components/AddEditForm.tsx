@@ -1,42 +1,40 @@
-'use client';
+"use client";
 
-import * as z from 'zod';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useSession } from 'next-auth/react';
-import { usePathname, useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
-import { Brush } from 'lucide-react';
+import * as z from "zod";
+import axios from "axios";
+import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { Brush } from "lucide-react";
 
-import { isAdmin } from '@/utils/admin';
-import { formSchema } from '@/utils/formSchema';
-import { WholeFoodWithCategory } from '@/types/types';
+import { isAdmin } from "@/utils/admin";
+import { formSchema } from "@/utils/formSchema";
+import { WholeFoodWithCategory } from "@/types/types";
 
-import MainNutrientsForm from './MainNutrientsForm';
-import GeneralForm from './GeneralForm';
-import MineralsForm from './MineralsForm';
-import TraceElementsForm from './TraceElementsForm';
-import VitaminsForm from './VitaminsForm';
-import { Form } from '@/components/ui/form';
-import { Button } from '@/components/ui/button';
-import { Label } from '@radix-ui/react-label';
-import { Switch } from '@/components/ui/switch';
-import IconHeader from '@/components/IconHeader';
-import ImageForm from '@/components/ImageForm';
-import PageHeader from '@/components/PageHeader';
-import Loader from '@/components/Loader';
+import MainNutrientsForm from "./MainNutrientsForm";
+import GeneralForm from "./GeneralForm";
+import MineralsForm from "./MineralsForm";
+import TraceElementsForm from "./TraceElementsForm";
+import VitaminsForm from "./VitaminsForm";
+import { Form } from "@/components/ui/form";
+import { Button } from "@/components/ui/button";
+import IconHeader from "@/components/IconHeader";
+import ImageForm from "@/components/ImageForm";
+import Loader from "@/components/Loader";
+import FormHeader from "./FormHeader";
 
 interface AddEditFormProps {
-  initialData: Omit<WholeFoodWithCategory, 'category'>;
+  initialData: Omit<WholeFoodWithCategory, "category">;
   foodId: string;
   options: { label: string; value: string }[];
+  currentUserId: string;
 }
 
 const parseValuesToNumber = (obj: { [key: string]: any }) => {
   const result = { ...obj };
-  const excludedProperties = ['title', 'preference', 'categoryId', 'isCreator'];
+  const excludedProperties = ["title", "preference", "categoryId", "isCreator"];
 
   for (const key in result) {
     if (result.hasOwnProperty(key) && !excludedProperties.includes(key)) {
@@ -44,10 +42,14 @@ const parseValuesToNumber = (obj: { [key: string]: any }) => {
 
       // Check if the value is a string representation of a number
       if (
-        typeof value === 'string' &&
-        !isNaN(Number(value.replace(',', '.')))
+        typeof value === "string" &&
+        !isNaN(Number(value.replace(",", ".")))
       ) {
-        result[key] = parseFloat(value.replace(',', '.')) || null;
+        if (value === "0" || value === "0.0") {
+          result[key] = 0;
+        } else {
+          result[key] = parseFloat(value.replace(",", ".")) || null;
+        }
       }
     }
   }
@@ -55,11 +57,15 @@ const parseValuesToNumber = (obj: { [key: string]: any }) => {
   return result;
 };
 
-const AddEditForm = ({ initialData, foodId, options }: AddEditFormProps) => {
+const AddEditForm = ({
+  initialData,
+  foodId,
+  options,
+  currentUserId,
+}: AddEditFormProps) => {
   const [isFoodCreator, setIsFoodCreator] = useState<boolean>(
-    initialData.isCreator
+    initialData.isCreator,
   );
-  const currentUser = useSession().data?.user;
   const router = useRouter();
 
   // flatten food object to fit to defaultValues
@@ -97,7 +103,10 @@ const AddEditForm = ({ initialData, foodId, options }: AddEditFormProps) => {
     initialData?.mainNutrients?.[0]?.water,
   ];
 
-  const isCompletedFields = requiredFields.every(Boolean);
+  // const isCompletedFields = requiredFields.every(Boolean);
+  const isCompletedFields = requiredFields.every(
+    (value) => value !== null && value !== undefined,
+  );
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -109,51 +118,34 @@ const AddEditForm = ({ initialData, foodId, options }: AddEditFormProps) => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const parsedValues = parseValuesToNumber(values);
 
-    values.isCreator = isFoodCreator;
+    parsedValues.isCreator = isFoodCreator;
 
     try {
       await axios.patch(`/api/food/${foodId}`, parsedValues);
-      toast.success('Food updated');
+      toast.success("Food updated");
       router.refresh();
     } catch {
-      toast.error('Something went wrong');
+      toast.error("Something went wrong");
     }
   };
 
   return (
     <>
-      <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4'>
-        <PageHeader
-          header='Customize Food'
-          subtext='fill out as much and accurate as possible'
-        />
-        {isAdmin(currentUser?.email) && (
-          <div className='flex items-center space-x-2'>
-            <Switch
-              id='is-creator'
-              checked={isFoodCreator}
-              onCheckedChange={() => setIsFoodCreator((c) => !c)}
-              className='w-md'
-            />
-            <Label htmlFor='is-creator'>is Creator</Label>
-          </div>
-        )}
-        <Button
-          disabled={!isCompletedFields}
-          variant={'outline'}
-          onClick={() => router.back()}
-        >
-          Back
-        </Button>
-      </div>
+      <FormHeader
+        checked={isFoodCreator}
+        disabled={!isCompletedFields || isSubmitting}
+        isAdmin={isAdmin(currentUserId)}
+        onCheckedChange={() => setIsFoodCreator((c) => !c)}
+      />
+
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className='grid grid-cols-1 md:grid-cols-2 gap-6 gap-y-8 mt-16'>
-            <div className='md:col-span-2 -mb-4'>
+          <div className="mt-16 grid grid-cols-1 gap-6 gap-y-8 md:grid-cols-2">
+            <div className="-mb-4 md:col-span-2">
               <IconHeader
                 icon={Brush}
-                title='Customize your Food'
-                size={'md'}
+                title="Customize your Food"
+                size={"md"}
               />
             </div>
             <GeneralForm
@@ -166,20 +158,20 @@ const AddEditForm = ({ initialData, foodId, options }: AddEditFormProps) => {
             <ImageForm
               initialData={initialData}
               endpoint={`/api/food/${initialData.id}`}
-              label='Food'
+              label="Food"
             />
             <MainNutrientsForm form={form} isSubmitting={isSubmitting} />
             <MineralsForm form={form} isSubmitting={isSubmitting} />
             <TraceElementsForm form={form} isSubmitting={isSubmitting} />
             <VitaminsForm form={form} isSubmitting={isSubmitting} />
 
-            <div className='flex items-center gap-x-2 my-6 md:col-span-2 md:ml-auto'>
+            <div className="my-6 flex items-center gap-x-2 md:col-span-2 md:ml-auto">
               <Button
                 disabled={isSubmitting}
-                type='submit'
-                className='w-full md:float-right md:w-[80px] bg-primary-800'
+                type="submit"
+                className="w-full bg-primary-800 md:float-right md:w-[80px]"
               >
-                {isSubmitting ? <Loader /> : 'Save'}
+                {isSubmitting ? <Loader /> : "Save"}
               </Button>
             </div>
           </div>
@@ -190,7 +182,3 @@ const AddEditForm = ({ initialData, foodId, options }: AddEditFormProps) => {
 };
 
 export default AddEditForm;
-
-// TODO
-// size of switch
-// loader

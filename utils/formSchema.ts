@@ -1,23 +1,23 @@
-import * as z from 'zod';
+import * as z from "zod";
 
 const isPositiveNumberString = (value: string) => {
   // Allow positive integers or decimals with "." or "," and 0
   const isNumeric = /^[0-9]+([.,][0-9]*)?$/.test(value);
-  return isNumeric && parseFloat(value.replace(',', '.')) >= 0;
+  return isNumeric && parseFloat(value.replace(",", ".")) >= 0;
 };
 
 const isPositiveNumberStringOptional = (value: string) => {
-  if (value === '') return true;
+  if (value === "") return true;
 
   // Allow positive integers or decimals with "." or "," and 0
   const isNumeric = /^[0-9]+([.,][0-9]*)?$/.test(value);
-  return isNumeric && parseFloat(value.replace(',', '.')) >= 0;
+  return isNumeric && parseFloat(value.replace(",", ".")) >= 0;
 };
 
 export const formSchema = z.object({
-  title: z.string().min(1, { message: 'Title is required' }),
+  title: z.string().min(1, { message: "Title is required" }),
   categoryId: z.string({
-    required_error: 'Please select a category.',
+    required_error: "Please select a category.",
   }),
   preference: z.string().nullable(),
   isCreator: z.boolean(),
@@ -25,72 +25,72 @@ export const formSchema = z.object({
   // Main Nutrients
   calories: z
     .string()
-    .min(1, { message: 'Calories is required' })
+    .min(1, { message: "Calories is required" })
     .refine(isPositiveNumberString, {
-      message: 'Calories must be a positive number or 0',
+      message: "Calories must be a positive number or 0",
     })
     .or(z.number()),
   fats: z
     .string()
-    .min(1, { message: 'Fats is required' })
+    .min(1, { message: "Fats is required" })
     .refine(isPositiveNumberString, {
-      message: 'Fats must be a positive number or 0',
+      message: "Fats must be a positive number or 0",
     })
     .or(z.number()),
   proteins: z
     .string()
-    .min(1, { message: 'Proteins is required' })
+    .min(1, { message: "Proteins is required" })
     .refine(isPositiveNumberString, {
-      message: 'Proteins must be a positive number or 0',
+      message: "Proteins must be a positive number or 0",
     })
     .or(z.number()),
   carbohydrates: z
     .string()
-    .min(1, { message: 'Carbohydrates is required' })
+    .min(1, { message: "Carbohydrates is required" })
     .refine(isPositiveNumberString, {
-      message: 'Carbohydrates must be a positive number or 0',
+      message: "Carbohydrates must be a positive number or 0",
     })
     .or(z.number()),
   sugar: z
     .string()
-    .min(1, { message: 'Sugar is required' })
+    .min(1, { message: "Sugar is required" })
     .refine(isPositiveNumberString, {
-      message: 'Sugar must be a positive number or 0',
+      message: "Sugar must be a positive number or 0",
     })
     .or(z.number()),
   fiber: z
     .string()
-    .min(1, { message: 'Fiber is required' })
+    .min(1, { message: "Fiber is required" })
     .refine(isPositiveNumberString, {
-      message: 'Fiber must be a positive number or 0',
+      message: "Fiber must be a positive number or 0",
     })
     .or(z.number()),
   salt: z
     .string()
-    .min(1, { message: 'Salt is required' })
+    .min(1, { message: "Salt is required" })
     .refine(isPositiveNumberString, {
-      message: 'Salt must be a positive number or 0',
+      message: "Salt must be a positive number or 0",
     })
     .or(z.number()),
   water: z
-    .string({ required_error: 'Water is required' })
-    .min(1, { message: 'Water is required' })
+    .string({ required_error: "Water is required" })
+    .min(1, { message: "Water is required" })
     .refine(isPositiveNumberString, {
-      message: 'Water must be a positive number or 0',
+      message: "Water must be a positive number or 0",
     })
     .or(z.number()),
   saturated: z
     .string()
     .refine(isPositiveNumberStringOptional, {
-      message: 'Saturated fats must be a positive number or 0',
+      message: "Saturated fats must be a positive number or 0",
     })
     .or(z.number())
     .nullable()
     .optional(),
-  unsaturated: z
+  monounsaturated: z
     .string()
     .refine(isPositiveNumberStringOptional, {
-      message: 'Unsaturated fats must be a positive number or 0',
+      message: "monounsaturated fats must be a positive number or 0",
     })
     .or(z.number())
     .optional()
@@ -98,7 +98,7 @@ export const formSchema = z.object({
   polyunsaturated: z
     .string()
     .refine(isPositiveNumberStringOptional, {
-      message: 'Polyunsaturated fats must be a positive number or 0',
+      message: "Polyunsaturated fats must be a positive number or 0",
     })
     .or(z.number())
     .nullable()
@@ -108,7 +108,7 @@ export const formSchema = z.object({
   potassium: z
     .string()
     .refine(isPositiveNumberStringOptional, {
-      message: 'Potassium must be a positive number or 0',
+      message: "Potassium must be a positive number or 0",
     })
     .or(z.number())
     .nullable()
@@ -116,7 +116,7 @@ export const formSchema = z.object({
   sodium: z
     .string()
     .refine(isPositiveNumberStringOptional, {
-      message: 'Sodium must be a positive number or 0',
+      message: "Sodium must be a positive number or 0",
     })
     .or(z.number())
     .nullable()
@@ -124,7 +124,7 @@ export const formSchema = z.object({
   calcium: z
     .string()
     .refine(isPositiveNumberStringOptional, {
-      message: 'Calcium must be a positive number or 0',
+      message: "Calcium must be a positive number or 0",
     })
     .or(z.number())
     .nullable()
@@ -132,7 +132,7 @@ export const formSchema = z.object({
   magnesium: z
     .string()
     .refine(isPositiveNumberStringOptional, {
-      message: 'Magnesium must be a positive number or 0',
+      message: "Magnesium must be a positive number or 0",
     })
     .or(z.number())
     .nullable()
@@ -140,7 +140,7 @@ export const formSchema = z.object({
   chloride: z
     .string()
     .refine(isPositiveNumberStringOptional, {
-      message: 'Chloride must be a positive number or 0',
+      message: "Chloride must be a positive number or 0",
     })
     .or(z.number())
     .nullable()
@@ -148,7 +148,7 @@ export const formSchema = z.object({
   sulfur: z
     .string()
     .refine(isPositiveNumberStringOptional, {
-      message: 'Sulfur must be a positive number or 0',
+      message: "Sulfur must be a positive number or 0",
     })
     .or(z.number())
     .nullable()
@@ -156,7 +156,7 @@ export const formSchema = z.object({
   phosphorus: z
     .string()
     .refine(isPositiveNumberStringOptional, {
-      message: 'Phosphorus must be a positive number or 0',
+      message: "Phosphorus must be a positive number or 0",
     })
     .or(z.number())
     .nullable()
@@ -166,7 +166,7 @@ export const formSchema = z.object({
   iron: z
     .string()
     .refine(isPositiveNumberStringOptional, {
-      message: 'Iron must be a positive number or 0',
+      message: "Iron must be a positive number or 0",
     })
     .or(z.number())
     .nullable()
@@ -174,7 +174,7 @@ export const formSchema = z.object({
   fluoride: z
     .string()
     .refine(isPositiveNumberStringOptional, {
-      message: 'Fluoride must be a positive number or 0',
+      message: "Fluoride must be a positive number or 0",
     })
     .or(z.number())
     .nullable()
@@ -182,7 +182,7 @@ export const formSchema = z.object({
   copper: z
     .string()
     .refine(isPositiveNumberStringOptional, {
-      message: 'Copper must be a positive number or 0',
+      message: "Copper must be a positive number or 0",
     })
     .or(z.number())
     .nullable()
@@ -190,7 +190,7 @@ export const formSchema = z.object({
   manganese: z
     .string()
     .refine(isPositiveNumberStringOptional, {
-      message: 'Manganese must be a positive number or 0',
+      message: "Manganese must be a positive number or 0",
     })
     .or(z.number())
     .nullable()
@@ -198,7 +198,7 @@ export const formSchema = z.object({
   selenium: z
     .string()
     .refine(isPositiveNumberStringOptional, {
-      message: 'Selenium must be a positive number or 0',
+      message: "Selenium must be a positive number or 0",
     })
     .or(z.number())
     .nullable()
@@ -206,7 +206,7 @@ export const formSchema = z.object({
   iodine: z
     .string()
     .refine(isPositiveNumberStringOptional, {
-      message: 'Iodine must be a positive number or 0',
+      message: "Iodine must be a positive number or 0",
     })
     .or(z.number())
     .nullable()
@@ -214,7 +214,7 @@ export const formSchema = z.object({
   zinc: z
     .string()
     .refine(isPositiveNumberStringOptional, {
-      message: 'Zinc must be a positive number or 0',
+      message: "Zinc must be a positive number or 0",
     })
     .or(z.number())
     .nullable()
@@ -224,7 +224,7 @@ export const formSchema = z.object({
   vitaminA: z
     .string()
     .refine(isPositiveNumberStringOptional, {
-      message: 'Vitamin A must be a positive number or 0',
+      message: "Vitamin A must be a positive number or 0",
     })
     .or(z.number())
     .nullable()
@@ -232,7 +232,7 @@ export const formSchema = z.object({
   vitaminB1: z
     .string()
     .refine(isPositiveNumberStringOptional, {
-      message: 'Vitamin B1 must be a positive number or 0',
+      message: "Vitamin B1 must be a positive number or 0",
     })
     .or(z.number())
     .nullable()
@@ -240,7 +240,7 @@ export const formSchema = z.object({
   vitaminB2: z
     .string()
     .refine(isPositiveNumberStringOptional, {
-      message: 'Vitamin B2 must be a positive number or 0',
+      message: "Vitamin B2 must be a positive number or 0",
     })
     .or(z.number())
     .nullable()
@@ -248,7 +248,7 @@ export const formSchema = z.object({
   vitaminB3: z
     .string()
     .refine(isPositiveNumberStringOptional, {
-      message: 'Vitamin B3 must be a positive number or 0',
+      message: "Vitamin B3 must be a positive number or 0",
     })
     .or(z.number())
     .nullable()
@@ -256,7 +256,7 @@ export const formSchema = z.object({
   vitaminB5: z
     .string()
     .refine(isPositiveNumberStringOptional, {
-      message: 'Vitamin B5 must be a positive number or 0',
+      message: "Vitamin B5 must be a positive number or 0",
     })
     .or(z.number())
     .nullable()
@@ -264,7 +264,7 @@ export const formSchema = z.object({
   vitaminB6: z
     .string()
     .refine(isPositiveNumberStringOptional, {
-      message: 'Vitamin B6 must be a positive number or 0',
+      message: "Vitamin B6 must be a positive number or 0",
     })
     .or(z.number())
     .nullable()
@@ -272,7 +272,7 @@ export const formSchema = z.object({
   vitaminB7: z
     .string()
     .refine(isPositiveNumberStringOptional, {
-      message: 'Vitamin B7 must be a positive number or 0',
+      message: "Vitamin B7 must be a positive number or 0",
     })
     .or(z.number())
     .nullable()
@@ -280,7 +280,7 @@ export const formSchema = z.object({
   vitaminB9: z
     .string()
     .refine(isPositiveNumberStringOptional, {
-      message: 'Vitamin B9 must be a positive number or 0',
+      message: "Vitamin B9 must be a positive number or 0",
     })
     .or(z.number())
     .nullable()
@@ -288,7 +288,7 @@ export const formSchema = z.object({
   vitaminB12: z
     .string()
     .refine(isPositiveNumberStringOptional, {
-      message: 'Vitamin B12 must be a positive number or 0',
+      message: "Vitamin B12 must be a positive number or 0",
     })
     .or(z.number())
     .nullable()
@@ -296,7 +296,7 @@ export const formSchema = z.object({
   vitaminC: z
     .string()
     .refine(isPositiveNumberStringOptional, {
-      message: 'Vitamin C must be a positive number or 0',
+      message: "Vitamin C must be a positive number or 0",
     })
     .or(z.number())
     .nullable()
@@ -304,7 +304,7 @@ export const formSchema = z.object({
   vitaminD: z
     .string()
     .refine(isPositiveNumberStringOptional, {
-      message: 'Vitamin D must be a positive number or 0',
+      message: "Vitamin D must be a positive number or 0",
     })
     .or(z.number())
     .nullable()
@@ -312,7 +312,7 @@ export const formSchema = z.object({
   vitaminE: z
     .string()
     .refine(isPositiveNumberStringOptional, {
-      message: 'Vitamin E must be a positive number or 0',
+      message: "Vitamin E must be a positive number or 0",
     })
     .or(z.number())
     .nullable()
@@ -320,7 +320,7 @@ export const formSchema = z.object({
   vitaminK: z
     .string()
     .refine(isPositiveNumberStringOptional, {
-      message: 'Vitamin K must be a positive number or 0',
+      message: "Vitamin K must be a positive number or 0",
     })
     .or(z.number())
     .nullable()

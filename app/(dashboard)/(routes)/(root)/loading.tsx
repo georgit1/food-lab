@@ -7,9 +7,9 @@ export default function Loading() {
         <Skeleton className='h-10 w-full rounded-full' />
       </div>
       <div className='space-y-5 pb-4'>
-        <div className='flex items-center gap-x-2 overflow-x-auto'>
+        <div className='flex items-center gap-x-2 overflow-x-hidden'>
           {Array.from({ length: 8 }, (_, index) => (
-            <Skeleton key={index} className='h-8 w-28' />
+            <Skeleton key={index} className='h-8 w-[6.2rem] flex-shrink-0' />
           ))}
         </div>
 

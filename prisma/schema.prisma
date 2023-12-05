@@ -39,7 +39,6 @@ model User {
   hours_leisure_time Int?
   hours_leisure_time_select String?
 
-  // favoriteIds Json @default("[]")
   favorites Favorite[]
   foods Food[]
   meals Meal[]
@@ -161,7 +160,7 @@ model MainNutrient {
   calories Float
   fats Float
   saturated Float?
-  unsaturated Float?
+  monounsaturated Float?
   polyunsaturated Float?
   proteins Float
   carbohydrates Float
@@ -173,7 +172,7 @@ model MainNutrient {
   caloriesUnit String @default("kcal")
   fatsUnit String @default("g")
   saturatedUnit String @default("g")
-  unsaturatedUnit String @default("g")
+  monounsaturatedUnit String @default("g")
   polyunsaturatedUnit String @default("g")
   proteinsUnit String @default("g")
   carbohydratesUnit String @default("g")

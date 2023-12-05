@@ -1,47 +1,32 @@
-import {
-  Category,
-  Food,
-  MainNutrient,
-  Mineral,
-  TraceElement,
-  Vitamin,
-} from '@prisma/client';
-import GeneralItem from './GeneralItem';
-import FoodDensityItem from './FoodDensityItem';
-import SubNutrientsItem from './SubnutrientsItem';
-import DataItem from './DataItem';
-import MainNutrientsItem from './MainNutrientsItem';
-import { WholeFoodWithCategory } from '@/types/types';
-import { NutrientData } from '@/utils/calcPersonalNutrients';
+import { WholeFoodWithCategory } from "@/types/types";
+import { NutrientData } from "@/utils/calcPersonalNutrients";
 
-// type WholeFood = Food & {
-//   category: Category;
-//   mainNutrients?: MainNutrient[];
-//   minerals?: Mineral[];
-//   traceElements?: TraceElement[];
-//   vitamins?: Vitamin[];
-// };
+import DataItem from "./DataItem";
+import GeneralItem from "./GeneralItem";
+import FoodDensityItem from "./FoodDensityItem";
+import SubNutrientsItem from "./SubnutrientsItem";
+import MainNutrientsItem from "./MainNutrientsItem";
 
 interface FoodDetailsGridProps {
   foodData: WholeFoodWithCategory;
-  userId: string;
+  currentUsersId: string;
   requiredNutrients: NutrientData;
 }
 
 const FoodDetailsGrid = ({
   foodData,
-  userId,
+  currentUsersId,
   requiredNutrients,
 }: FoodDetailsGridProps) => {
   return (
-    <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 grid-rows-[1fr, 0.3fr, 1fr] gap-4 mt-8 mb-2'>
+    <div className="grid-rows-[1fr, 0.3fr, 1fr] mb-2 mt-8 grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-4 lg:grid-cols-5">
       <GeneralItem
         foodId={foodData.id}
-        userId={userId}
+        currentUserId={currentUsersId}
         foodCreator={foodData.userId}
         title={foodData.title}
         category={foodData.category.name}
-        imageUrl={foodData.imageUrl || ''}
+        imageUrl={foodData.imageUrl || ""}
         preference={foodData.preference}
         isCreator={foodData.isCreator}
       />
@@ -63,18 +48,18 @@ const FoodDetailsGrid = ({
         )}
       {foodData?.mainNutrients?.[0].calories && (
         <DataItem
-          label='Energy'
+          label="Energy"
           value={foodData?.mainNutrients?.[0].calories}
-          unit='kcal'
-          className='order-3 sm:col-span-1 lg:col-span-1 lg:order-4'
+          unit="kcal"
+          className="order-3 col-span-3 sm:col-span-1 lg:order-4 lg:col-span-1"
         />
       )}
       {foodData?.mainNutrients?.[0].water && (
         <DataItem
-          label='Water'
+          label="Water"
           value={foodData?.mainNutrients?.[0].water}
-          unit='ml'
-          className='order-4 sm:col-span-1 lg:col-span-1 lg:order-5'
+          unit="ml"
+          className="order-4 col-span-3 sm:col-span-2 lg:order-5 lg:col-span-1"
         />
       )}
       {foodData.mainNutrients?.[0] && (

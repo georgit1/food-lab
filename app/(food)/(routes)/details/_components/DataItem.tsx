@@ -1,5 +1,3 @@
-import { title } from 'process';
-
 interface DataItemProps {
   value: number;
   label: string;
@@ -10,10 +8,10 @@ interface DataItemProps {
 const DataItem = ({ value, label, unit, className }: DataItemProps) => {
   return (
     <div
-      className={`col-span-2 sm:col-span-1 flex flex-col w-full h-full bg-primary-50 rounded-md p-2 text-center ${className}`}
+      className={`flex h-full w-full flex-col rounded-md bg-primary-50 p-2 text-center ${className}`}
     >
-      <span className='text-neutral-400 text-md font-semibold'>{label}</span>
-      <span className='text-primary-600 font-semibold text-xl'>
+      <span className="text-md font-semibold text-neutral-400">{label}</span>
+      <span className="truncate text-xl font-semibold text-primary-600">
         {value} {unit && <span>{unit}</span>}
       </span>
     </div>

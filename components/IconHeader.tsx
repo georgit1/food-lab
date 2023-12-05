@@ -1,34 +1,8 @@
-// import React from 'react';
-// import { LucideIcon } from 'lucide-react';
-
-// import { cn } from '@/utils/utils';
-// import IconBadge from './IconBadge';
-
-// interface IconHeaderProps extends React.ComponentProps<typeof IconBadge> {
-//   title: string;
-//   icon: LucideIcon;
-//   classname?: string;
-// }
-
-// const IconHeader = ({ title, icon, classname, ...rest }: IconHeaderProps) => {
-//   return (
-//     <div className='flex items-center gap-x-2'>
-//       <IconBadge icon={icon} {...rest} />
-//       <h2 className={cn('text-xl text-primary-600 font-semibold', classname)}>
-//         {title}
-//       </h2>
-//     </div>
-//   );
-// };
-
-// export default IconHeader;
-
 import React from 'react';
 import { LucideIcon } from 'lucide-react';
+import { VariantProps, cva } from 'class-variance-authority';
 
 import { cn } from '@/lib/utils';
-import IconBadge from './IconBadge';
-import { VariantProps, cva } from 'class-variance-authority';
 
 const backgroundVariants = cva(
   'rounded-full flex items-center justify-center',
@@ -98,12 +72,6 @@ interface IconHeaderProps extends BackgroundVariantsProps, IconVariantsProps {
   title: string;
   className?: string;
 }
-
-// interface IconHeaderProps extends React.ComponentProps<typeof IconBadge> {
-//   title: string;
-//   icon: LucideIcon;
-//   classname?: string;
-// }
 
 const IconHeader = ({
   icon: Icon,

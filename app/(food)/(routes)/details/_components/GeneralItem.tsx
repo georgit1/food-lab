@@ -1,24 +1,24 @@
-'use client';
+"use client";
 
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import { Edit, Lock, MoreVertical, Trash, User } from 'lucide-react';
+import { useRouter } from "next/navigation";
+import { Edit, Lock, MoreVertical, Trash, User } from "lucide-react";
 
-import { isAdmin } from '@/utils/admin';
-import { ModalType, useModal } from '@/hooks/useModalStore';
-import Carousel from './Carousel';
+import { isAdmin } from "@/utils/admin";
+import { ModalType, useModal } from "@/hooks/useModalStore";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import IconBadge from '@/components/IconBadge';
+} from "@/components/ui/dropdown-menu";
+import IconBadge from "@/components/IconBadge";
+import Carousel from "./Carousel";
 
 interface GeneralItemProps {
   foodId: string;
-  userId: string;
+  currentUserId: string;
   foodCreator: string;
   title: string;
   category: string;
@@ -29,7 +29,7 @@ interface GeneralItemProps {
 
 const GeneralItem = ({
   foodId,
-  userId,
+  currentUserId,
   foodCreator,
   title,
   category,
@@ -37,7 +37,6 @@ const GeneralItem = ({
   preference,
   isCreator,
 }: GeneralItemProps) => {
-  const currentUser = useSession().data?.user;
   const { onOpen } = useModal();
   const router = useRouter();
 
@@ -51,57 +50,54 @@ const GeneralItem = ({
   };
 
   return (
-    <div className='relative col-span-2 sm:col-span-1 order-1 bg-primary-50 rounded-md p-2 overflow-hidden'>
-      <div className='flex flex-col'>
-        <span className='flex gap-1.5 items-center'>
-          <h3 className='lg:max-w-[110px] xl:max-w-[155px] text-xl text-primary-800 font-bold truncate'>
+    <div className="relative order-1 col-span-3 overflow-hidden rounded-md bg-primary-50 p-2 sm:col-span-1">
+      <div className="flex flex-col">
+        <span className="flex items-center gap-1.5">
+          <h3 className="truncate text-xl font-bold text-primary-800 lg:max-w-[110px] xl:max-w-[155px]">
             {title}
           </h3>
-          {!isCreator && currentUser?.email && (
-            <IconBadge icon={User} size={'sm'} />
-          )}
+          {!isCreator && currentUserId && <IconBadge icon={User} size={"sm"} />}
         </span>
-        <span className='text-sm text-primary-500 font-semibold'>
+        <span className="text-sm font-semibold text-primary-500">
           {category}
         </span>
       </div>
-
       {/* Menu Button */}
-      {isAdmin(currentUser?.email) || userId === foodCreator ? (
+      {isAdmin(currentUserId) || currentUserId === foodCreator ? (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <div className='absolute top-2 right-1 p-1 rounded-full bg-primary-50 hover:bg-primary-100 transition'>
+            <div className="absolute right-1 top-2 rounded-full bg-primary-50 p-1 transition hover:bg-primary-100">
               <MoreVertical
                 size={20}
-                className='text-primary-600 cursor-pointer hover'
+                className="hover cursor-pointer text-primary-600"
               />
             </div>
           </DropdownMenuTrigger>
-          <DropdownMenuContent side='left'>
+          <DropdownMenuContent side="left">
             <DropdownMenuItem
               onClick={onClick}
-              className='cursor-pointer text-primary-800'
+              className="cursor-pointer text-primary-800"
             >
-              <Edit className='mr-2 h-4 w-4' />
+              <Edit className="mr-2 h-4 w-4" />
               <span>Edit</span>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem
-              onClick={(e) => onAction(e, 'deleteFood')}
-              className='cursor-pointer text-red-600'
+              onClick={(e) => onAction(e, "deleteFood")}
+              className="cursor-pointer text-red-600"
             >
-              <Trash className='mr-2 h-4 w-4' />
+              <Trash className="mr-2 h-4 w-4" />
               <span>Delete</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       ) : (
         <Lock
-          className='absolute top-3 right-2 text-neutral-400 bg-primary-50'
+          className="absolute right-2 top-3 bg-primary-50 text-neutral-400"
           size={18}
         />
       )}
-      <div className='relative h-40 w-full mt-8'>
+      <div className="relative mt-8 h-40 w-full">
         <Carousel imageUrl={imageUrl} preference={preference} />
       </div>
     </div>

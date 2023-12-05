@@ -61,8 +61,8 @@ export default function Loading() {
       </div>
 
       <div className='grid grid-cols-2 mt-16'>
-        <Skeleton className='h-32 w-32 mx-auto rounded-full' />
-        <Skeleton className='h-32 w-32 mx-auto rounded-full' />
+        <Skeleton className='h-32 w-32 sm:h-36 sm:w-36 mx-auto rounded-full' />
+        <Skeleton className='h-32 w-32 sm:h-36 sm:w-36  mx-auto rounded-full' />
       </div>
     </>
   );

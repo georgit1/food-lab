@@ -7,7 +7,12 @@ import {
   Mineral,
   TraceElement,
   Vitamin,
-} from '@prisma/client';
+} from "@prisma/client";
+
+export type FoodWithCategoryWithMain = Food & {
+  category: Category | null;
+  mainNutrients: MainNutrient[];
+};
 
 export type WholeFoodWithCategory = Food & {
   category: Category;
@@ -19,7 +24,7 @@ export type WholeFoodWithCategory = Food & {
 
 export type WholeFoodWithCategoryWithQuantity = Food & {
   category: Category;
-  quantity: number;
+  quantity?: number;
   mainNutrients?: MainNutrient[];
   minerals?: Mineral[];
   traceElements?: TraceElement[];
@@ -41,7 +46,6 @@ export type FoodEntry = {
   id: string;
   title: string;
   imageUrl: string | null;
-  // preference: string;
   quantity: number;
   isEnabled: boolean;
   category: string;
@@ -60,41 +64,41 @@ export type MealEntry = {
 };
 
 export type Nutrient =
-  | 'calories'
-  | 'fats'
-  | 'saturated'
-  | 'unsaturated'
-  | 'polyunsaturated'
-  | 'proteins'
-  | 'carbohydrates'
-  | 'sugar'
-  | 'fiber'
-  | 'salt'
-  | 'water'
-  | 'calcium'
-  | 'chloride'
-  | 'potassium'
-  | 'magnesium'
-  | 'sodium'
-  | 'phosphorus'
-  | 'sulfur'
-  | 'copper'
-  | 'fluoride'
-  | 'iron'
-  | 'iodine'
-  | 'manganese'
-  | 'zinc'
-  | 'selenium'
-  | 'vitaminA'
-  | 'vitaminB1'
-  | 'vitaminB2'
-  | 'vitaminB3'
-  | 'vitaminB5'
-  | 'vitaminB6'
-  | 'vitaminB7'
-  | 'vitaminB9'
-  | 'vitaminB12'
-  | 'vitaminC'
-  | 'vitaminD'
-  | 'vitaminE'
-  | 'vitaminK';
+  | "calories"
+  | "fats"
+  | "saturated"
+  | "monounsaturated"
+  | "polyunsaturated"
+  | "proteins"
+  | "carbohydrates"
+  | "sugar"
+  | "fiber"
+  | "salt"
+  | "water"
+  | "calcium"
+  | "chloride"
+  | "potassium"
+  | "magnesium"
+  | "sodium"
+  | "phosphorus"
+  | "sulfur"
+  | "copper"
+  | "fluoride"
+  | "iron"
+  | "iodine"
+  | "manganese"
+  | "zinc"
+  | "selenium"
+  | "vitaminA"
+  | "vitaminB1"
+  | "vitaminB2"
+  | "vitaminB3"
+  | "vitaminB5"
+  | "vitaminB6"
+  | "vitaminB7"
+  | "vitaminB9"
+  | "vitaminB12"
+  | "vitaminC"
+  | "vitaminD"
+  | "vitaminE"
+  | "vitaminK";

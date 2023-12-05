@@ -1,16 +1,17 @@
-import React from 'react';
-import { Crown, ImageIcon } from 'lucide-react';
+import React from "react";
+import { Crown, ImageIcon } from "lucide-react";
 
-import { cn } from '@/lib/utils';
-import { Avatar, AvatarImage } from '@/components/ui/avatar';
-import IconBadge from '@/components/IconBadge';
-import { useSmallScreen } from '@/hooks/useSmallScreen';
+import { cn } from "@/lib/utils";
+import { useSmallScreen } from "@/hooks/useSmallScreen";
+
+import IconBadge from "@/components/IconBadge";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 
 interface HeaderProps {
   imageSrc: string;
   title: string;
   category: string;
-  variant?: 'left' | 'right';
+  variant?: "left" | "right";
   winner?: boolean;
 }
 
@@ -24,32 +25,32 @@ const Header = ({
   const isSmallScreen = useSmallScreen();
 
   const sideByVariant = {
-    left: 'flex items-center justify-center',
-    right: 'flex flex-row-reverse justify-center items-center text-end',
+    left: "flex items-center justify-center",
+    right: "flex flex-row-reverse justify-center items-center text-end",
   };
 
   return (
-    <div className={cn('mt-2', sideByVariant[variant || 'left'])}>
-      <div className='mr-1.5'>
+    <div className={cn("mt-2", sideByVariant[variant || "left"])}>
+      <div className="mr-1.5">
         <Avatar
-          className={`flex items-center justify-center ring-primary-800 ring-2 ring-offset-2 m-3 ${
-            isSmallScreen ? 'w-12 h-12' : 'w-14 h-14'
+          className={`m-3 flex items-center justify-center ring-2 ring-primary-800 ring-offset-2 ${
+            isSmallScreen ? "h-12 w-12" : "h-14 w-14"
           } `}
         >
           {imageSrc ? (
             <AvatarImage src={imageSrc} />
           ) : (
-            <ImageIcon className='text-neutral-400' />
+            <ImageIcon className="text-neutral-400" />
           )}
         </Avatar>
       </div>
-      <div className='truncate'>
-        <h2 className='flex items-center text-md text-primary-800 font-semibold gap-1'>
-          <span className='truncate'>{title || '[Title]'}</span>
-          {winner && <IconBadge variant={'success'} icon={Crown} size={'xs'} />}
+      <div className="truncate">
+        <h2 className="text-md flex items-center gap-1 font-semibold text-primary-800">
+          <span className="max-w-[200px] truncate">{title || "[Title]"}</span>
+          {winner && <IconBadge variant={"success"} icon={Crown} size={"xs"} />}
         </h2>
-        <p className='text-xs text-neutral-500 truncate'>
-          {category || '[category]'}
+        <p className="truncate text-xs text-neutral-500">
+          {category || "[category]"}
         </p>
       </div>
     </div>

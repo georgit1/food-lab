@@ -1,6 +1,8 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import { ImageIcon } from 'lucide-react';
+import Link from "next/link";
+import Image from "next/image";
+import { ImageIcon } from "lucide-react";
+
+import { useMeal } from "@/context/MealContext";
 
 interface MealCardProps {
   id: string;
@@ -9,31 +11,32 @@ interface MealCardProps {
   foodTitles: string[];
 }
 
-const MealCard = async ({ id, title, imageUrl, foodTitles }: MealCardProps) => {
+const MealCard = ({ id, title, imageUrl, foodTitles }: MealCardProps) => {
   const isImage = Boolean(imageUrl);
+  const { clearAll } = useMeal();
 
   return (
-    <Link href={`/meal/${id}`}>
-      <div className='border-b-2 border-neutral-800 rounded-xl p-4 shadow-md bg-primary-50'>
-        <div className='flex items-center justify-start gap-4'>
-          <div className='flex items-center flex-shrink-0 justify-center h-[95px] w-[95px] border-[3.5px] border-neutral-800 rounded-full overflow-hidden'>
+    <Link href={`/meal/${id}`} onClick={() => clearAll()}>
+      <div className="rounded-xl border-b-2 border-neutral-800 bg-primary-50 p-4 shadow-md">
+        <div className="flex items-center justify-start gap-4">
+          <div className="flex h-[90px] w-[90px] flex-shrink-0 items-center justify-center overflow-hidden rounded-full border-[3.5px] border-neutral-800">
             {isImage && (
               <Image
                 width={30}
                 height={30}
-                className='object-cover w-full h-full'
+                className="h-full w-full object-cover"
                 alt={title}
-                src={imageUrl || ''}
+                src={imageUrl || ""}
               />
             )}
-            {!isImage && <ImageIcon className='text-neutral-400' size={30} />}
+            {!isImage && <ImageIcon className="text-neutral-400" size={30} />}
           </div>
-          <div className='flex flex-col gap-0.5 text-slate-900 truncate'>
-            <span className='text-lg font-bold truncate'>{title}</span>
-            <span className='text-xs text-neutral-700 px-2 rounded-full max-w-fit bg-yellow-300'>
+          <div className="flex flex-col gap-0.5 truncate text-slate-900">
+            <span className="truncate text-lg font-bold">{title}</span>
+            <span className="max-w-fit rounded-full bg-yellow-300 px-2 text-xs text-neutral-700">
               Meal
             </span>
-            <span className='text-xs truncate'>{foodTitles.join(', ')}</span>
+            <span className="truncate text-xs">{foodTitles.join(", ")}</span>
           </div>
         </div>
       </div>

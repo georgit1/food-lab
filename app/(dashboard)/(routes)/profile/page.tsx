@@ -1,15 +1,16 @@
-import { db } from '@/lib/db';
-import { redirect } from 'next/navigation';
+import { db } from "@/lib/db";
+import { redirect } from "next/navigation";
 
-import getCurrentUser from '@/utils/getCurrentUser';
-import InfoBoard from './_components/InfoBoard';
-import PageHeader from '@/components/PageHeader';
-import DataInsight from './_components/DataInsight';
+import getCurrentUser from "@/utils/getCurrentUser";
+
+import InfoBoard from "./_components/InfoBoard";
+import PageHeader from "@/components/PageHeader";
+import DataInsight from "./_components/DataInsight";
 
 const ProfilePage = async () => {
   const currentUser = await getCurrentUser();
 
-  if (!currentUser?.id) return redirect('/');
+  if (!currentUser?.id) return redirect("/");
 
   const user = await db.user.findUnique({
     where: {
@@ -17,15 +18,15 @@ const ProfilePage = async () => {
     },
   });
 
-  if (!user) return redirect('/');
+  if (!user) return redirect("/");
 
   return (
     <div>
       <PageHeader
-        header='Personal Data'
-        subtext='full insight into your personal values'
+        header="Personal Data"
+        subtext="insight into your personal needs"
       />
-      <div className='grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8'>
+      <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
         <DataInsight userData={user} />
         <InfoBoard />
       </div>

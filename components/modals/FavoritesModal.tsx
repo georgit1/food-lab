@@ -1,28 +1,27 @@
-'use client';
-
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
+} from "@/components/ui/dialog";
 
-import { useModal } from '@/hooks/useModalStore';
-import FavoritesTable from '../FavoritesTable';
+import { useModal } from "@/hooks/useModalStore";
+
+import FavoritesTable from "../FavoritesTable";
 
 const FavoritesModal = () => {
   const { isOpen, onClose, type, data } = useModal();
 
-  const isModalOpen = isOpen && type === 'favorites';
+  const isModalOpen = isOpen && type === "favorites";
   const { favorites } = data;
 
   return (
     <Dialog open={isModalOpen} onOpenChange={onClose}>
-      <DialogContent className='sm:max-w-md'>
+      <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className='text-primary-800'>Favorites</DialogTitle>
-          <DialogDescription className='text-neutral-500'>
+          <DialogTitle className="text-primary-800">Favorites</DialogTitle>
+          <DialogDescription className="text-neutral-500">
             List of your favorite foods
           </DialogDescription>
         </DialogHeader>

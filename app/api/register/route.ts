@@ -1,7 +1,7 @@
-import bcrypt from 'bcrypt';
+import bcrypt from "bcrypt";
+import { NextResponse } from "next/server";
 
-import { db } from '@/lib/db';
-import { NextResponse } from 'next/server';
+import { db } from "@/lib/db";
 
 export async function POST(request: Request) {
   try {
@@ -9,7 +9,7 @@ export async function POST(request: Request) {
     const { email, name, password } = body;
 
     if (!email || !name || !password) {
-      return new NextResponse('Missing info', { status: 400 });
+      return new NextResponse("Missing info", { status: 400 });
     }
 
     const hashedPassword = await bcrypt.hash(password, 12);
@@ -24,7 +24,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json(user);
   } catch (error: any) {
-    console.log('[REGISTRATION]', error);
-    return new NextResponse('Internal Error', { status: 500 });
+    console.log("[REGISTRATION]", error);
+    return new NextResponse("Internal Error", { status: 500 });
   }
 }

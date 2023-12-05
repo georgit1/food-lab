@@ -1,6 +1,7 @@
 'use client';
 
 import { Food } from '@prisma/client';
+import { useEffect, useState } from 'react';
 
 import {
   FormControl,
@@ -17,7 +18,6 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
-import { useEffect, useState } from 'react';
 import PillCheckbox from '@/components/PillCheckbox';
 import { preferences } from '@/constants/preferences';
 

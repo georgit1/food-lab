@@ -1,161 +1,165 @@
-import Link from 'next/link';
-import Image from 'next/image';
-import { ImageIcon, User } from 'lucide-react';
+"use client";
 
-import getCurrentUser from '@/utils/getCurrentUser';
-import { getFavorites } from '@/actions/get-favorites';
-import FavoriteButton from '@/components/FavoriteButton';
-import IconBadge from '@/components/IconBadge';
+import Link from "next/link";
+import Image from "next/image";
+import { motion } from "framer-motion";
+import { ImageIcon, User } from "lucide-react";
+
+import { FoodWithCategoryWithMain } from "@/types/types";
+
+import IconBadge from "@/components/IconBadge";
+import FavoriteButton from "@/components/FavoriteButton";
 
 interface FoodCardProps {
   id: string;
-  title: string;
-  imageUrl: string | null;
-  category: string | undefined;
-  calories: number;
-  proteins: number;
-  carbohydrates: number;
-  fats: number;
-  fiber: number;
-  isCreator: boolean;
+  item: FoodWithCategoryWithMain;
+  favorites: FoodWithCategoryWithMain[];
+  currentUserId: string | undefined;
 }
 
-const FoodCard = async ({
-  id,
-  title,
-  imageUrl,
-  category,
-  calories,
-  proteins,
-  carbohydrates,
-  fats,
-  fiber,
-  isCreator,
-}: FoodCardProps) => {
-  const isImage = Boolean(imageUrl);
-  const currentUser = await getCurrentUser();
-  const favorites = await getFavorites(currentUser?.id || '');
+const FoodCard = ({ id, item, favorites, currentUserId }: FoodCardProps) => {
+  const isImage = Boolean(item.imageUrl);
 
-  let backgroundColorClass = '';
-  let borderColorClass = '';
+  let backgroundColorClass = "";
+  let borderColorClass = "";
 
   // necessary because the class names from tailwind are generated during the build process
   // and cannot be dynamically generated at runtime.
 
-  switch (category) {
-    case 'Grains':
-      backgroundColorClass = 'bg-category-grains';
-      borderColorClass = 'border-category-grains';
+  switch (item.category?.name) {
+    case "Grains":
+      backgroundColorClass = "bg-category-grains";
+      borderColorClass = "border-category-grains";
       break;
-    case 'Vegetables':
-      backgroundColorClass = 'bg-category-vegetables';
-      borderColorClass = 'border-category-vegetables';
+    case "Vegetables":
+      backgroundColorClass = "bg-category-vegetables";
+      borderColorClass = "border-category-vegetables";
       break;
-    case 'Legumes':
-      backgroundColorClass = 'bg-category-legumes';
-      borderColorClass = 'border-category-legumes';
+    case "Legumes":
+      backgroundColorClass = "bg-category-legumes";
+      borderColorClass = "border-category-legumes";
       break;
-    case 'Nuts & Seeds':
-      backgroundColorClass = 'bg-category-nuts_seeds';
-      borderColorClass = 'border-category-nuts_seeds';
+    case "Nuts & Seeds":
+      backgroundColorClass = "bg-category-nuts_seeds";
+      borderColorClass = "border-category-nuts_seeds";
       break;
-    case 'Oils & Fats':
-      backgroundColorClass = 'bg-category-oils_fats';
-      borderColorClass = 'border-category-oils_fats';
+    case "Oils & Fats":
+      backgroundColorClass = "bg-category-oils_fats";
+      borderColorClass = "border-category-oils_fats";
       break;
-    case 'Herbs':
-      backgroundColorClass = 'bg-category-herbs';
-      borderColorClass = 'border-category-herbs';
+    case "Herbs":
+      backgroundColorClass = "bg-category-herbs";
+      borderColorClass = "border-category-herbs";
       break;
-    case 'Beverages':
-      backgroundColorClass = 'bg-category-beverages';
-      borderColorClass = 'border-category-beverages';
+    case "Beverages":
+      backgroundColorClass = "bg-category-beverages";
+      borderColorClass = "border-category-beverages";
       break;
-    case 'Dairy':
-      backgroundColorClass = 'bg-category-dairy';
-      borderColorClass = 'border-category-dairy';
+    case "Dairy":
+      backgroundColorClass = "bg-category-dairy";
+      borderColorClass = "border-category-dairy";
       break;
-    case 'Fruits':
-      backgroundColorClass = 'bg-category-fruits';
-      borderColorClass = 'border-category-fruits';
+    case "Fruits":
+      backgroundColorClass = "bg-category-fruits";
+      borderColorClass = "border-category-fruits";
       break;
     default:
       break;
   }
 
   return (
-    <Link href={`/details/${id}`}>
-      <div
-        className={`flex flex-col gap-4 border-b-2 ${borderColorClass} bg-primary-50 rounded-xl p-4 shadow-md relative overflow-hidden`}
-      >
+    <motion.div
+      key={id}
+      layout
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
+    >
+      <Link href={`/details/${id}`}>
         <div
-          className={`absolute h-10 w-32 ${backgroundColorClass} -right-3 -top-6 rotate-12`}
-        ></div>
-        {currentUser?.id && (
-          <div className='absolute top-[5px] right-[5px]'>
-            <FavoriteButton
-              foodId={id}
-              favoriteIds={favorites.map((favorite) => favorite.foodId)}
-            />
-          </div>
-        )}
-        {!isCreator && (
-          <IconBadge icon={User} size='sm' className='absolute top-1 left-1' />
-        )}
-        <div className='mx-auto max-w-[210px] flex items-center justify-center gap-4'>
-          {/* Image */}
+          className={`flex flex-col gap-4 border-b-2 ${borderColorClass} relative overflow-hidden rounded-xl bg-primary-50 p-4 shadow-md`}
+        >
           <div
-            className={`flex flex-shrink-0 items-center justify-center h-[95px] w-[95px] border-[3.5px] ${borderColorClass} rounded-full overflow-hidden`}
-          >
-            {isImage && (
-              <Image
-                width={30}
-                height={30}
-                className='object-cover w-full h-full'
-                alt={title}
-                src={imageUrl || ''}
-              />
-            )}
-            {!isImage && <ImageIcon className='text-neutral-400' size={30} />}
-          </div>
-          <div className='flex flex-col text-slate-900 truncate'>
-            <span className='text-lg font-bold truncate'>{title}</span>
-            <span
-              className={`w-max border-[2px] ${borderColorClass} rounded-full px-2 text-xs font-medium`}
+            className={`absolute h-10 w-32 ${backgroundColorClass} -right-3 -top-6 rotate-12`}
+          ></div>
+          {currentUserId && (
+            <div className="absolute right-[5px] top-[5px]">
+              <FavoriteButton foodId={id} item={item} favorites={favorites} />
+            </div>
+          )}
+          {!item.isCreator && (
+            <IconBadge
+              icon={User}
+              size="sm"
+              className="absolute left-1 top-1"
+            />
+          )}
+          <div className="mx-auto flex max-w-[210px] items-center justify-center gap-4">
+            {/* Image */}
+            <div
+              className={`flex h-[95px] w-[95px] flex-shrink-0 items-center justify-center border-[3.5px] ${borderColorClass} overflow-hidden rounded-full`}
             >
-              {category}
-            </span>
+              {isImage && (
+                <Image
+                  width={30}
+                  height={30}
+                  className="h-full w-full object-cover"
+                  alt={item.title}
+                  src={item.imageUrl || ""}
+                />
+              )}
+              {!isImage && <ImageIcon className="text-neutral-400" size={30} />}
+            </div>
+            <div className="flex flex-col truncate text-neutral-700">
+              <span className="truncate text-lg font-bold">{item.title}</span>
+              <span
+                className={`w-max border-[2px] ${borderColorClass} rounded-full px-2 text-xs font-medium`}
+              >
+                {item.category?.name}
+              </span>
+            </div>
           </div>
-        </div>
 
-        {/* Table */}
-        <div className='flex justify-center gap-3 text-sm text-slate-600'>
-          <div className='flex flex-col'>
-            <span>Calories</span>
-            <span>Proteins</span>
-            <span>Carbohydrates</span>
-            <span>Fats</span>
-            <span>Fiber</span>
-          </div>
-          <div className='bg-slate-200 w-[3px]'></div>
-          <div className='flex flex-col'>
-            <span>{calories}</span>
-            <span>{proteins}</span>
-            <span>{carbohydrates}</span>
-            <span>{fats}</span>
-            <span>{fiber}</span>
-          </div>
-          <div className='bg-slate-200 w-[3px]'></div>
-          <div className='flex flex-col'>
-            <span>kcal</span>
-            <span>g</span>
-            <span>mg</span>
-            <span>g</span>
-            <span>g</span>
+          {/* Table */}
+          <div className="flex justify-center gap-3 text-sm text-neutral-600">
+            <div className="flex flex-col">
+              <span>Calories</span>
+              <span>Proteins</span>
+              <span>Carbohydrates</span>
+              <span>Fats</span>
+              <span>Fiber</span>
+            </div>
+            <div className="w-[3px] bg-slate-200"></div>
+            <div className="flex flex-col truncate">
+              <span className="truncate">
+                {item.mainNutrients?.[0]?.calories?.toFixed(1)}
+              </span>
+              <span className="truncate">
+                {item.mainNutrients?.[0]?.proteins?.toFixed(1)}
+              </span>
+              <span className="truncate">
+                {item.mainNutrients?.[0]?.carbohydrates?.toFixed(1)}
+              </span>
+              <span className="truncate">
+                {item.mainNutrients?.[0]?.fats?.toFixed(1)}
+              </span>
+              <span className="truncate">
+                {item.mainNutrients?.[0]?.fiber?.toFixed(1)}
+              </span>
+            </div>
+            <div className="w-[3px] bg-slate-200"></div>
+            <div className="flex flex-col">
+              <span>kcal</span>
+              <span>g</span>
+              <span>mg</span>
+              <span>g</span>
+              <span>g</span>
+            </div>
           </div>
         </div>
-      </div>
-    </Link>
+      </Link>
+    </motion.div>
   );
 };
 

@@ -1,22 +1,23 @@
-'use client';
+"use client";
 
-import { useCallback, useMemo } from 'react';
-import { Check, Plus } from 'lucide-react';
-import { MainNutrient, Mineral, TraceElement, Vitamin } from '@prisma/client';
+import { useCallback, useMemo } from "react";
+import { Check, Plus } from "lucide-react";
+import { MainNutrient, Mineral, TraceElement, Vitamin } from "@prisma/client";
 
 import {
   MealWithMealFoodWithFood,
   PreparedMeal,
   WholeFoodWithCategory,
-} from '@/types/types';
+} from "@/types/types";
 import {
   mainNutrientItems,
   mineralItems,
   traceElementItems,
   vitaminItems,
-} from '@/constants/nutrients';
-import IconBadge from '@/components/IconBadge';
-import { useCalculator } from '@/context/CalculatorContext';
+} from "@/constants/nutrients";
+import { useCalculator } from "@/context/CalculatorContext";
+
+import IconBadge from "@/components/IconBadge";
 
 type NutrientsArray = MainNutrient | Mineral | TraceElement | Vitamin;
 
@@ -28,7 +29,7 @@ interface ToggleMealButtonProps {
 const updateNutrientArray = (
   nutrientArray: NutrientsArray[],
   quantity: number,
-  nutrientList: string[]
+  nutrientList: string[],
 ): NutrientsArray[] => {
   return nutrientArray.map((nutrient) => {
     const updatedNutrient = { ...nutrient } as NutrientsArray & {
@@ -55,31 +56,31 @@ const ToggleMealButton = ({ mealItem, mealId }: ToggleMealButtonProps) => {
     const preparedMeal: PreparedMeal = {
       id: mealId,
       title: mealItem.title,
-      imageUrl: mealItem.imageUrl || '',
+      imageUrl: mealItem.imageUrl || "",
       items: mealItem.mealFoods.map((food) => {
         // calc the nutrients quantity based on the saved quantity coming from db
         const mainNutrients = updateNutrientArray(
           food.food.mainNutrients || [],
           food.quantity,
-          mainNutrientItems
+          mainNutrientItems,
         );
 
         const minerals = updateNutrientArray(
           food.food.minerals || [],
           food.quantity,
-          mineralItems
+          mineralItems,
         );
 
         const traceElements = updateNutrientArray(
           food.food.traceElements || [],
           food.quantity,
-          traceElementItems
+          traceElementItems,
         );
 
         const vitamins = updateNutrientArray(
           food.food.vitamins || [],
           food.quantity,
-          vitaminItems
+          vitaminItems,
         );
 
         return {
@@ -108,11 +109,11 @@ const ToggleMealButton = ({ mealItem, mealId }: ToggleMealButtonProps) => {
   ]);
 
   return (
-    <div onClick={handletoggleMeal} className='max-w-fit'>
+    <div onClick={handletoggleMeal} className="float-right max-w-fit">
       <IconBadge
         icon={isMealAdded ? Check : Plus}
-        size='sm'
-        className='cursor-pointer hover:bg-primary-200 transition'
+        size="sm"
+        className="cursor-pointer transition hover:bg-primary-200"
       />
     </div>
   );

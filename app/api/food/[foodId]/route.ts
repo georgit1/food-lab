@@ -1,11 +1,12 @@
-import { db } from '@/lib/db';
-import getCurrentUser from '@/utils/getCurrentUser';
-import { seperateNutrientData } from '@/lib/utils';
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
+
+import { db } from "@/lib/db";
+import getCurrentUser from "@/utils/getCurrentUser";
+import { seperateNutrientData } from "@/utils/convertUtils";
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { foodId: string } }
+  { params }: { params: { foodId: string } },
 ) {
   try {
     const currentUser = await getCurrentUser();
@@ -13,11 +14,11 @@ export async function PATCH(
     const values = await req.json();
 
     if (!currentUser?.id || !currentUser?.email) {
-      return new NextResponse('Unauthorized', { status: 401 });
+      return new NextResponse("Unauthorized", { status: 401 });
     }
 
     // only update imageUrl
-    if (Object.keys(values).length === 1 && 'imageUrl' in values) {
+    if (Object.keys(values).length === 1 && "imageUrl" in values) {
       const food = await db.food.update({
         where: {
           id: foodId,
@@ -89,23 +90,23 @@ export async function PATCH(
       update: vitaminsData,
     });
 
-    return NextResponse.json({ status: 200, message: 'Successfully updated' });
+    return NextResponse.json({ status: 200, message: "Successfully updated" });
   } catch (error) {
-    console.log('[FOOD_ID]', error);
-    return new NextResponse('Internal Error', { status: 500 });
+    console.log("[FOOD_ID]", error);
+    return new NextResponse("Internal Error", { status: 500 });
   }
 }
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { foodId: string } }
+  { params }: { params: { foodId: string } },
 ) {
   try {
     const currentUser = await getCurrentUser();
     const { foodId } = params;
 
     if (!currentUser?.id || !currentUser?.email) {
-      return new NextResponse('Unauthorized', { status: 401 });
+      return new NextResponse("Unauthorized", { status: 401 });
     }
 
     const food = await db.food.findUnique({
@@ -115,11 +116,11 @@ export async function DELETE(
     });
 
     if (!food) {
-      return new NextResponse('Food item not found', { status: 404 });
+      return new NextResponse("Food item not found", { status: 404 });
     }
 
     if (food.userId !== currentUser.id) {
-      return new NextResponse('Permission denied', { status: 403 });
+      return new NextResponse("Permission denied", { status: 403 });
     }
 
     const deletedFood = await db.food.delete({
@@ -130,7 +131,7 @@ export async function DELETE(
 
     return NextResponse.json(deletedFood);
   } catch (error) {
-    console.log('[FOOD_ID_DELETE]', error);
-    return new NextResponse('Internal Error', { status: 500 });
+    console.log("[FOOD_ID_DELETE]", error);
+    return new NextResponse("Internal Error", { status: 500 });
   }
 }

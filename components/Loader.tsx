@@ -15,15 +15,6 @@ const Loader = ({ twColor = 'neutral-50', className }: LoaderProps) => {
       <div
         className={`w-[4px] h-[4px] rounded-full animate-pulse bg-${twColor}`}
       ></div>
-      {/* {/* <div
-        className={`w-[4px] h-[4px] rounded-full animate-pulse bg-black`}
-      ></div> */}
-      {/* <div
-        className={`w-[4px] h-[4px] rounded-full animate-pulse bg-black`}
-      ></div>
-      <div
-        className={`w-[4px] h-[4px] rounded-full animate-pulse bg-black`}
-      ></div> */}
     </div>
   );
 };

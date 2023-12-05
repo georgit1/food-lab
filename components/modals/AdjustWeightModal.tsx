@@ -1,4 +1,8 @@
-import { useModal } from '@/hooks/useModalStore';
+import { ListRestart } from "lucide-react";
+
+import { Nutrient } from "@/types/types";
+import { useModal } from "@/hooks/useModalStore";
+import { useWeight } from "@/context/WeightContext";
 
 import {
   Dialog,
@@ -6,21 +10,17 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
-import WeightSlider from '@/app/(dashboard)/(routes)/compare/_components/WeightSlider';
-import { useWeight } from '@/context/WeightContext';
-import { Nutrient } from '@/types/types';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Button } from '../ui/button';
-import { ListRestart } from 'lucide-react';
+} from "@/components/ui/dialog";
+import WeightSlider from "@/app/(dashboard)/(routes)/compare/_components/WeightSlider";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Button } from "../ui/button";
 
 const AdjustWeightModal = () => {
   const { isOpen, onClose, type, data } = useModal();
   const { nutrientWeights, updateNutrientWeight, resetNutrientWeights } =
     useWeight();
-  // const { foodData, mealData } = data;
 
-  const isModalOpen = isOpen && type === 'adjustWeight';
+  const isModalOpen = isOpen && type === "adjustWeight";
 
   const handleSliderChange = (nutrient: string, weight: number) => {
     updateNutrientWeight(nutrient as Nutrient, weight);
@@ -28,222 +28,222 @@ const AdjustWeightModal = () => {
 
   return (
     <Dialog open={isModalOpen} onOpenChange={onClose}>
-      <DialogContent className='sm:max-w-md space-y-4'>
+      <DialogContent className="space-y-4 sm:max-w-md">
         <DialogHeader>
-          <div className='flex justify-between items-center'>
-            <div className='text-start'>
-              <DialogTitle className='text-primary-800'>
+          <div className="flex items-center justify-between">
+            <div className="text-start">
+              <DialogTitle className="text-primary-800">
                 Adjust Weights
               </DialogTitle>
-              <DialogDescription className='text-neutral-500'>
+              <DialogDescription className="text-neutral-500">
                 Fine-Tune Nutrient Distribution
               </DialogDescription>
             </div>
             <Button
               onClick={resetNutrientWeights}
-              className='p-2.5 rounded-md mr-5'
+              className="mr-5 rounded-md p-2.5"
             >
-              <ListRestart className='h-5 w-5' />
+              <ListRestart className="h-5 w-5" />
             </Button>
           </div>
         </DialogHeader>
-        <ScrollArea className='max-h-[450px] px-5'>
-          <div className='space-y-4'>
+        <ScrollArea className="max-h-[450px] px-5">
+          <div className="space-y-4">
             <WeightSlider
-              label='Calories'
+              label="Calories"
               value={nutrientWeights.calories}
-              onValueChange={(value) => handleSliderChange('calories', value)}
+              onValueChange={(value) => handleSliderChange("calories", value)}
             />
             <WeightSlider
-              label='Fats'
+              label="Fats"
               value={nutrientWeights.fats}
-              onValueChange={(value) => handleSliderChange('fats', value)}
+              onValueChange={(value) => handleSliderChange("fats", value)}
             />
             <WeightSlider
-              label='Saturated Fats'
+              label="Saturated Fats"
               value={nutrientWeights.saturated}
-              onValueChange={(value) => handleSliderChange('saturated', value)}
+              onValueChange={(value) => handleSliderChange("saturated", value)}
             />
             <WeightSlider
-              label='Unsaturated Fats'
-              value={nutrientWeights.unsaturated}
+              label="monounsaturated Fats"
+              value={nutrientWeights.monounsaturated}
               onValueChange={(value) =>
-                handleSliderChange('unsaturated', value)
+                handleSliderChange("monounsaturated", value)
               }
             />
             <WeightSlider
-              label='Polyunsaturated Fats'
+              label="Polyunsaturated Fats"
               value={nutrientWeights.polyunsaturated}
               onValueChange={(value) =>
-                handleSliderChange('polyunsaturated', value)
+                handleSliderChange("polyunsaturated", value)
               }
             />
             <WeightSlider
-              label='Proteins'
+              label="Proteins"
               value={nutrientWeights.proteins}
-              onValueChange={(value) => handleSliderChange('proteins', value)}
+              onValueChange={(value) => handleSliderChange("proteins", value)}
             />
             <WeightSlider
-              label='Carbohydrates'
+              label="Carbohydrates"
               value={nutrientWeights.carbohydrates}
               onValueChange={(value) =>
-                handleSliderChange('carbohydrates', value)
+                handleSliderChange("carbohydrates", value)
               }
             />
             <WeightSlider
-              label='Sugar'
+              label="Sugar"
               value={nutrientWeights.sugar}
-              onValueChange={(value) => handleSliderChange('sugar', value)}
+              onValueChange={(value) => handleSliderChange("sugar", value)}
             />
             <WeightSlider
-              label='Fiber'
+              label="Fiber"
               value={nutrientWeights.fiber}
-              onValueChange={(value) => handleSliderChange('fiber', value)}
+              onValueChange={(value) => handleSliderChange("fiber", value)}
             />
             <WeightSlider
-              label='Salt'
+              label="Salt"
               value={nutrientWeights.salt}
-              onValueChange={(value) => handleSliderChange('salt', value)}
+              onValueChange={(value) => handleSliderChange("salt", value)}
             />
             <WeightSlider
-              label='Water'
+              label="Water"
               value={nutrientWeights.water}
-              onValueChange={(value) => handleSliderChange('water', value)}
+              onValueChange={(value) => handleSliderChange("water", value)}
             />
             <WeightSlider
-              label='Calcium'
+              label="Calcium"
               value={nutrientWeights.calcium}
-              onValueChange={(value) => handleSliderChange('calcium', value)}
+              onValueChange={(value) => handleSliderChange("calcium", value)}
             />
             <WeightSlider
-              label='Chloride'
+              label="Chloride"
               value={nutrientWeights.chloride}
-              onValueChange={(value) => handleSliderChange('chloride', value)}
+              onValueChange={(value) => handleSliderChange("chloride", value)}
             />
             <WeightSlider
-              label='Potassium'
+              label="Potassium"
               value={nutrientWeights.potassium}
-              onValueChange={(value) => handleSliderChange('potassium', value)}
+              onValueChange={(value) => handleSliderChange("potassium", value)}
             />
             <WeightSlider
-              label='Magnesium'
+              label="Magnesium"
               value={nutrientWeights.magnesium}
-              onValueChange={(value) => handleSliderChange('magnesium', value)}
+              onValueChange={(value) => handleSliderChange("magnesium", value)}
             />
             <WeightSlider
-              label='Sodium'
+              label="Sodium"
               value={nutrientWeights.sodium}
-              onValueChange={(value) => handleSliderChange('sodium', value)}
+              onValueChange={(value) => handleSliderChange("sodium", value)}
             />
             <WeightSlider
-              label='Phosphorus'
+              label="Phosphorus"
               value={nutrientWeights.phosphorus}
-              onValueChange={(value) => handleSliderChange('phosphorus', value)}
+              onValueChange={(value) => handleSliderChange("phosphorus", value)}
             />
             <WeightSlider
-              label='Sulfur'
+              label="Sulfur"
               value={nutrientWeights.sulfur}
-              onValueChange={(value) => handleSliderChange('sulfur', value)}
+              onValueChange={(value) => handleSliderChange("sulfur", value)}
             />
             <WeightSlider
-              label='Copper'
+              label="Copper"
               value={nutrientWeights.copper}
-              onValueChange={(value) => handleSliderChange('copper', value)}
+              onValueChange={(value) => handleSliderChange("copper", value)}
             />
             <WeightSlider
-              label='Fluoride'
+              label="Fluoride"
               value={nutrientWeights.fluoride}
-              onValueChange={(value) => handleSliderChange('fluoride', value)}
+              onValueChange={(value) => handleSliderChange("fluoride", value)}
             />
             <WeightSlider
-              label='Iron'
+              label="Iron"
               value={nutrientWeights.iron}
-              onValueChange={(value) => handleSliderChange('iron', value)}
+              onValueChange={(value) => handleSliderChange("iron", value)}
             />
             <WeightSlider
-              label='Iodine'
+              label="Iodine"
               value={nutrientWeights.iodine}
-              onValueChange={(value) => handleSliderChange('iodine', value)}
+              onValueChange={(value) => handleSliderChange("iodine", value)}
             />
             <WeightSlider
-              label='Manganese'
+              label="Manganese"
               value={nutrientWeights.manganese}
-              onValueChange={(value) => handleSliderChange('manganese', value)}
+              onValueChange={(value) => handleSliderChange("manganese", value)}
             />
             <WeightSlider
-              label='Zinc'
+              label="Zinc"
               value={nutrientWeights.zinc}
-              onValueChange={(value) => handleSliderChange('zinc', value)}
+              onValueChange={(value) => handleSliderChange("zinc", value)}
             />
             <WeightSlider
-              label='Selenium'
+              label="Selenium"
               value={nutrientWeights.selenium}
-              onValueChange={(value) => handleSliderChange('selenium', value)}
+              onValueChange={(value) => handleSliderChange("selenium", value)}
             />
             <WeightSlider
-              label='Vitamin A'
+              label="Vitamin A"
               value={nutrientWeights.vitaminA}
-              onValueChange={(value) => handleSliderChange('vitaminA', value)}
+              onValueChange={(value) => handleSliderChange("vitaminA", value)}
             />
             <WeightSlider
-              label='Vitamin B1'
+              label="Vitamin B1"
               value={nutrientWeights.vitaminB1}
-              onValueChange={(value) => handleSliderChange('vitaminB1', value)}
+              onValueChange={(value) => handleSliderChange("vitaminB1", value)}
             />
             <WeightSlider
-              label='Vitamin B2'
+              label="Vitamin B2"
               value={nutrientWeights.vitaminB2}
-              onValueChange={(value) => handleSliderChange('vitaminB2', value)}
+              onValueChange={(value) => handleSliderChange("vitaminB2", value)}
             />
             <WeightSlider
-              label='Vitamin B3'
+              label="Vitamin B3"
               value={nutrientWeights.vitaminB3}
-              onValueChange={(value) => handleSliderChange('vitaminB3', value)}
+              onValueChange={(value) => handleSliderChange("vitaminB3", value)}
             />
             <WeightSlider
-              label='Vitamin B5'
+              label="Vitamin B5"
               value={nutrientWeights.vitaminB5}
-              onValueChange={(value) => handleSliderChange('vitaminB5', value)}
+              onValueChange={(value) => handleSliderChange("vitaminB5", value)}
             />
             <WeightSlider
-              label='Vitamin B6'
+              label="Vitamin B6"
               value={nutrientWeights.vitaminB6}
-              onValueChange={(value) => handleSliderChange('vitaminB6', value)}
+              onValueChange={(value) => handleSliderChange("vitaminB6", value)}
             />
             <WeightSlider
-              label='Vitamin B7'
+              label="Vitamin B7"
               value={nutrientWeights.vitaminB7}
-              onValueChange={(value) => handleSliderChange('vitaminB7', value)}
+              onValueChange={(value) => handleSliderChange("vitaminB7", value)}
             />
             <WeightSlider
-              label='Vitamin B9'
+              label="Vitamin B9"
               value={nutrientWeights.vitaminB9}
-              onValueChange={(value) => handleSliderChange('vitaminB9', value)}
+              onValueChange={(value) => handleSliderChange("vitaminB9", value)}
             />
             <WeightSlider
-              label='Vitamin B12'
+              label="Vitamin B12"
               value={nutrientWeights.vitaminB12}
-              onValueChange={(value) => handleSliderChange('vitaminB12', value)}
+              onValueChange={(value) => handleSliderChange("vitaminB12", value)}
             />
             <WeightSlider
-              label='Vitamin C'
+              label="Vitamin C"
               value={nutrientWeights.vitaminC}
-              onValueChange={(value) => handleSliderChange('vitaminC', value)}
+              onValueChange={(value) => handleSliderChange("vitaminC", value)}
             />
             <WeightSlider
-              label='Vitamin D'
+              label="Vitamin D"
               value={nutrientWeights.vitaminD}
-              onValueChange={(value) => handleSliderChange('vitaminD', value)}
+              onValueChange={(value) => handleSliderChange("vitaminD", value)}
             />
             <WeightSlider
-              label='Vitamin E'
+              label="Vitamin E"
               value={nutrientWeights.vitaminE}
-              onValueChange={(value) => handleSliderChange('vitaminE', value)}
+              onValueChange={(value) => handleSliderChange("vitaminE", value)}
             />
             <WeightSlider
-              label='Vitamin K'
+              label="Vitamin K"
               value={nutrientWeights.vitaminK}
-              onValueChange={(value) => handleSliderChange('vitaminK', value)}
+              onValueChange={(value) => handleSliderChange("vitaminK", value)}
             />
           </div>
         </ScrollArea>

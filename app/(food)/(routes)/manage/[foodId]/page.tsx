@@ -1,20 +1,21 @@
-import { db } from '@/lib/db';
-import { redirect } from 'next/navigation';
-import AddEditForm from './_components/AddEditForm';
-import getCurrentUser from '@/utils/getCurrentUser';
+import { redirect } from "next/navigation";
 
-// TODO - only admin can edit admin food
+import { db } from "@/lib/db";
+import getCurrentUser from "@/utils/getCurrentUser";
+
+import AddEditForm from "./_components/AddEditForm";
+
 const AddEditFoodPage = async ({ params }: { params: { foodId: string } }) => {
   const currentUser = await getCurrentUser();
   const { foodId } = params;
 
   if (!currentUser?.id || !currentUser?.email) {
-    return redirect('/');
+    return redirect("/");
   }
 
   const categories = await db.category.findMany({
     orderBy: {
-      name: 'asc',
+      name: "asc",
     },
   });
 
@@ -32,7 +33,7 @@ const AddEditFoodPage = async ({ params }: { params: { foodId: string } }) => {
   });
 
   if (!food) {
-    return redirect('/');
+    return redirect("/");
   }
 
   return (
@@ -43,6 +44,7 @@ const AddEditFoodPage = async ({ params }: { params: { foodId: string } }) => {
         label: category.name,
         value: category.id,
       }))}
+      currentUserId={currentUser.id}
     />
   );
 };

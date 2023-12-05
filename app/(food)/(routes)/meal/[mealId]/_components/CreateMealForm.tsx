@@ -1,14 +1,17 @@
-'use client';
+"use client";
 
-import * as z from 'zod';
-import axios from 'axios';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
-import { Meal } from '@prisma/client';
+import * as z from "zod";
+import axios from "axios";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { Meal } from "@prisma/client";
 
-import { Button } from '@/components/ui/button';
+import { useMeal } from "@/context/MealContext";
+import { ModalType, useModal } from "@/hooks/useModalStore";
+import { useCalculator } from "@/context/CalculatorContext";
+
 import {
   Form,
   FormControl,
@@ -16,12 +19,11 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import ImageForm from '@/components/ImageForm';
-import { Textarea } from '@/components/ui/textarea';
-import { useMeal } from '@/context/MealContext';
-import { ModalType, useModal } from '@/hooks/useModalStore';
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import ImageForm from "@/components/ImageForm";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 
 interface CreateMealProps {
   initialData: Meal;
@@ -29,14 +31,15 @@ interface CreateMealProps {
 }
 
 const formSchema = z.object({
-  title: z.string().min(1, { message: 'Title is required' }),
+  title: z.string().min(1, { message: "Title is required" }),
   description: z.string().nullable(),
 });
 
 const CreateMealForm = ({ initialData, mealId }: CreateMealProps) => {
-  const { mealEntries } = useMeal();
-  const { onOpen } = useModal();
   const router = useRouter();
+  const { onOpen } = useModal();
+  const { mealEntries } = useMeal();
+  const { clearInitialEntries } = useCalculator();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -47,18 +50,17 @@ const CreateMealForm = ({ initialData, mealId }: CreateMealProps) => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     if (mealEntries.length < 2)
-      return toast.error('at least two items required');
+      return toast.error("at least two items required");
 
     const data = { ...values, mealItems: mealEntries };
 
     try {
       await axios.patch(`/api/meal/${mealId}`, data);
-      toast.success('Meal updated');
-      // clearAll();
+      toast.success("Meal updated");
+      clearInitialEntries();
       router.refresh();
-      // router.back();
     } catch {
-      toast.error('Something went wrong');
+      toast.error("Something went wrong");
     }
   };
 
@@ -69,28 +71,28 @@ const CreateMealForm = ({ initialData, mealId }: CreateMealProps) => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-5'>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
         <ImageForm
           initialData={initialData}
           endpoint={`/api/meal/${initialData.id}`}
-          label='Meal'
+          label="Meal"
         />
         {/* Title */}
         <FormField
           control={form.control}
-          name='title'
+          name="title"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className='text-primary-600 font-semibold'>
+              <FormLabel className="font-semibold text-primary-600">
                 Title
               </FormLabel>
               <FormControl>
                 <Input
-                  type='string'
+                  type="string"
                   disabled={isSubmitting}
-                  placeholder='Enter title'
+                  placeholder="Enter title"
                   {...field}
-                  value={field.value || ''}
+                  value={field.value || ""}
                 />
               </FormControl>
               <FormMessage />
@@ -100,10 +102,10 @@ const CreateMealForm = ({ initialData, mealId }: CreateMealProps) => {
         {/* Description */}
         <FormField
           control={form.control}
-          name='description'
+          name="description"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className='text-primary-600 font-semibold'>
+              <FormLabel className="font-semibold text-primary-600">
                 Description (optional)
               </FormLabel>
               <FormControl>
@@ -111,7 +113,7 @@ const CreateMealForm = ({ initialData, mealId }: CreateMealProps) => {
                   disabled={isSubmitting}
                   placeholder="e.g. 'This meal contains...'"
                   {...field}
-                  value={field.value || ''}
+                  value={field.value || ""}
                 />
               </FormControl>
               <FormMessage />
@@ -120,16 +122,16 @@ const CreateMealForm = ({ initialData, mealId }: CreateMealProps) => {
         />
         <Button
           disabled={isSubmitting}
-          type='submit'
-          className='w-full md:ml-auto'
+          type="submit"
+          className="w-full md:ml-auto"
         >
           Save
         </Button>
         <Button
-          type='button'
-          className='w-full md:ml-auto text-red-700 border-red-700'
-          variant={'outline'}
-          onClick={(e) => onAction(e, 'deleteMeal')}
+          type="button"
+          className="w-full border-red-700 text-red-700 md:ml-auto"
+          variant={"outline"}
+          onClick={(e) => onAction(e, "deleteMeal")}
         >
           delete Meal
         </Button>

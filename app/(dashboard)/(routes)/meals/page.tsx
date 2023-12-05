@@ -16,6 +16,9 @@ const MealsPage = async ({}: MealsPageProps) => {
   const meals = await db.meal.findMany({
     where: {
       userId: currentUser?.id,
+      mealFoods: {
+        some: {},
+      },
     },
     include: {
       mealFoods: {

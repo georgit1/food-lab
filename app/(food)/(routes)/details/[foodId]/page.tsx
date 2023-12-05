@@ -1,23 +1,15 @@
-import { redirect } from 'next/navigation';
+import { Gender } from "@prisma/client";
+import { redirect } from "next/navigation";
 
-import PageHeader from '@/components/PageHeader';
-import FoodDetailsGrid from '../_components/FoodDetailsGrid';
-import { db } from '@/lib/db';
-import getCurrentUser from '@/utils/getCurrentUser';
-import { calculateNutrientRequirements } from '@/utils/calcPersonalNutrients';
-import { Gender } from '@prisma/client';
+import { db } from "@/lib/db";
+import getCurrentUser from "@/utils/getCurrentUser";
+import { calculateNutrientRequirements } from "@/utils/calcPersonalNutrients";
+
+import DetailsHeader from "../_components/DetailsHeader";
+import FoodDetailsGrid from "../_components/FoodDetailsGrid";
 
 const FoodDetailsPage = async ({ params }: { params: { foodId: string } }) => {
   const currentUser = await getCurrentUser();
-
-  // if (
-  //   !currentUser?.pal ||
-  //   !currentUser?.rmr ||
-  //   !currentUser?.age ||
-  //   !currentUser?.gender ||
-  //   !currentUser?.weight
-  // )
-  //   return redirect('/');
 
   const food = await db.food.findUnique({
     where: {
@@ -33,7 +25,7 @@ const FoodDetailsPage = async ({ params }: { params: { foodId: string } }) => {
   });
 
   if (!food) {
-    return redirect('/');
+    return redirect("/");
   }
 
   const requiredNutrients = calculateNutrientRequirements(
@@ -41,28 +33,19 @@ const FoodDetailsPage = async ({ params }: { params: { foodId: string } }) => {
     currentUser?.rmr as number,
     currentUser?.age as number,
     currentUser?.gender as Gender,
-    currentUser?.weight as number
+    currentUser?.weight as number,
   );
 
   return (
-    <div>
-      <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4'>
-        <PageHeader
-          header='Food Details'
-          subtext='full insight into the food per 100g'
-        />
+    <>
+      <DetailsHeader />
 
-        {/* TODO -back button maybe on navbar or remove completely */}
-        {/* <Button variant={'outline'} onClick={() => router.back()}>
-          Back
-        </Button> */}
-      </div>
       <FoodDetailsGrid
         foodData={food}
-        userId={currentUser?.id || ''}
+        currentUsersId={currentUser?.id || ""}
         requiredNutrients={requiredNutrients}
       />
-    </div>
+    </>
   );
 };
 

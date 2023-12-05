@@ -1,6 +1,7 @@
-import { db } from '@/lib/db';
-import getCurrentUser from '@/utils/getCurrentUser';
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
+
+import { db } from "@/lib/db";
+import getCurrentUser from "@/utils/getCurrentUser";
 
 export async function POST(req: Request) {
   try {
@@ -14,21 +15,20 @@ export async function POST(req: Request) {
     });
 
     if (!existingFood) {
-      return new NextResponse('Invalid ID', { status: 404 });
+      return new NextResponse("Invalid ID", { status: 404 });
     }
 
     const newFavorite = await db.favorite.create({
-      // TODO
       data: {
-        userId: currentUser?.id,
+        userId: currentUser?.id as string,
         foodId: foodId,
       },
     });
 
     return NextResponse.json(newFavorite);
   } catch (error) {
-    console.log('[FAVORITE_POST]', error);
-    return new NextResponse('Internal Error', { status: 500 });
+    console.log("[FAVORITE_POST]", error);
+    return new NextResponse("Internal Error", { status: 500 });
   }
 }
 
@@ -45,7 +45,7 @@ export async function DELETE(req: Request) {
     });
 
     if (!existingFood) {
-      return new NextResponse('Invalid ID', { status: 404 });
+      return new NextResponse("Invalid ID", { status: 404 });
     }
 
     await db.favorite.deleteMany({
@@ -55,9 +55,9 @@ export async function DELETE(req: Request) {
       },
     });
 
-    return new NextResponse('Favorite deleted successfully');
+    return new NextResponse("Favorite deleted successfully");
   } catch (error) {
-    console.log('[FAVORITE_DELETE]', error);
-    return new NextResponse('Internal Error', { status: 500 });
+    console.log("[FAVORITE_DELETE]", error);
+    return new NextResponse("Internal Error", { status: 500 });
   }
 }

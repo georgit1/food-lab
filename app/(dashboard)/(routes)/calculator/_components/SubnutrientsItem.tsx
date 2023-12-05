@@ -1,3 +1,5 @@
+import { Ref, useRef } from "react";
+
 import {
   MineralItemsType,
   TraceElementItemsType,
@@ -5,13 +7,13 @@ import {
   mineralItems,
   traceElementItems,
   vitaminItems,
-} from '@/constants/nutrients';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import NutrientsBarChart from './NutrientsBarChart';
-import NutrientsTable from './NutrientsTable';
-import { Separator } from '@/components/ui/separator';
-import { NutrientData } from '@/utils/calcPersonalNutrients';
+} from "@/constants/nutrients";
+import { NutrientData } from "@/utils/calcPersonalNutrients";
+
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import NutrientsBarChart from "./NutrientsBarChart";
+import NutrientsTable from "./NutrientsTable";
 
 interface NutrientIndex {
   [key: string]: number | null;
@@ -30,89 +32,104 @@ const SubnutrientsItem = ({
   vitamins,
   requiredNutrients,
 }: SubNutrientsItemProps) => {
+  // close tooltip (Attention) on scroll
+  const tooltipRef = useRef<HTMLDivElement>(null);
+
   const allMineralsUndefined = mineralItems.every(
-    (mineral) => minerals?.[mineral] === undefined
+    (mineral) => minerals?.[mineral] === undefined,
   );
   const allTraceElementsUndefined = traceElementItems.every(
-    (traceElement) => traceElements?.[traceElement] === undefined
+    (traceElement) => traceElements?.[traceElement] === undefined,
   );
   const allVitaminsUndefined = vitaminItems.every(
-    (vitamin) => vitamins?.[vitamin] === undefined
+    (vitamin) => vitamins?.[vitamin] === undefined,
   );
 
   return (
-    <div className='lg:col-span-2 min-h-[280px] bg-primary-50 rounded-md p-2 mb-6 overflow-hidden'>
-      <Tabs defaultValue='minerals'>
+    <div className="mb-6 min-h-[280px] overflow-hidden rounded-md bg-primary-50 p-2 lg:col-span-2">
+      <Tabs defaultValue="minerals">
         <TabsList>
-          <TabsTrigger value='minerals'>Minerals</TabsTrigger>
-          <TabsTrigger value='traceElements'>Trace Elements</TabsTrigger>
-          <TabsTrigger value='vitamins'>Vitamins</TabsTrigger>
+          <TabsTrigger value="minerals">Minerals</TabsTrigger>
+          <TabsTrigger value="traceElements">Trace Elements</TabsTrigger>
+          <TabsTrigger value="vitamins">Vitamins</TabsTrigger>
         </TabsList>
-        <TabsContent value='minerals'>
+        <TabsContent value="minerals">
           {!allMineralsUndefined ? (
-            <div className='flex flex-col-reverse lg:flex-row gap-4'>
-              <ScrollArea className='h-[300px] w-full lg:border-r-2 border-primary-100 pr-4'>
+            <div className="flex flex-col-reverse gap-4 lg:flex-row">
+              <ScrollArea
+                onScrollCapture={() => tooltipRef?.current?.remove()}
+                className="h-[300px] w-full border-primary-100 pr-4 lg:border-r-2"
+              >
                 <NutrientsTable
                   nutrients={minerals}
                   nutrientsItems={mineralItems}
                   requiredNutrients={requiredNutrients}
+                  ref={tooltipRef as Ref<HTMLDivElement>}
                 />
               </ScrollArea>
               <NutrientsBarChart
                 nutrients={minerals}
                 nutrientsItems={mineralItems}
-                targetUnit='mg'
+                targetUnit="mg"
                 requiredNutrients={requiredNutrients}
               />
             </div>
           ) : (
-            <p className='text-sm text-neutral-400 font-semibold text-center mt-16'>
+            <p className="mt-16 text-center text-sm font-semibold text-neutral-400">
               no data available
             </p>
           )}
         </TabsContent>
-        <TabsContent value='traceElements'>
+        <TabsContent value="traceElements">
           {!allTraceElementsUndefined ? (
-            <div className='flex flex-col-reverse lg:flex-row gap-4'>
-              <ScrollArea className='h-[300px] w-full lg:border-r-2 border-primary-100 pr-4'>
+            <div className="flex flex-col-reverse gap-4 lg:flex-row">
+              <ScrollArea
+                onScrollCapture={() => tooltipRef?.current?.remove()}
+                className="h-[300px] w-full border-primary-100 pr-4 lg:border-r-2"
+              >
                 <NutrientsTable
                   nutrients={traceElements}
                   nutrientsItems={traceElementItems}
                   requiredNutrients={requiredNutrients}
+                  ref={tooltipRef as Ref<HTMLDivElement>}
                 />
               </ScrollArea>
               <NutrientsBarChart
                 nutrients={traceElements}
                 nutrientsItems={traceElementItems}
-                targetUnit='mg'
+                targetUnit="mg"
                 requiredNutrients={requiredNutrients}
               />
             </div>
           ) : (
-            <p className='text-sm text-neutral-400 font-semibold text-center mt-16'>
+            <p className="mt-16 text-center text-sm font-semibold text-neutral-400">
               no data available
             </p>
           )}
         </TabsContent>
-        <TabsContent value='vitamins'>
+        <TabsContent value="vitamins">
           {!allVitaminsUndefined ? (
-            <div className='flex flex-col-reverse lg:flex-row gap-4'>
-              <ScrollArea className='h-[300px] w-full lg:border-r-2 border-primary-100 pr-4'>
+            <div className="flex flex-col-reverse gap-4 lg:flex-row">
+              <ScrollArea
+                onScrollCapture={() => tooltipRef?.current?.remove()}
+                className="h-[300px] w-full border-primary-100 pr-4 lg:border-r-2"
+              >
                 <NutrientsTable
                   nutrients={vitamins}
                   nutrientsItems={vitaminItems}
                   requiredNutrients={requiredNutrients}
+                  ref={tooltipRef as Ref<HTMLDivElement>}
                 />
               </ScrollArea>
               <NutrientsBarChart
                 nutrients={vitamins}
                 nutrientsItems={vitaminItems}
-                targetUnit='mg'
+                targetUnit="mg"
                 requiredNutrients={requiredNutrients}
               />
             </div>
           ) : (
-            <p className='text-sm text-neutral-400 font-semibold text-center mt-16'>
+            <p className="mt-16 text-center text-sm font-semibold text-neutral-400">
               no data available
             </p>
           )}

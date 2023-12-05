@@ -1,13 +1,14 @@
-'use client';
+"use client";
 
-import { Nutrient } from '@/types/types';
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState } from "react";
+
+import { Nutrient } from "@/types/types";
 
 const initialWeights = {
   calories: 100,
   fats: 100,
   saturated: 100,
-  unsaturated: 100,
+  monounsaturated: 100,
   polyunsaturated: 100,
   proteins: 100,
   carbohydrates: 100,
@@ -88,7 +89,7 @@ const useWeight = () => {
   const context = useContext(WeightContext);
 
   if (context === undefined)
-    throw new Error('WeigthContext was used outside of WeightProvider');
+    throw new Error("WeigthContext was used outside of WeightProvider");
   return context;
 };
 

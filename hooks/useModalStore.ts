@@ -1,31 +1,29 @@
 import {
   FoodEntry,
-  MealWithMealFoodWithFood,
+  FoodWithCategoryWithMain,
   WholeFoodWithCategory,
-} from '@/types/types';
-import { Category, Food, Meal, User } from '@prisma/client';
-import { create } from 'zustand';
+} from "@/types/types";
+import { create } from "zustand";
+import { Meal, User } from "@prisma/client";
 
 export type ModalType =
-  | 'createFood'
-  | 'editFood'
-  | 'deleteFood'
-  | 'createMeal'
-  | 'deleteMeal'
-  | 'favorites'
-  | 'calculateCalories'
-  | 'chooseFood'
-  | 'adjustWeight';
+  | "createFood"
+  | "editFood"
+  | "deleteFood"
+  | "createMeal"
+  | "deleteMeal"
+  | "favorites"
+  | "calculateCalories"
+  | "chooseFood"
+  | "adjustWeight";
 
-export type ModalUseCase = 'saveMeal' | 'meal';
+export type ModalUseCase = "initial" | "meal";
 
 interface ModalData {
   userData?: User;
   options?: { label: string; value: string }[];
-  favorites?: WholeFoodWithCategory[];
+  favorites?: FoodWithCategoryWithMain[];
   foodData?: WholeFoodWithCategory[] | FoodEntry[];
-  // foodData?: FoodEntry[];
-  // mealData?: MealWithMealFoodWithFood[];
   mealData?: Meal[];
   mealId?: string;
   title?: string;
@@ -40,7 +38,6 @@ interface ModalStore {
   data: ModalData;
   isOpen: boolean;
   onOpen: (type: ModalType, data?: ModalData, useCase?: ModalUseCase) => void;
-  // onOpen: (type: ModalType, data?: ModalData) => void;
   onClose: () => void;
 }
 
@@ -50,8 +47,6 @@ export const useModal = create<ModalStore>((set) => ({
   useCase: null,
   isOpen: false,
   onOpen: (type, data = {}, useCase) =>
-    // onOpen: (type, data = {}) =>
     set({ isOpen: true, type, data, useCase }),
-  // set({ isOpen: true, type, data }),
   onClose: () => set({ type: null, isOpen: false }),
 }));

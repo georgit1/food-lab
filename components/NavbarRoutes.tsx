@@ -1,31 +1,31 @@
-'use client';
+"use client";
 
-import { motion } from 'framer-motion';
-import { Category, Food } from '@prisma/client';
-import { signOut, useSession } from 'next-auth/react';
-import { usePathname, useRouter } from 'next/navigation';
-import { Heart, LogOutIcon, PlusCircle } from 'lucide-react';
+import { useEffect } from "react";
+import { signOut, useSession } from "next-auth/react";
+import { usePathname, useRouter } from "next/navigation";
+import { Heart, LogOutIcon, PlusCircle } from "lucide-react";
 
-import { Button } from '@/components/ui/button';
-import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
-import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
-import { Separator } from './ui/separator';
-import SearchInput from './SearchInput';
-import { useModal, ModalType } from '@/hooks/useModalStore';
-import { useSmallScreen } from '@/hooks/useSmallScreen';
+import { useModal, ModalType } from "@/hooks/useModalStore";
+import { useSmallScreen } from "@/hooks/useSmallScreen";
+import { useFavorites } from "@/context/FavoritesContext";
+import { FoodWithCategoryWithMain } from "@/types/types";
 
-type FoodWithCategory = Food & { category: Category };
+import SearchInput from "./SearchInput";
+import { Separator } from "./ui/separator";
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 
 interface NavbarRoutesProps {
   options?: { label: string; value: string }[];
-  favorites: FoodWithCategory[];
+  favorites: FoodWithCategoryWithMain[];
 }
 
 const getInitials = (fullName: string) => {
-  const nameParts = fullName.split(' ');
+  const nameParts = fullName.split(" ");
 
   if (nameParts.length === 0) {
-    return '';
+    return "";
   }
 
   if (nameParts.length === 1) {
@@ -43,23 +43,25 @@ const getInitials = (fullName: string) => {
 export const NavbarRoutes = ({ options, favorites }: NavbarRoutesProps) => {
   const currentUser = useSession().data?.user;
   const { onOpen } = useModal();
+  const { revalidateFavorites } = useFavorites();
+
   const pathname = usePathname();
   const router = useRouter();
 
-  const isHome = pathname === '/';
-  const isMeals = pathname === '/meals';
+  const isHome = pathname === "/";
+  const isMeals = pathname === "/meals";
 
   const isSmallScreen = useSmallScreen();
 
   const handleButtonClick = (e: React.MouseEvent) => {
     if (currentUser?.email) {
       if (isHome) {
-        onActionCreateFood(e, 'createFood');
+        onActionCreateFood(e, "createFood");
       } else if (isMeals) {
-        onActionCreateMeal(e, 'createMeal');
+        onActionCreateMeal(e, "createMeal");
       }
     } else {
-      router.push('/sign-in');
+      router.push("/sign-in");
     }
   };
 
@@ -78,97 +80,96 @@ export const NavbarRoutes = ({ options, favorites }: NavbarRoutesProps) => {
     onOpen(action, { favorites });
   };
 
+  useEffect(() => {
+    revalidateFavorites(favorites);
+
+    // only on init
+  }, []);
+
   return (
     <>
       {isHome && (
-        <div className='hidden md:block'>
+        <div className="hidden md:block">
           <SearchInput />
         </div>
       )}
 
-      <div className='flex gap-x-6 ml-auto'>
+      <div className="ml-auto flex gap-x-6">
         {/* Create Food/Meal */}
         {(isHome || isMeals) &&
           (isSmallScreen ? (
             <Button
-              className='fixed bottom-6 right-6 p-4 h-auto shadow-md rounded-full'
+              className="fixed bottom-6 right-6 h-auto rounded-full p-4 shadow-md"
               onClick={(e) => handleButtonClick(e)}
             >
-              <PlusCircle className='h-5 w-5' />
+              <PlusCircle className="h-5 w-5" />
             </Button>
           ) : (
             <Button
-              variant='outline'
-              className={`p-2.5 h-auto md:static rounded-full ${
-                isMeals ? 'md:rounded-md' : 'lg:rounded-md'
+              variant="outline"
+              className={`h-auto rounded-full p-2.5 md:static ${
+                isMeals ? "md:rounded-md" : "lg:rounded-md"
               }`}
               onClick={(e) => handleButtonClick(e)}
             >
-              <PlusCircle className='h-5 w-5' />
+              <PlusCircle className="h-4 w-4" />
               <span
-                className={`${!isMeals ? 'hidden lg:inline-block' : ''} ml-2`}
-              >{`${isHome ? 'Add Food' : isMeals ? 'Add Meal' : ''}`}</span>
+                className={`${!isMeals ? "hidden lg:inline-block" : ""} ml-2`}
+              >{`${isHome ? "Add Food" : isMeals ? "Create Meal" : ""}`}</span>
             </Button>
           ))}
 
-        {/* TODO - button bump - 580 */}
         {/* Favorites */}
         {currentUser?.email && (
           <Button
-            //         {/* <motion.button
-
-            // key={favorites.length}
-            // animate={{ scale: [1, 1.8, 1] }}
-            // transition={{ duration: 0.3 }}
-            variant='outline'
-            className='rounded-full p-2 bg-primary-50 hover:bg-primary-100 border border-primary-200 transition duration-300'
-            onClick={(e) => onActionFavorites(e, 'favorites')}
+            variant="outline"
+            className="rounded-full border border-primary-200 bg-primary-50 p-2 transition duration-300 hover:bg-primary-100"
+            onClick={(e) => onActionFavorites(e, "favorites")}
           >
-            <Heart className='text-primary-600' fill='#0284c7' />
+            <Heart className="text-primary-600" fill="#0284c7" />
           </Button>
         )}
-        {/* </motion.button> */}
 
         {/* Avatar */}
         <Popover>
           <PopoverTrigger>
-            <Avatar className='ring ring-primary-600 ring-offset-2'>
-              <AvatarImage src={currentUser?.image || '/profile.jpg'} />
+            <Avatar className="ring ring-primary-600 ring-offset-2">
+              <AvatarImage src={currentUser?.image || "/profile.jpg"} />
               <AvatarFallback>
-                {getInitials(currentUser?.name || '')}
+                {getInitials(currentUser?.name || "")}
               </AvatarFallback>
             </Avatar>
           </PopoverTrigger>
-          <PopoverContent className='mt-2 mr-2'>
+          <PopoverContent className="mr-2 mt-2">
             {currentUser?.email && (
               <>
-                <div className='px-2 py-1.5 text-sm font-normal'>
-                  <div className='flex flex-col space-y-1'>
-                    <p className='text-sm font-medium leading-none'>
+                <div className="px-2 py-1.5 text-sm font-normal">
+                  <div className="flex flex-col space-y-1">
+                    <p className="text-sm font-medium leading-none">
                       {currentUser?.name}
                     </p>
-                    <p className='text-xs leading-none text-muted-foreground'>
+                    <p className="text-xs leading-none text-muted-foreground">
                       {currentUser?.email}
                     </p>
                   </div>
                 </div>
                 <Separator
-                  aria-orientation='horizontal'
-                  className='-mx-1 my-1 h-px bg-muted'
+                  aria-orientation="horizontal"
+                  className="-mx-1 my-1 h-px bg-muted"
                 />
               </>
             )}
             <Button
-              variant='ghost'
+              variant="ghost"
               onClick={
                 currentUser?.email
                   ? () => signOut()
-                  : () => router.push('/sign-in')
+                  : () => router.push("/sign-in")
               }
-              className='w-full flex justify-start'
+              className="flex w-full justify-start"
             >
-              <LogOutIcon className='h-4 w-4 mr-2' />
-              {currentUser?.email ? 'Log out' : 'Log in'}
+              <LogOutIcon className="mr-2 h-4 w-4" />
+              {currentUser?.email ? "Log out" : "Log in"}
             </Button>
           </PopoverContent>
         </Popover>

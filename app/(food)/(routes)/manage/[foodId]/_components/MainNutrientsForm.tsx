@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Apple, ChevronDown, ChevronUp } from 'lucide-react';
+import { useState } from "react";
+import { Apple, ChevronDown, ChevronUp } from "lucide-react";
 
 import {
   FormControl,
@@ -9,10 +9,10 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import IconBadge from '@/components/IconBadge';
-import IconHeader from '@/components/IconHeader';
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import IconBadge from "@/components/IconBadge";
+import IconHeader from "@/components/IconHeader";
 
 interface GeneralFormProps {
   form: any;
@@ -28,30 +28,26 @@ const MainNutrientsForm = ({ form, isSubmitting }: GeneralFormProps) => {
 
   return (
     <div>
-      <IconHeader icon={Apple} title='Main Nutrients' size={'md'} />
+      <IconHeader icon={Apple} title="Main Nutrients" size={"md"} />
 
-      <div className='border bg-primary-50 rounded-md p-4 mt-5'>
-        <div className='grid sm:grid-cols-2 gap-2'>
+      <div className="mt-5 rounded-md border bg-primary-50 p-4">
+        <div className="grid gap-2 sm:grid-cols-2">
           <FormField
             control={form.control}
-            name='calories'
+            name="calories"
             render={({ field }) => (
-              <FormItem className='w-full'>
-                <FormLabel className='text-primary-800 font-semibold'>
+              <FormItem className="w-full">
+                <FormLabel className="font-semibold text-primary-800">
                   Calories
                 </FormLabel>
                 <FormControl>
                   <Input
-                    type='text'
-                    unit='g'
+                    type="text"
+                    unit="g"
                     disabled={isSubmitting}
-                    placeholder='Enter calories'
+                    placeholder="Enter calories"
                     {...field}
-                    value={field.value || ''}
-                    // onChange={(e) => {
-                    //   const parsedValue = parseFloat(e.target.value);
-                    //   field.onChange(parsedValue);
-                    // }}
+                    value={field.value || ""}
                   />
                 </FormControl>
                 <FormMessage />
@@ -60,20 +56,20 @@ const MainNutrientsForm = ({ form, isSubmitting }: GeneralFormProps) => {
           />
           <FormField
             control={form.control}
-            name='fats'
+            name="fats"
             render={({ field }) => (
-              <FormItem className='w-full'>
-                <FormLabel className='text-primary-800 font-semibold'>
+              <FormItem className="w-full">
+                <FormLabel className="font-semibold text-primary-800">
                   Fats
                 </FormLabel>
                 <FormControl>
                   <Input
-                    type='text'
-                    unit='g'
+                    type="text"
+                    unit="g"
                     disabled={isSubmitting}
-                    placeholder='Enter fats'
+                    placeholder="Enter fats"
                     {...field}
-                    value={field.value || ''}
+                    value={field.value || ""}
                   />
                 </FormControl>
                 <FormMessage />
@@ -82,20 +78,20 @@ const MainNutrientsForm = ({ form, isSubmitting }: GeneralFormProps) => {
           />
           <FormField
             control={form.control}
-            name='proteins'
+            name="proteins"
             render={({ field }) => (
-              <FormItem className='w-full'>
-                <FormLabel className='text-primary-800 font-semibold'>
+              <FormItem className="w-full">
+                <FormLabel className="font-semibold text-primary-800">
                   Proteins
                 </FormLabel>
                 <FormControl>
                   <Input
-                    type='text'
-                    unit='g'
+                    type="text"
+                    unit="g"
                     disabled={isSubmitting}
-                    placeholder='Enter proteins'
+                    placeholder="Enter proteins"
                     {...field}
-                    value={field.value || ''}
+                    value={field.value || ""}
                   />
                 </FormControl>
                 <FormMessage />
@@ -104,20 +100,20 @@ const MainNutrientsForm = ({ form, isSubmitting }: GeneralFormProps) => {
           />
           <FormField
             control={form.control}
-            name='carbohydrates'
+            name="carbohydrates"
             render={({ field }) => (
-              <FormItem className='w-full'>
-                <FormLabel className='text-primary-800 font-semibold'>
+              <FormItem className="w-full">
+                <FormLabel className="font-semibold text-primary-800">
                   Carbohydrates
                 </FormLabel>
                 <FormControl>
                   <Input
-                    type='text'
-                    unit='g'
+                    type="text"
+                    unit="g"
                     disabled={isSubmitting}
-                    placeholder='Enter carbohydrates'
+                    placeholder="Enter carbohydrates"
                     {...field}
-                    value={field.value || ''}
+                    value={field.value || ""}
                   />
                 </FormControl>
                 <FormMessage />
@@ -126,20 +122,20 @@ const MainNutrientsForm = ({ form, isSubmitting }: GeneralFormProps) => {
           />
           <FormField
             control={form.control}
-            name='sugar'
+            name="sugar"
             render={({ field }) => (
-              <FormItem className='w-full'>
-                <FormLabel className='text-primary-800 font-semibold'>
+              <FormItem className="w-full">
+                <FormLabel className="font-semibold text-primary-800">
                   Sugar
                 </FormLabel>
                 <FormControl>
                   <Input
-                    type='text'
-                    unit='g'
+                    type="text"
+                    unit="g"
                     disabled={isSubmitting}
-                    placeholder='Enter sugar'
+                    placeholder="Enter sugar"
                     {...field}
-                    value={field.value || ''}
+                    value={field.value || ""}
                   />
                 </FormControl>
                 <FormMessage />
@@ -148,20 +144,20 @@ const MainNutrientsForm = ({ form, isSubmitting }: GeneralFormProps) => {
           />
           <FormField
             control={form.control}
-            name='fiber'
+            name="fiber"
             render={({ field }) => (
-              <FormItem className='w-full'>
-                <FormLabel className='text-primary-800 font-semibold'>
+              <FormItem className="w-full">
+                <FormLabel className="font-semibold text-primary-800">
                   Fiber
                 </FormLabel>
                 <FormControl>
                   <Input
-                    type='text'
-                    unit='g'
+                    type="text"
+                    unit="g"
                     disabled={isSubmitting}
-                    placeholder='Enter fiber'
+                    placeholder="Enter fiber"
                     {...field}
-                    value={field.value || ''}
+                    value={field.value || ""}
                   />
                 </FormControl>
                 <FormMessage />
@@ -170,20 +166,20 @@ const MainNutrientsForm = ({ form, isSubmitting }: GeneralFormProps) => {
           />
           <FormField
             control={form.control}
-            name='salt'
+            name="salt"
             render={({ field }) => (
-              <FormItem className='w-full'>
-                <FormLabel className='text-primary-800 font-semibold'>
+              <FormItem className="w-full">
+                <FormLabel className="font-semibold text-primary-800">
                   Salt
                 </FormLabel>
                 <FormControl>
                   <Input
-                    type='text'
-                    unit='g'
+                    type="text"
+                    unit="g"
                     disabled={isSubmitting}
-                    placeholder='Enter salt'
+                    placeholder="Enter salt"
                     {...field}
-                    value={field.value || ''}
+                    value={field.value || ""}
                   />
                 </FormControl>
                 <FormMessage />
@@ -192,20 +188,20 @@ const MainNutrientsForm = ({ form, isSubmitting }: GeneralFormProps) => {
           />
           <FormField
             control={form.control}
-            name='water'
+            name="water"
             render={({ field }) => (
-              <FormItem className='w-full'>
-                <FormLabel className='text-primary-800 font-semibold'>
+              <FormItem className="w-full">
+                <FormLabel className="font-semibold text-primary-800">
                   Water
                 </FormLabel>
                 <FormControl>
                   <Input
-                    type='text'
-                    unit='g'
+                    type="text"
+                    unit="g"
                     disabled={isSubmitting}
-                    placeholder='Enter water'
+                    placeholder="Enter water"
                     {...field}
-                    value={field.value || ''}
+                    value={field.value || ""}
                   />
                 </FormControl>
                 <FormMessage />
@@ -217,20 +213,20 @@ const MainNutrientsForm = ({ form, isSubmitting }: GeneralFormProps) => {
             <>
               <FormField
                 control={form.control}
-                name='saturated'
+                name="saturated"
                 render={({ field }) => (
-                  <FormItem className='w-full'>
-                    <FormLabel className='text-primary-800 font-semibold'>
+                  <FormItem className="w-full">
+                    <FormLabel className="font-semibold text-primary-800">
                       Saturated Fats
                     </FormLabel>
                     <FormControl>
                       <Input
-                        type='text'
-                        unit='g'
+                        type="text"
+                        unit="g"
                         disabled={isSubmitting}
-                        placeholder='Enter saturated fats'
+                        placeholder="Enter saturated fats"
                         {...field}
-                        value={field.value || ''}
+                        value={field.value || ""}
                       />
                     </FormControl>
                     <FormMessage />
@@ -239,20 +235,20 @@ const MainNutrientsForm = ({ form, isSubmitting }: GeneralFormProps) => {
               />
               <FormField
                 control={form.control}
-                name='unsaturated'
+                name="monounsaturated"
                 render={({ field }) => (
-                  <FormItem className='w-full'>
-                    <FormLabel className='text-primary-800 font-semibold'>
-                      Unsaturated Fats
+                  <FormItem className="w-full">
+                    <FormLabel className="font-semibold text-primary-800">
+                      Monounsaturated Fats
                     </FormLabel>
                     <FormControl>
                       <Input
-                        type='text'
-                        unit='g'
+                        type="text"
+                        unit="g"
                         disabled={isSubmitting}
-                        placeholder='Enter unsaturated fats'
+                        placeholder="Enter monounsaturated fats"
                         {...field}
-                        value={field.value || ''}
+                        value={field.value || ""}
                       />
                     </FormControl>
                     <FormMessage />
@@ -261,20 +257,20 @@ const MainNutrientsForm = ({ form, isSubmitting }: GeneralFormProps) => {
               />
               <FormField
                 control={form.control}
-                name='polyunsaturated'
+                name="polyunsaturated"
                 render={({ field }) => (
-                  <FormItem className='w-full'>
-                    <FormLabel className='text-primary-800 font-semibold'>
+                  <FormItem className="w-full">
+                    <FormLabel className="font-semibold text-primary-800">
                       Polyunsaturated Fats
                     </FormLabel>
                     <FormControl>
                       <Input
-                        type='text'
-                        unit='g'
+                        type="text"
+                        unit="g"
                         disabled={isSubmitting}
-                        placeholder='Enter polyunsaturated fats'
+                        placeholder="Enter polyunsaturated fats"
                         {...field}
-                        value={field.value || ''}
+                        value={field.value || ""}
                       />
                     </FormControl>
                     <FormMessage />
@@ -286,16 +282,16 @@ const MainNutrientsForm = ({ form, isSubmitting }: GeneralFormProps) => {
         </div>
 
         {/* Uncollapse details */}
-        <div className='flex col-span-2 mt-4'>
-          <div className='flex flex-col gap-1 content-center mx-auto'>
-            <span className='mx-auto text-xs text-primary-600 font-semibold'>
-              {showDetails ? 'close' : 'more details'}
+        <div className="col-span-2 mt-4 flex">
+          <div className="mx-auto flex flex-col content-center gap-1">
+            <span className="mx-auto text-xs font-semibold text-primary-600">
+              {showDetails ? "close" : "more details"}
             </span>
-            <span className='mx-auto' onClick={toggleShowDetails}>
+            <span className="mx-auto" onClick={toggleShowDetails}>
               <IconBadge
                 icon={showDetails ? ChevronUp : ChevronDown}
-                size='sm'
-                className='cursor-pointer'
+                size="sm"
+                className="cursor-pointer"
               />
             </span>
           </div>

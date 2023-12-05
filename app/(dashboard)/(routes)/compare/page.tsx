@@ -1,33 +1,30 @@
-import { redirect } from 'next/navigation';
+import { Gender } from "@prisma/client";
 
-import SplitScreen from './_components/SplitScreen';
-import getCurrentUser from '@/utils/getCurrentUser';
-import { getFavorites } from '@/actions/get-favorites';
-import { db } from '@/lib/db';
-import CompareHeader from './_components/CompareHeader';
-import { calculateNutrientRequirements } from '@/utils/calcPersonalNutrients';
-import { Gender } from '@prisma/client';
+import { db } from "@/lib/db";
+import getCurrentUser from "@/utils/getCurrentUser";
+import { calculateNutrientRequirements } from "@/utils/calcPersonalNutrients";
+import { getFavorites } from "@/actions/get-favorites";
+
+import SplitScreen from "./_components/SplitScreen";
+import CompareHeader from "./_components/CompareHeader";
 
 const ComparePage = async () => {
   const currentUser = await getCurrentUser();
 
-  // TODO - compare page should be accessable for non logged in user
-  // if (
-  //   !currentUser?.pal ||
-  //   !currentUser?.rmr ||
-  //   !currentUser?.age ||
-  //   !currentUser?.gender ||
-  //   !currentUser?.weight
-  // )
-  //   return redirect('/');
-
-  const favorites = await getFavorites(currentUser?.id || '');
+  const favorites = await getFavorites(currentUser?.id || "");
 
   const food = await db.food.findMany({
     where: {
       OR: [{ userId: currentUser?.id }, { isCreator: true }],
+      mainNutrients: {
+        some: {
+          calories: {
+            gt: 0,
+          },
+        },
+      },
     },
-    take: 10,
+    take: 5,
     include: {
       category: true,
       mainNutrients: true,
@@ -42,11 +39,11 @@ const ComparePage = async () => {
     currentUser?.rmr as number,
     currentUser?.age as number,
     currentUser?.gender as Gender,
-    currentUser?.weight as number
+    currentUser?.weight as number,
   );
 
   return (
-    <div className='-mx-8'>
+    <div className="-mx-8">
       <CompareHeader />
 
       <SplitScreen

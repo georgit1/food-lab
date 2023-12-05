@@ -1,19 +1,18 @@
-'use client';
+"use client";
 
-import { MainNutrient, Mineral, TraceElement, Vitamin } from '@prisma/client';
-
+import { MainNutrient, Mineral, TraceElement, Vitamin } from "@prisma/client";
 import {
   Bar,
   BarChart,
   Tooltip,
-  Legend,
   ResponsiveContainer,
   XAxis,
   YAxis,
   CartesianGrid,
-} from 'recharts';
-import { convertValueToTargetUnit } from '@/lib/utils';
-import { NutrientData } from '@/utils/calcPersonalNutrients';
+} from "recharts";
+
+import { NutrientData } from "@/utils/calcPersonalNutrients";
+import { convertValueToTargetUnit } from "@/utils/convertUtils";
 
 interface NutrientsBarChartProps {
   nutrients: MainNutrient | Mineral | TraceElement | Vitamin;
@@ -35,26 +34,24 @@ interface CustomTooltipProps {
 const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
   if (active && payload && payload.length) {
     return (
-      <div className='bg-white border border-neutral-300 rounded p-2'>
+      <div className="rounded border border-neutral-300 bg-white p-2">
         {payload[0]?.payload?.requiredValue ? (
           <>
-            {' '}
-            <p className='text-sm font-semibold'>{label}:</p>
-            <p className='text-xs font-semibold'>{`actual: ${payload[0].payload.value}${payload[0].payload.unit}`}</p>
-            <p className='text-xs font-semibold'>{`required: ${parseFloat(
+            <p className="text-sm font-semibold">{label}:</p>
+            <p className="text-xs font-semibold">{`actual: ${payload[0].payload.value}${payload[0].payload.unit}`}</p>
+            <p className="text-xs font-semibold">{`required: ${parseFloat(
               // @ts-ignore
-              payload[0]?.payload?.requiredValue
+              payload[0]?.payload?.requiredValue,
             ).toFixed(1)}${payload[0].payload.unit}`}</p>
           </>
         ) : (
-          <p className='text-xs font-semibold'>{`${label}: ${payload[0].payload.value}${payload[0].payload.unit}`}</p>
+          <p className="text-xs font-semibold">{`${label}: ${payload[0].payload.value}${payload[0].payload.unit}`}</p>
         )}
       </div>
     );
   }
 };
 
-// TODO - Gradient
 const NutrientsBarChart = ({
   nutrients,
   nutrientsItems,
@@ -64,7 +61,7 @@ const NutrientsBarChart = ({
   const data = nutrientsItems.map((nutrient) => {
     // capitalize + add space between lower and uppercase letters
     const nutrientLabel = nutrient
-      .replace(/([a-z])([A-Z])/g, '$1 $2')
+      .replace(/([a-z])([A-Z])/g, "$1 $2")
       .replace(/^./, (str) => str.toUpperCase());
 
     if (nutrient in nutrients) {
@@ -78,12 +75,12 @@ const NutrientsBarChart = ({
           ] as unknown as number)
         : null;
 
-      const nutrientUnit = (nutrients as any)[nutrient + 'Unit'];
+      const nutrientUnit = (nutrients as any)[nutrient + "Unit"];
 
       const convertedValue = convertValueToTargetUnit(
         value,
         nutrientUnit,
-        targetUnit
+        targetUnit,
       );
 
       return {
@@ -104,7 +101,7 @@ const NutrientsBarChart = ({
   const filteredData = data.filter((item) => Boolean(item.value));
 
   return (
-    <ResponsiveContainer width='100%' height={250}>
+    <ResponsiveContainer width="100%" height={250} className="-ml-4  sm:mx-0">
       <BarChart
         width={500}
         height={300}
@@ -113,15 +110,25 @@ const NutrientsBarChart = ({
           top: 5,
           right: 0,
           left: 0,
-          bottom: 70,
+          bottom: 80,
         }}
       >
-        <CartesianGrid strokeDasharray='3 3' />
-        <XAxis dataKey='name' angle={-45} textAnchor='end' />
+        <defs>
+          <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="5%" stopColor="#0284c7" stopOpacity={1} />
+            <stop offset="95%" stopColor="#0284c7" stopOpacity={0.25} />
+          </linearGradient>
+        </defs>
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="name" angle={-45} textAnchor="end" />
         <Tooltip content={<CustomTooltip />} />
         <YAxis />
-        {/* <Legend /> */}
-        <Bar dataKey='convertedValue' barSize={10} fill='#0284c7' radius={3} />
+        <Bar
+          dataKey="convertedValue"
+          barSize={10}
+          fill="url(#colorUv)"
+          radius={3}
+        />
       </BarChart>
     </ResponsiveContainer>
   );

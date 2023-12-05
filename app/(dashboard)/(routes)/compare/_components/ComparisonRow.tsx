@@ -16,7 +16,7 @@ const ComparisonRow = ({
 
   return (
     <div className='flex justify-center items-center gap-1 my-1 px-4'>
-      <span className='min-w-[36px] text-primary-800 text-sm font-semibold'>
+      <span className='w-32 text-primary-800 text-sm text-right font-semibold truncate'>
         {leftValue?.toFixed(1)}
       </span>
       <div className='flex items-center gap-2 whitespace-nowrap overflow-x-hidden'>
@@ -45,7 +45,7 @@ const ComparisonRow = ({
         </span>
       </div>
 
-      <span className='min-w-[40px] text-left text-primary-800 text-sm font-semibold'>
+      <span className='w-32 text-left text-primary-800 text-sm font-semibold truncate'>
         {rightValue?.toFixed(1)}
       </span>
     </div>

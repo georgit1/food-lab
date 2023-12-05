@@ -1,5 +1,5 @@
-import { parseDecimal } from '@/lib/utils';
-import { NutrientData } from './calcPersonalNutrients';
+import { parseDecimal } from "./convertUtils";
+import { NutrientData } from "./calcPersonalNutrients";
 
 export type NutrientValues = {
   [key: string]: number;
@@ -9,29 +9,19 @@ type NutrientWeights = {
   [key: string]: number;
 };
 
-interface NutrientNeeds {
-  [nutrient: string]: number;
-}
-
-// type NutrientCalculationResult = {
-//   normalizedNutrients: NutrientValues;
-//   totalScore: number;
-// };
-
 export const calculateNutrientScore = (
   nutrientValues: NutrientValues,
-  nutrientWeights: NutrientWeights
+  nutrientWeights: NutrientWeights,
 ) => {
   const totalWeight = Object.values(nutrientWeights).reduce(
     (acc, weight) => acc + weight,
-    0
+    0,
   );
 
   // Normalize each nutrient value based on the sum of weights
   const normalizedNutrients: NutrientValues = {};
   Object.entries(nutrientValues).forEach(([nutrient, value]) => {
     const weight = nutrientWeights[nutrient];
-    // normalizedNutrients[nutrient] = (value * weight) / totalWeight;
     normalizedNutrients[nutrient] = weight / totalWeight;
   });
 
@@ -40,17 +30,16 @@ export const calculateNutrientScore = (
       const nutrientValue = nutrientValues[nutrient];
       return acc + nutrientValue * normalizedValue;
     },
-    0
+    0,
   );
 
-  // return { normalizedNutrients, totalScore };
   return totalScore || 0;
 };
 
 // Function to fill missing nutrient values with zeros
 const fillMissingNutrients = (
   nutrientValues: NutrientValues,
-  allNutrients: string[]
+  allNutrients: string[],
 ): NutrientValues => {
   return allNutrients.reduce((values, nutrient) => {
     values[nutrient] = nutrientValues[nutrient] || 0;
@@ -61,7 +50,7 @@ const fillMissingNutrients = (
 // Function to calculate cosine similarity
 export const calculateCosineSimilarity = (
   nutrientValues1: NutrientValues,
-  nutrientValues2: NutrientValues
+  nutrientValues2: NutrientValues,
 ): number => {
   // Ensure both sets of nutrient values have the same nutrients
   const allNutrients = [
@@ -74,33 +63,33 @@ export const calculateCosineSimilarity = (
   // Fill in missing nutrient values with zeros
   const filledNutrientValues1 = fillMissingNutrients(
     nutrientValues1,
-    allNutrients
+    allNutrients,
   );
   const filledNutrientValues2 = fillMissingNutrients(
     nutrientValues2,
-    allNutrients
+    allNutrients,
   );
 
   // Calculate dot product
   const dotProduct = allNutrients.reduce(
     (sum, nutrient) =>
       sum + filledNutrientValues1[nutrient] * filledNutrientValues2[nutrient],
-    0
+    0,
   );
 
   // Calculate magnitudes
   const magnitude1 = Math.sqrt(
     allNutrients.reduce(
       (sum, nutrient) => sum + filledNutrientValues1[nutrient] ** 2,
-      0
-    )
+      0,
+    ),
   );
 
   const magnitude2 = Math.sqrt(
     allNutrients.reduce(
       (sum, nutrient) => sum + filledNutrientValues2[nutrient] ** 2,
-      0
-    )
+      0,
+    ),
   );
 
   // Calculate cosine similarity
@@ -112,7 +101,7 @@ export const calculateCosineSimilarity = (
 export const calculateHealthRating = (
   nutrientValues: NutrientValues,
   nutrientNeeds: NutrientData,
-  nutrientWeights: NutrientWeights
+  nutrientWeights: NutrientWeights,
 ): number => {
   const allNutrients = Object.keys(nutrientValues);
 
@@ -121,9 +110,7 @@ export const calculateHealthRating = (
     const need = parseDecimal(nutrientNeeds[nutrient] || 1);
     const weight = nutrientWeights[nutrient] || 1;
 
-    // Calculate health rating for each nutrient
-    // const nutrientScore = (value / need) * weight;
-    const nutrientScore = value / (need * weight);
+    const nutrientScore = (value / need) * (weight / 100);
 
     return sum + nutrientScore;
   }, 0);
@@ -137,25 +124,25 @@ interface Food {
 
 export const sumCommonNutrientValues = (
   foodLeft: Food,
-  foodRight: Food
+  foodRight: Food,
 ): number[] => {
   // Get a list of common nutrients from both foods
   const commonNutrients = Object.keys(foodLeft).filter(
     (nutrient) =>
       foodRight.hasOwnProperty(nutrient) &&
       foodLeft[nutrient] != null &&
-      foodRight[nutrient] != null
+      foodRight[nutrient] != null,
   );
 
   // Sum common nutrients for foodLeft and foodRight
   const totalSumLeft = commonNutrients.reduce(
     (sum, nutrient) => sum + (foodLeft[nutrient] as number),
-    0
+    0,
   );
 
   const totalSumRight = commonNutrients.reduce(
     (sum, nutrient) => sum + (foodRight[nutrient] as number),
-    0
+    0,
   );
 
   return [totalSumLeft, totalSumRight];

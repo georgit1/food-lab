@@ -1,26 +1,35 @@
-'use client';
+"use client";
 
-import { createContext, useContext, useState } from 'react';
-import { MainNutrient, Mineral, TraceElement, Vitamin } from '@prisma/client';
+import { createContext, useContext, useState } from "react";
+import { MainNutrient, Mineral, TraceElement, Vitamin } from "@prisma/client";
 
 import {
   WholeFoodWithCategory,
   WholeFoodWithCategoryWithQuantity,
-} from '@/types/types';
+} from "@/types/types";
 import {
   mainNutrientItems,
   mineralItems,
   traceElementItems,
   vitaminItems,
-} from '../constants/nutrients';
+} from "../constants/nutrients";
 
 export type SubNutrient = {
   [key: string]: number;
 };
 
+type NutrientsObject = MainNutrient | Mineral | TraceElement | Vitamin;
+
+type NutrientsObjectWithIndex = NutrientsObject & {
+  [key: string]: number | undefined;
+};
+
 const initialValue: {
-  mealEntries: WholeFoodWithCategory[];
-  addMealEntry: (foodItem: WholeFoodWithCategory) => void;
+  mealEntries: WholeFoodWithCategoryWithQuantity[];
+  addMealEntry: (
+    foodItem: WholeFoodWithCategoryWithQuantity,
+    quantity?: number,
+  ) => void;
   deleteMealEntry: (foodId: string) => void;
   updateMealEntry: (foodId: string, quntity: number) => void;
   originalValues: Record<string, WholeFoodWithCategory>;
@@ -39,21 +48,25 @@ const initialValue: {
 const MealContext = createContext(initialValue);
 
 const MealProvider = ({ children }: { children: React.ReactNode }) => {
-  const [mealEntries, setMealEntries] = useState<WholeFoodWithCategory[]>([]);
-  // const [mealIds, setMealIds] = useState<string[]>([]);
+  const [mealEntries, setMealEntries] = useState<
+    WholeFoodWithCategoryWithQuantity[]
+  >([]);
   const [originalValues, setOriginalValues] = useState<
     Record<string, WholeFoodWithCategory>
   >({});
 
   const missingNutrients: string[] = [];
 
-  const addMealEntry = (foodItem: WholeFoodWithCategory) => {
-    // const preparedFoodItem = { ...foodItem, quantity: 100 };
+  const addMealEntry = (
+    foodItem: WholeFoodWithCategoryWithQuantity,
+    quantity: number = 100,
+  ) => {
+    const preparedFoodItem = { ...foodItem, quantity };
 
-    setMealEntries((prevFoodItem) => [...prevFoodItem, foodItem]);
+    setMealEntries((prevFoodItem) => [...prevFoodItem, preparedFoodItem]);
     setOriginalValues((prevValues) => ({
       ...prevValues,
-      [foodItem.id]: { ...foodItem },
+      [foodItem.id]: { ...preparedFoodItem },
     }));
   };
 
@@ -68,36 +81,11 @@ const MealProvider = ({ children }: { children: React.ReactNode }) => {
     });
   };
 
-  // const updateNutrientArray = (
-  //   nutrientArray: SubNutrient[],
-  //   quantity: number,
-  //   originalValues: SubNutrient,
-  //   nutrientList: string[]
-  // ): SubNutrient[] => {
-  //   return nutrientArray.map((nutrient) => {
-  //     const updatedNutrient: SubNutrient = { ...nutrient };
-  //     nutrientList.forEach((item) => {
-  //       console.log(item, originalValues);
-  //       if (updatedNutrient[item] !== undefined) {
-  //         const baseValue = originalValues[item] || 0;
-  //         updatedNutrient[item] = (baseValue / 100) * quantity;
-  //       }
-  //     });
-  //     return updatedNutrient;
-  //   });
-  // };
-
-  type NutrientsObject = MainNutrient | Mineral | TraceElement | Vitamin;
-
-  type NutrientsObjectWithIndex = NutrientsObject & {
-    [key: string]: number | undefined;
-  };
-
   const updateNutrientArray = (
     nutrientArray: NutrientsObject[],
     quantity: number,
     originalValues: NutrientsObjectWithIndex,
-    nutrientList: string[]
+    nutrientList: string[],
   ): NutrientsObject[] => {
     return nutrientArray.map((nutrient) => {
       const updatedNutrient = { ...nutrient } as NutrientsObjectWithIndex;
@@ -112,62 +100,23 @@ const MealProvider = ({ children }: { children: React.ReactNode }) => {
     });
   };
 
-  // const updateMealEntry = (foodId: string, quantity: number) => {
-  //   setMealEntries((prevFoodEntries) =>
-  //     prevFoodEntries.map((entry) => {
-  //       if (entry.id === foodId) {
-  //         // add quantity property on change - default value 100
-  //         entry.quantity = quantity;
-  //         entry.mainNutrients = updateNutrientArray(
-  //           entry.mainNutrients,
-  //           quantity,
-  //           originalValues[foodId]?.mainNutrients?.[0],
-  //           mainNutrientItems
-  //         );
-  //         entry.minerals = updateNutrientArray(
-  //           entry.minerals,
-  //           quantity,
-  //           originalValues[foodId]?.minerals?.[0] || {},
-  //           mineralItems
-  //         );
-  //         entry.vitamins = updateNutrientArray(
-  //           entry.vitamins,
-  //           quantity,
-  //           originalValues[foodId]?.vitamins?.[0] || {},
-  //           vitaminItems
-  //         );
-  //         entry.traceElements = updateNutrientArray(
-  //           entry.traceElements,
-  //           quantity,
-  //           originalValues[foodId]?.traceElements?.[0] || {},
-  //           traceElementItems
-  //         );
-  //       }
-  //       return entry;
-  //     })
-  //   );
-  // };
-
   const updateMealEntry = (foodId: string, quantity: number) => {
     setMealEntries((prevFoodEntries) =>
       prevFoodEntries.map((entry) => {
         if (entry.id === foodId) {
-          // add quantity property on change - default value 100
-          // entry.quantity = quantity;
-
           const mainNutrients = updateNutrientArray(
             entry.mainNutrients || [],
             quantity,
             originalValues[foodId]
               ?.mainNutrients?.[0] as NutrientsObjectWithIndex,
-            mainNutrientItems
+            mainNutrientItems,
           );
 
           const minerals = updateNutrientArray(
             entry.minerals || [],
             quantity,
             originalValues[foodId]?.minerals?.[0] as NutrientsObjectWithIndex,
-            mineralItems
+            mineralItems,
           );
 
           const traceElements = updateNutrientArray(
@@ -175,14 +124,14 @@ const MealProvider = ({ children }: { children: React.ReactNode }) => {
             quantity,
             originalValues[foodId]
               ?.traceElements?.[0] as NutrientsObjectWithIndex,
-            traceElementItems
+            traceElementItems,
           );
 
           const vitamins = updateNutrientArray(
             entry.vitamins || [],
             quantity,
             originalValues[foodId]?.vitamins?.[0] as NutrientsObjectWithIndex,
-            vitaminItems
+            vitaminItems,
           );
 
           return {
@@ -196,7 +145,7 @@ const MealProvider = ({ children }: { children: React.ReactNode }) => {
         }
 
         return entry;
-      })
+      }),
     );
   };
 
@@ -271,7 +220,7 @@ const MealProvider = ({ children }: { children: React.ReactNode }) => {
 const useMeal = () => {
   const context = useContext(MealContext);
   if (context === undefined)
-    throw new Error('MealContext was used outside of MealProvider');
+    throw new Error("MealContext was used outside of MealProvider");
   return context;
 };
 

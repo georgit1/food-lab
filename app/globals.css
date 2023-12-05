@@ -8,6 +8,22 @@ body,
   height: 100%;
 }
 
+* {
+  scrollbar-width: thin;
+}
+
+*::-webkit-scrollbar {
+  @apply h-1 w-2 bg-transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  @apply rounded-full bg-neutral-200;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  @apply bg-neutral-300;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -72,13 +88,6 @@ body,
   }
 }
 
-.progress-ring__circle {
-  stroke-dasharray: 400, 400;
-  transition: stroke-dashoffset 0.35s;
-  transform: rotate(-90deg);
-  transform-origin: 50% 50%;
-}
-
 @layer base {
   * {
     @apply border-border;
@@ -88,4 +97,4 @@ body,
   }
 }
 
-@import '~@uploadthing/react/styles.css';
+@import "~@uploadthing/react/styles.css";

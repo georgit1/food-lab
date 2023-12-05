@@ -1,12 +1,13 @@
-'use client';
+"use client";
 
-import { User } from '@prisma/client';
-import { Bike, CircleSlash2, Equal, X } from 'lucide-react';
+import { User } from "@prisma/client";
+import { Bike, CircleSlash2, Equal, X } from "lucide-react";
 
-import NumberCard from './NumberCard';
-import BiometricDisplay from './BiometricDisplay';
-import { Separator } from '@/components/ui/separator';
-import { ModalType, useModal } from '@/hooks/useModalStore';
+import { ModalType, useModal } from "@/hooks/useModalStore";
+
+import NumberCard from "./NumberCard";
+import BiometricDisplay from "./BiometricDisplay";
+import { Separator } from "@/components/ui/separator";
 
 interface DataInsightProps {
   userData: User;
@@ -26,48 +27,48 @@ const DataInsight = ({ userData }: DataInsightProps) => {
   };
 
   return (
-    <div className='flex flex-col gap-8 bg-primary-50 rounded-md p-6 lg:pt-24 xl:p-20'>
+    <div className="flex flex-col gap-8 rounded-md bg-primary-50 p-6 lg:pt-24 xl:p-20">
       {/* Equation */}
-      <div className='flex items-center justify-center gap-1 sm:gap-3 lg:gap-1 xl:gap-3'>
+      <div className="flex items-center justify-center gap-1 sm:gap-3 lg:gap-1 xl:gap-3">
         <NumberCard
-          title='RMR'
-          value={parseFloat(userData?.rmr?.toFixed(1) || '0')}
-          unit='kcal'
+          title="RMR"
+          value={parseFloat(userData?.rmr?.toFixed(1) || "0")}
+          unit="kcal"
         />
-        <X className='text-neutral-400' />
+        <X className="text-neutral-400" />
         <NumberCard
-          title='PAL'
-          value={parseFloat(userData?.pal?.toFixed(2) || '0')}
-          unit='PAL'
+          title="PAL"
+          value={parseFloat(userData?.pal?.toFixed(2) || "0")}
+          unit="PAL"
           icon={CircleSlash2}
         />
-        <Equal className='text-neutral-400' />
+        <Equal className="text-neutral-400" />
         <NumberCard
-          title='AMR'
+          title="AMR"
           value={parseFloat(amr.toFixed(1))}
-          unit='kcal'
-          variant='primary'
+          unit="kcal"
+          variant="primary"
         />
       </div>
 
       {/* Personal data */}
-      <div className='flex justify-center items-center gap-6'>
-        <BiometricDisplay value={userData.gender || '-'} label='Gender' />
-        <Separator orientation='vertical' className='w-[2px]' />
-        <BiometricDisplay value={userData.age || '-'} label='Age' />
-        <Separator orientation='vertical' className='w-[2px]' />
-        <BiometricDisplay value={userData.height || '-'} label='cm' />
-        <Separator orientation='vertical' className='w-[2px]' />
-        <BiometricDisplay value={userData.weight || '-'} label='kg' />
+      <div className="flex items-center justify-center gap-6">
+        <BiometricDisplay value={userData.gender || "-"} label="Gender" />
+        <Separator orientation="vertical" className="w-[2px]" />
+        <BiometricDisplay value={userData.age || "-"} label="Age" />
+        <Separator orientation="vertical" className="w-[2px]" />
+        <BiometricDisplay value={userData.height || "-"} label="cm" />
+        <Separator orientation="vertical" className="w-[2px]" />
+        <BiometricDisplay value={userData.weight || "-"} label="kg" />
       </div>
 
       {/* CTA-Button w/ dialog */}
       <div
-        className='flex flex-col gap-2 bg-primary-700 rounded-md py-3 px-6 mx-auto lg:mt-8 text-neutral-50 hover:bg-primary-800 cursor-pointer transition'
-        onClick={(e) => onAction(e, 'calculateCalories')}
+        className="mx-auto flex cursor-pointer flex-col gap-2 rounded-md bg-primary-700 px-6 py-3 text-neutral-50 transition hover:bg-primary-800 lg:mt-8"
+        onClick={(e) => onAction(e, "calculateCalories")}
       >
-        <Bike className='mx-auto' size={22} />
-        <span className='text-center text-xs'>
+        <Bike className="mx-auto" size={22} />
+        <span className="text-center text-xs">
           Calculate calorie
           <br />
           needs

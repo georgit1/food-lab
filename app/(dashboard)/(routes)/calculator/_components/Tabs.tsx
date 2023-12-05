@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import React, { useMemo, useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState } from "react";
+import { motion } from "framer-motion";
 
-import { Separator } from '@/components/ui/separator';
+import { Separator } from "@/components/ui/separator";
 interface Tab {
   label: string;
   children: React.ReactNode;
@@ -23,16 +23,16 @@ const Tabs = ({ tabs }: TabsProps) => {
 
   return (
     <div>
-      <div className='flex space-x-4'>
+      <div className="flex space-x-4">
         {tabs?.map((tab) => (
-          <div key={tab.id} className='flex flex-col gap-1'>
-            <button className='text-sm' onClick={() => changeTab(tab.id)}>
+          <div key={tab.id} className="flex flex-col gap-1">
+            <button className="text-sm" onClick={() => changeTab(tab.id)}>
               {tab.label}
             </button>
             {activeTab === tab.id && (
               <motion.div
-                layoutId='tab-indicator'
-                className='border border-primary-600'
+                layoutId="tab-indicator"
+                className="border border-primary-600"
               />
             )}
           </div>
@@ -41,7 +41,7 @@ const Tabs = ({ tabs }: TabsProps) => {
       <Separator />
       <div>
         {tabs?.map((tab) => (
-          <div key={tab.id} className={activeTab === tab.id ? '' : 'hidden'}>
+          <div key={tab.id} className={activeTab === tab.id ? "" : "hidden"}>
             {tab.children}
           </div>
         ))}

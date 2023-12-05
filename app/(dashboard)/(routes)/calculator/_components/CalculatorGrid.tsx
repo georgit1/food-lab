@@ -1,17 +1,19 @@
-'use client';
+"use client";
+
+import { Mineral, TraceElement, Vitamin } from "@prisma/client";
 
 import {
   mineralItems,
   traceElementItems,
   vitaminItems,
-} from '@/constants/nutrients';
-import DataDisplayItem from './DataDisplayItem';
-import FoodTableItem from './FoodTableItem';
-import SubnutrientsItem from './SubnutrientsItem';
-import { useCalculator } from '@/context/CalculatorContext';
-import { FoodEntry, MealEntry, WholeFoodWithCategory } from '@/types/types';
-import { Mineral, TraceElement, Vitamin } from '@prisma/client';
-import { NutrientData } from '@/utils/calcPersonalNutrients';
+} from "@/constants/nutrients";
+import { useCalculator } from "@/context/CalculatorContext";
+import { NutrientData } from "@/utils/calcPersonalNutrients";
+import { FoodEntry, MealEntry, WholeFoodWithCategory } from "@/types/types";
+
+import DataDisplayItem from "./DataDisplayItem";
+import FoodTableItem from "./FoodTableItem";
+import SubnutrientsItem from "./SubnutrientsItem";
 
 interface CalculatorGridProps {
   foodData: WholeFoodWithCategory[];
@@ -32,20 +34,14 @@ const CalculatorGrid = ({
     mealEntries: MealEntry[];
   } = useCalculator();
 
-  // TODO - is this neccessarry - why??
-  // NOTE - chosenFood was passed to FoodTableItem belwo!!
-  // const foodIds = foodEntries.map((entry) => entry.id);
-  // const choosenFood = foodData.filter((food) => foodIds.includes(food.id));
-  // console.log('#1', foodEntries); --> takes quantity into account
-  // console.log('#2', choosenFood);
   // extract nutrient values based on what mentioned in the items arrays
   // and also extract associated units from the foodData of the database
   const minerals = mineralItems.reduce((acc, item) => {
     return {
       ...acc,
       [item]: totalNutrients[item],
-      [item + 'Unit']:
-        foodData[0].minerals?.[0][(item + 'Unit') as keyof Mineral],
+      [item + "Unit"]:
+        foodData[0].minerals?.[0][(item + "Unit") as keyof Mineral],
     };
   }, {});
 
@@ -53,8 +49,8 @@ const CalculatorGrid = ({
     return {
       ...acc,
       [item]: totalNutrients[item],
-      [item + 'Unit']:
-        foodData[0].traceElements?.[0][(item + 'Unit') as keyof TraceElement],
+      [item + "Unit"]:
+        foodData[0].traceElements?.[0][(item + "Unit") as keyof TraceElement],
     };
   }, {});
 
@@ -62,13 +58,13 @@ const CalculatorGrid = ({
     return {
       ...acc,
       [item]: totalNutrients[item],
-      [item + 'Unit']:
-        foodData[0].vitamins?.[0][(item + 'Unit') as keyof Vitamin],
+      [item + "Unit"]:
+        foodData[0].vitamins?.[0][(item + "Unit") as keyof Vitamin],
     };
   }, {});
 
   return (
-    <div className='grid grid-cols-1 lg:grid-cols-2 gap-4 mt-8'>
+    <div className="mt-8 grid grid-cols-1 gap-4 lg:grid-cols-2">
       <FoodTableItem foodEntries={foodEntries} mealEntries={mealEntries} />
       <DataDisplayItem
         totalNutrients={totalNutrients}

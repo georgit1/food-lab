@@ -1,15 +1,16 @@
-import { Mineral, TraceElement, Vitamin } from '@prisma/client';
+import { Mineral, TraceElement, Vitamin } from "@prisma/client";
 
 import {
   mineralItems,
   traceElementItems,
   vitaminItems,
-} from '@/constants/nutrients';
-import NutrientsBarChart from './NutrientsBarChart';
-import NutrientsTable from '@/app/(food)/(routes)/details/_components/NutrientsTable';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { NutrientData } from '@/utils/calcPersonalNutrients';
+} from "@/constants/nutrients";
+import { NutrientData } from "@/utils/calcPersonalNutrients";
+
+import NutrientsBarChart from "./NutrientsBarChart";
+import NutrientsTable from "./NutrientsTable";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface NutrientIndex {
   [key: string]: number | null;
@@ -29,33 +30,33 @@ const SubNutrientsItem = ({
   requiredNutrients,
 }: SubNutrientsItemProps) => {
   const allMineralsNull = mineralItems.every(
-    (mineral) => minerals[mineral] === null
+    (mineral) => minerals[mineral] === null,
   );
   const allTraceElementsNull = traceElementItems.every(
-    (traceElement) => traceElements[traceElement] === null
+    (traceElement) => traceElements[traceElement] === null,
   );
   const allVitaminsNull = vitaminItems.every(
-    (vitamin) => vitamins[vitamin] === null
+    (vitamin) => vitamins[vitamin] === null,
   );
 
   return (
-    <div className='row-span-3 col-span-3 order-6 lg:order-3 bg-primary-50 rounded-md p-2 overflow-hidden'>
-      <Tabs defaultValue='minerals'>
-        <TabsList className='w-full'>
-          <TabsTrigger value='minerals'>Minerals</TabsTrigger>
-          <TabsTrigger value='traceElements'>Trace Elements</TabsTrigger>
-          <TabsTrigger value='vitamins'>Vitamins</TabsTrigger>
+    <div className="order-6 col-span-3 row-span-3 mb-6 min-h-[280px] overflow-hidden rounded-md bg-primary-50 p-2 lg:order-3">
+      <Tabs defaultValue="minerals">
+        <TabsList className="w-full">
+          <TabsTrigger value="minerals">Minerals</TabsTrigger>
+          <TabsTrigger value="traceElements">Trace Elements</TabsTrigger>
+          <TabsTrigger value="vitamins">Vitamins</TabsTrigger>
         </TabsList>
-        <TabsContent value='minerals'>
+        <TabsContent value="minerals">
           {!allMineralsNull ? (
             <>
               <NutrientsBarChart
                 nutrients={minerals}
                 nutrientsItems={mineralItems}
-                targetUnit='mg'
+                targetUnit="mg"
                 requiredNutrients={requiredNutrients}
               />
-              <ScrollArea className='h-[300px]'>
+              <ScrollArea className="h-[300px]">
                 <NutrientsTable
                   nutrients={minerals}
                   nutrientsItems={mineralItems}
@@ -64,44 +65,44 @@ const SubNutrientsItem = ({
               </ScrollArea>
             </>
           ) : (
-            <p className='text-sm text-neutral-600 font-semibold text-center lg:mt-56'>
+            <p className="mt-16 text-center text-sm font-semibold text-neutral-600 lg:mt-56">
               no data available
             </p>
           )}
         </TabsContent>
-        <TabsContent value='traceElements'>
+        <TabsContent value="traceElements">
           {!allTraceElementsNull ? (
             <>
               <NutrientsBarChart
                 nutrients={traceElements}
                 nutrientsItems={traceElementItems}
-                targetUnit='mg'
+                targetUnit="mg"
                 requiredNutrients={requiredNutrients}
               />
-              <ScrollArea className='h-[300px]'>
+              <ScrollArea className="h-[300px]">
                 <NutrientsTable
                   nutrients={traceElements}
                   nutrientsItems={traceElementItems}
                   requiredNutrients={requiredNutrients}
                 />
-              </ScrollArea>{' '}
+              </ScrollArea>
             </>
           ) : (
-            <p className='text-sm text-neutral-600 font-semibold text-center lg:mt-56'>
+            <p className="text-center text-sm font-semibold text-neutral-600 lg:mt-56">
               no data available
             </p>
           )}
         </TabsContent>
-        <TabsContent value='vitamins'>
+        <TabsContent value="vitamins">
           {!allVitaminsNull ? (
             <>
               <NutrientsBarChart
                 nutrients={vitamins}
                 nutrientsItems={vitaminItems}
-                targetUnit='mg'
+                targetUnit="mg"
                 requiredNutrients={requiredNutrients}
               />
-              <ScrollArea className='h-[300px]'>
+              <ScrollArea className="h-[300px]">
                 <NutrientsTable
                   nutrients={vitamins}
                   nutrientsItems={vitaminItems}
@@ -110,7 +111,7 @@ const SubNutrientsItem = ({
               </ScrollArea>
             </>
           ) : (
-            <p className='text-sm text-neutral-600 font-semibold text-center lg:mt-56'>
+            <p className="text-center text-sm font-semibold text-neutral-600 lg:mt-56">
               no data available
             </p>
           )}

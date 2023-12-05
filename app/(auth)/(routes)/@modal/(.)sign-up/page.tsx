@@ -1,5 +1,5 @@
-import SignUpForm from '@/app/(auth)/_components/SignUpForm';
-import Modal from '@/components/Modal';
+import SignUpForm from "../../../_components/SignUpForm";
+import Modal from "@/components/Modal";
 
 const SignUpModal = () => {
   return (

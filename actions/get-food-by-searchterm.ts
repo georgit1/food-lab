@@ -1,19 +1,16 @@
-'use server';
+"use server";
 
-import { db } from '@/lib/db';
-import getCurrentUser from '@/utils/getCurrentUser';
+import { db } from "@/lib/db";
 
 export const getFoodBySearchTerm = async (
   searchTerm: string,
-  userId: string
+  userId: string,
 ) => {
   try {
-    // const currentUser = await getCurrentUser();
     const food = await db.food.findMany({
       where: {
         AND: [
           {
-            // OR: [{ userId: currentUser?.id }, { isCreator: true }],
             OR: [{ userId }, { isCreator: true }],
           },
           { title: { contains: searchTerm } },
@@ -30,7 +27,7 @@ export const getFoodBySearchTerm = async (
     });
     return food;
   } catch (error) {
-    console.log('[GET_FOOD_BY_SEARCHTERM', error);
+    console.log("[GET_FOOD_BY_SEARCHTERM", error);
     return [];
   }
 };

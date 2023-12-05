@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import * as z from 'zod';
-import { signIn, useSession } from 'next-auth/react';
-import { useEffect, useState } from 'react';
-import { BsGithub, BsGoogle } from 'react-icons/bs';
-import { useForm } from 'react-hook-form';
-import { useRouter } from 'next/navigation';
-import { toast } from 'react-hot-toast';
-import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from "zod";
+import { signIn, useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
+import { BsGithub, BsGoogle } from "react-icons/bs";
+import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
+import { toast } from "react-hot-toast";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-import AuthSocialButton from './AuthSocialButton';
+import AuthSocialButton from "./AuthSocialButton";
 
 import {
   Form,
@@ -18,20 +18,20 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import Loader from '@/components/Loader';
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import Loader from "@/components/Loader";
 
 const formSchema = z.object({
   email: z
     .string()
     .min(1, {
-      message: 'Email is required',
+      message: "Email is required",
     })
     .email(),
-  password: z.string().min(1, { message: 'password is required' }).min(8, {
-    message: 'Password must be at least 8 characters long',
+  password: z.string().min(1, { message: "password is required" }).min(8, {
+    message: "Password must be at least 8 characters long",
   }),
 });
 
@@ -43,34 +43,34 @@ const SignInForm = () => {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: { email: '', password: '' },
+    defaultValues: { email: "", password: "" },
   });
 
   useEffect(() => {
-    if (session?.status === 'authenticated') {
-      router.push('/');
+    if (session?.status === "authenticated") {
+      router.push("/");
     }
   }, [session?.status, router]);
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       setIsLoading(true);
-      const res = await signIn('credentials', {
+      const res = await signIn("credentials", {
         ...values,
         redirect: false,
       });
 
       if (res?.error) {
-        toast.error('Invalid credentials!');
+        toast.error("Invalid credentials!");
       }
 
       if (res?.ok) {
-        router.push('/');
+        router.push("/");
       }
       setIsLoading(false);
     } catch (error) {
-      toast.error('Something went wrong');
-      console.log('Error during sign-in:', error);
+      toast.error("Something went wrong");
+      console.log("Error during sign-in:", error);
     } finally {
       setIsLoading(false);
     }
@@ -83,49 +83,49 @@ const SignInForm = () => {
       const res = await signIn(action, { redirect: false });
 
       if (res?.error) {
-        toast.error('Invalid credentials!');
+        toast.error("Invalid credentials!");
       }
 
       if (res?.ok) {
-        router.push('/');
+        router.push("/");
       }
 
       setIsLoading(false);
     } catch (error) {
-      toast.error('Something went wrong');
-      console.log('Error during sign-in:', error);
+      toast.error("Something went wrong");
+      console.log("Error during sign-in:", error);
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className='mt-8 sm:mx-auto sm:w-full sm:max-w-md '>
+    <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md ">
       <div
-        className='
-         bg-white
+        className="
+         rounded-lg
+          bg-white
           px-4
           py-8
           shadow
-          rounded-lg
           sm:px-10
-        '
+        "
       >
         <Form {...form}>
-          <form className='space-y-6' onSubmit={form.handleSubmit(onSubmit)}>
+          <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
             <FormField
               control={form.control}
-              name='email'
+              name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className='text-primary-600 font-semibold'>
+                  <FormLabel className="font-semibold text-primary-600">
                     Email
                   </FormLabel>
                   <FormControl>
                     <Input
                       disabled={isLoading}
-                      placeholder='Enter your email'
-                      type='email'
+                      placeholder="Enter your email"
+                      type="email"
                       {...field}
                     />
                   </FormControl>
@@ -135,17 +135,17 @@ const SignInForm = () => {
             />
             <FormField
               control={form.control}
-              name='password'
+              name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className='text-primary-600 font-semibold'>
+                  <FormLabel className="font-semibold text-primary-600">
                     Password
                   </FormLabel>
                   <FormControl>
                     <Input
                       disabled={isLoading}
-                      placeholder='Enter your password'
-                      type='password'
+                      placeholder="Enter your password"
+                      type="password"
                       {...field}
                     />
                   </FormControl>
@@ -154,59 +154,65 @@ const SignInForm = () => {
               )}
             />
             <div>
-              <Button disabled={isLoading} type='submit' className='w-full'>
-                {isLoading ? <Loader /> : 'Login'}
+              <Button disabled={isLoading} type="submit" className="w-full">
+                {isLoading ? <Loader /> : "Login"}
               </Button>
             </div>
           </form>
         </Form>
 
-        <div className='mt-6'>
-          <div className='relative'>
+        <div className="mt-6">
+          <div className="relative">
             <div
-              className='
+              className="
                 absolute 
                 inset-0 
                 flex 
                 items-center
-              '
+              "
             >
-              <div className='w-full border-t border-gray-300' />
+              <div className="w-full border-t border-gray-300" />
             </div>
-            <div className='relative flex justify-center text-sm'>
-              <span className='bg-white px-2 text-gray-500'>
+            <div className="relative flex justify-center text-sm">
+              <span className="bg-white px-2 text-gray-500">
                 or continue with
               </span>
             </div>
           </div>
 
-          <div className='mt-6 flex gap-2'>
+          <div className="mt-6 flex gap-2">
             <AuthSocialButton
               icon={BsGithub}
-              onClick={() => socialAction('github')}
+              onClick={() => socialAction("github")}
             />
+            <Button
+              variant={"outline"}
+              className="border-2 text-neutral-500"
+              onClick={() => router.push("/")}
+            >
+              Guest
+            </Button>
             <AuthSocialButton
               icon={BsGoogle}
-              onClick={() => socialAction('google')}
+              onClick={() => socialAction("google")}
             />
           </div>
         </div>
         <div
-          className='
-            flex 
-            gap-2 
-            justify-center 
-            text-sm 
+          className="
             mt-6 
+            flex 
+            justify-center 
+            gap-2 
             px-2 
+            text-sm 
             text-gray-500
-          '
+          "
         >
-          {/* TODO - try to reach to page instead of modal */}
           <div>New to FoodLab?</div>
           <div
-            onClick={() => router.push('/sign-up')}
-            className='underline cursor-pointer'
+            onClick={() => router.push("/sign-up")}
+            className="cursor-pointer underline"
           >
             Create an account
           </div>

@@ -10,7 +10,6 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import IconBadge from '@/components/IconBadge';
 import IconHeader from '@/components/IconHeader';
 
 interface GeneralFormProps {

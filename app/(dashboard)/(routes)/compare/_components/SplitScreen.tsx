@@ -1,27 +1,28 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Category, Food } from '@prisma/client';
+import { useState } from "react";
+import { Category, Food } from "@prisma/client";
 
-import { WholeFoodWithCategory } from '@/types/types';
+import { WholeFoodWithCategory } from "@/types/types";
 
-import { useWeight } from '@/context/WeightContext';
-import { WholeFood, seperateNutrientData } from '@/lib/utils';
-import { NutrientData } from '@/utils/calcPersonalNutrients';
+import { useWeight } from "@/context/WeightContext";
+import { NutrientData } from "@/utils/calcPersonalNutrients";
+import { WholeFood, seperateNutrientData } from "@/utils/convertUtils";
 import {
   NutrientValues,
   calculateCosineSimilarity,
   calculateHealthRating,
   calculateNutrientScore,
   sumCommonNutrientValues,
-} from '@/utils/compareUtils';
-import Header from './Header';
-import SearchCombobox from './SearchCombobox';
-import SectionProgress from './SectionProgress';
-import NutrientComparison from './NutrientComparison';
-import NutrientsPieChart from './NutrientsPieChart';
-import ComparisonRow from './ComparisonRow';
-import { Separator } from '@/components/ui/separator';
+} from "@/utils/compareUtils";
+import Header from "./Header";
+import SearchCombobox from "./SearchCombobox";
+import SectionProgress from "./SectionProgress";
+import NutrientComparison from "./NutrientComparison";
+import NutrientsPieChart from "./NutrientsPieChart";
+import ComparisonRow from "./ComparisonRow";
+import { Separator } from "@/components/ui/separator";
+import Legend from "./Legend";
 
 type FoodWithCategory = Food & { category: Category };
 
@@ -36,7 +37,6 @@ interface SelectedFoods {
   foodRight: WholeFoodWithCategory | null;
 }
 
-// TODO - span background full height
 const SplitScreen = ({
   favorites,
   requiredNutrients,
@@ -88,43 +88,18 @@ const SplitScreen = ({
   const leftHealthRating = calculateHealthRating(
     fullLeftFood,
     requiredNutrients,
-    nutrientWeights
+    nutrientWeights,
   );
-  // const leftHealthRating = calculateHealthRating(
-  //   {
-  //     calories: 120,
-  //     proteins: 12,
-  //     fats: 30,
-  //     carbohydrates: 45,
-  //     fiber: 8,
-  //     salt: 2,
-  //   },
-  //   {
-  //     calories: 2700,
-  //     proteins: 75,
-  //     fats: 60,
-  //     carbohydrates: 280,
-  //     fiber: 30,
-  //     salt: 5,
-  //   },
-  //   {
-  //     calories: 0.1,
-  //     proteins: 0.2,
-  //     fats: 0.15,
-  //     carbohydrates: 0.2,
-  //     fiber: 1,
-  //     salt: 1,
-  //   }
-  // );
+
   const rightHealthRating = calculateHealthRating(
     fullRightFood,
     requiredNutrients,
-    nutrientWeights
+    nutrientWeights,
   );
 
   const handleFoodSelection = (
     food: WholeFoodWithCategory | null,
-    foodIdentifier: string
+    foodIdentifier: string,
   ) => {
     setSelectedFoods((prevSelectedFoods) => ({
       ...prevSelectedFoods,
@@ -133,112 +108,132 @@ const SplitScreen = ({
   };
 
   const chartDataLeft = [
-    { name: 'Calories', value: seperatedFoodLeft?.mainNutrients.calories || 1 },
-    { name: 'Fats', value: seperatedFoodLeft?.mainNutrients.fats || 1 },
-    { name: 'Proteins', value: seperatedFoodLeft?.mainNutrients.proteins || 1 },
+    { name: "Calories", value: seperatedFoodLeft?.mainNutrients.calories || 1 },
+    { name: "Fats", value: seperatedFoodLeft?.mainNutrients.fats || 1 },
+    { name: "Proteins", value: seperatedFoodLeft?.mainNutrients.proteins || 1 },
     {
-      name: 'Carbohydrates',
+      name: "Carbohydrates",
       value: seperatedFoodLeft?.mainNutrients.carbohydrates || 1,
     },
-    { name: 'Sugar', value: seperatedFoodLeft?.mainNutrients.sugar || 1 },
-    { name: 'Fiber', value: seperatedFoodLeft?.mainNutrients.fiber || 1 },
-    { name: 'Salt', value: seperatedFoodLeft?.mainNutrients.salt || 1 },
-    { name: 'Water', value: seperatedFoodLeft?.mainNutrients.water || 1 },
+    { name: "Sugar", value: seperatedFoodLeft?.mainNutrients.sugar || 1 },
+    { name: "Fiber", value: seperatedFoodLeft?.mainNutrients.fiber || 1 },
+    { name: "Salt", value: seperatedFoodLeft?.mainNutrients.salt || 1 },
+    { name: "Water", value: seperatedFoodLeft?.mainNutrients.water || 1 },
   ];
 
   const chartDataRight = [
     {
-      name: 'Calories',
+      name: "Calories",
       value: seperatedFoodRight?.mainNutrients.calories || 1,
     },
-    { name: 'Fats', value: seperatedFoodRight?.mainNutrients.fats || 1 },
+    { name: "Fats", value: seperatedFoodRight?.mainNutrients.fats || 1 },
     {
-      name: 'Proteins',
+      name: "Proteins",
       value: seperatedFoodRight?.mainNutrients.proteins || 1,
     },
     {
-      name: 'Carbohydrates',
+      name: "Carbohydrates",
       value: seperatedFoodRight?.mainNutrients.carbohydrates || 1,
     },
-    { name: 'Sugar', value: seperatedFoodRight?.mainNutrients.sugar || 1 },
-    { name: 'Fiber', value: seperatedFoodRight?.mainNutrients.fiber || 1 },
-    { name: 'Salt', value: seperatedFoodRight?.mainNutrients.salt || 1 },
-    { name: 'Water', value: seperatedFoodRight?.mainNutrients.water || 1 },
+    { name: "Sugar", value: seperatedFoodRight?.mainNutrients.sugar || 1 },
+    { name: "Fiber", value: seperatedFoodRight?.mainNutrients.fiber || 1 },
+    { name: "Salt", value: seperatedFoodRight?.mainNutrients.salt || 1 },
+    { name: "Water", value: seperatedFoodRight?.mainNutrients.water || 1 },
   ];
 
   // calculate totalSum:
-
   const [totalSumLeft, totalSumRight] = sumCommonNutrientValues(
     { ...fullLeftFood, score: leftScore, healthRating: leftHealthRating },
-    { ...fullRightFood, score: rightScore, healthRating: rightHealthRating }
+    { ...fullRightFood, score: rightScore, healthRating: rightHealthRating },
   );
 
+  const legendData = [
+    { label: "Calories" },
+    { label: "Fats" },
+    { label: "Proteins" },
+    { label: "Carbs" },
+    { label: "Sugar" },
+    { label: "Fiber" },
+    { label: "Salt" },
+    { label: "Water" },
+  ];
+
+  const legendColors = [
+    "#bae6fd",
+    "#7dd3fc",
+    "#38bdf8",
+    "#0ea5e9",
+    "#0284c7",
+    "#0369a1",
+    "#075985",
+    "#0c4a6e",
+  ];
+
   return (
-    <div className='relative grid grid-cols-2 min-h-screen mt-8'>
+    <div className="relative mt-8 grid min-h-screen grid-cols-2">
       {/* Left side */}
-      <div className='bg-primary-50 p-4 text-center'>
+      <div className="bg-primary-50 p-4 text-center">
         <SearchCombobox
           favorites={favorites}
           foodData={foodData}
-          identifier='foodLeft'
+          identifier="foodLeft"
           onFoodSelection={handleFoodSelection}
         />
 
         <Header
-          title={selectedFoods.foodLeft?.title || ''}
-          category={selectedFoods.foodLeft?.category.name || ''}
-          imageSrc={selectedFoods.foodLeft?.imageUrl || ''}
+          title={selectedFoods.foodLeft?.title || ""}
+          category={selectedFoods.foodLeft?.category.name || ""}
+          imageSrc={selectedFoods.foodLeft?.imageUrl || ""}
           winner={totalSumLeft > totalSumRight}
         />
       </div>
 
       {/* Right side */}
-      <div className='bg-primary-100 p-4 text-center'>
+      <div className="bg-primary-100 p-4 text-center">
         <SearchCombobox
           favorites={favorites}
           foodData={foodData}
-          identifier='foodRight'
+          identifier="foodRight"
           onFoodSelection={handleFoodSelection}
         />
 
         <Header
-          title={selectedFoods.foodRight?.title || ''}
-          category={selectedFoods.foodRight?.category.name || ''}
-          imageSrc={selectedFoods.foodRight?.imageUrl || ''}
-          variant='right'
+          title={selectedFoods.foodRight?.title || ""}
+          category={selectedFoods.foodRight?.category.name || ""}
+          imageSrc={selectedFoods.foodRight?.imageUrl || ""}
+          variant="right"
           winner={totalSumRight > totalSumLeft}
         />
       </div>
 
       {/* centered content */}
-      <div className='absolute w-full flex flex-col top-40 left-1/2 transform -translate-x-1/2 text-center pb-8'>
-        {/* <div className='col-span-2 w-full flex flex-col text-center pb-8'> */}
-        <Separator className='w-[90%] h-[1.5px] mx-auto mt-2 mb-4 bg-primary-200' />
-        <span className='text-md text-primary-800 font-semibold'>
+      <div className="bg-split-bg absolute left-1/2 top-40 flex w-full -translate-x-1/2 transform flex-col pb-5 text-center">
+        <Separator className="mx-auto mb-4 mt-2 h-[1.5px] w-[90%] bg-primary-200" />
+        <span className="text-md mb-1 font-semibold text-primary-800">
           Similarity
         </span>
-        <span className='text-lg bg-neutral-50 text-primary-800 font-semibold px-3 mx-auto rounded-sm'>
+        <span className="mx-auto mb-1 rounded-sm bg-neutral-50 px-3 text-lg font-semibold text-primary-800">
           {similarity?.toFixed(0)}
         </span>
         <SectionProgress value={similarity} />
 
         <ComparisonRow
-          label='Score'
+          label="Score"
           leftValue={leftScore}
           rightValue={rightScore}
         />
         <ComparisonRow
-          label='Healthrating'
+          label="Healthrating"
           leftValue={leftHealthRating}
           rightValue={rightHealthRating}
         />
 
         {/* Chart */}
-        <div className='flex h-[250px] w-full max-w-[800px] mx-auto'>
-          {/* TODO - maybe legend in middle */}
+        <div className="mx-auto mt-8 flex h-[155px] w-full max-w-[800px]">
           <NutrientsPieChart data={chartDataLeft} />
           <NutrientsPieChart data={chartDataRight} />
         </div>
+        <Legend data={legendData} colors={legendColors} />
 
         {/* Nutrients Comparison bars*/}
         <NutrientComparison
@@ -256,9 +251,9 @@ const SplitScreen = ({
           }}
         />
 
-        <Separator className='w-[90%] h-[1.5px] mx-auto my-5 bg-primary-200' />
+        <Separator className="mx-auto my-5 h-[1.5px] w-[90%] bg-primary-200" />
         <ComparisonRow
-          label='Total'
+          label="Total"
           leftValue={totalSumLeft}
           rightValue={totalSumRight}
         />

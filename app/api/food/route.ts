@@ -1,8 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
 
-import { db } from '@/lib/db';
-import getCurrentUser from '@/utils/getCurrentUser';
-import { NextApiRequest } from 'next';
+import { db } from "@/lib/db";
+import getCurrentUser from "@/utils/getCurrentUser";
 
 export async function POST(req: Request) {
   try {
@@ -10,7 +9,7 @@ export async function POST(req: Request) {
     const { title, categoryId } = await req.json();
 
     if (!currentUser?.id || !currentUser?.email) {
-      return new NextResponse('Unauthorized', { status: 401 });
+      return new NextResponse("Unauthorized", { status: 401 });
     }
 
     const food = await db.food.create({
@@ -23,8 +22,8 @@ export async function POST(req: Request) {
 
     return NextResponse.json(food);
   } catch (error) {
-    console.log('[FOOD]', error);
-    return new NextResponse('Internal Error', { status: 500 });
+    console.log("[FOOD]", error);
+    return new NextResponse("Internal Error", { status: 500 });
   }
 }
 
@@ -33,10 +32,10 @@ export async function GET(req: Request) {
   try {
     const currentUser = await getCurrentUser();
     const url = new URL(req.url);
-    const searchTerm = url.searchParams.get('searchTerm');
+    const searchTerm = url.searchParams.get("searchTerm");
 
     if (!currentUser?.id || !currentUser?.email) {
-      return new NextResponse('Unauthorized', { status: 401 });
+      return new NextResponse("Unauthorized", { status: 401 });
     }
 
     const food = await db.food.findMany({
@@ -60,7 +59,7 @@ export async function GET(req: Request) {
 
     return NextResponse.json(food);
   } catch (error) {
-    console.log('[FOOD]', error);
-    return new NextResponse('Internal Error', { status: 500 });
+    console.log("[FOOD]", error);
+    return new NextResponse("Internal Error", { status: 500 });
   }
 }

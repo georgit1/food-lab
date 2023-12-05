@@ -1,7 +1,9 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { ArrowUpDown } from 'lucide-react';
+import { useState } from "react";
+import { ArrowUpDown } from "lucide-react";
+
+import { WholeFoodWithCategory } from "@/types/types";
 
 import {
   Table,
@@ -10,11 +12,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import StackedTextWithImage from '@/components/StackedTextWithImage';
-import ToggleFoodButton from './ToggleFoodButton';
-import { WholeFoodWithCategory } from '@/types/types';
+} from "@/components/ui/table";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import StackedTextWithImage from "@/components/StackedTextWithImage";
+import ToggleFoodButton from "./ToggleFoodButton";
 
 interface FoodItemsTabProps {
   foodData: WholeFoodWithCategory[];
@@ -22,35 +23,35 @@ interface FoodItemsTabProps {
 }
 
 const FoodItemsTab = ({ foodData, useCase }: FoodItemsTabProps) => {
-  const [sortOrder, setSortOrder] = useState('asc');
+  const [sortOrder, setSortOrder] = useState("asc");
 
   const toggleSortOrder = () => {
-    setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+    setSortOrder(sortOrder === "asc" ? "desc" : "asc");
   };
 
   // sort favorites based on the current sort order
   const sortedFoodData = foodData.slice().sort((a, b) => {
     const comparison =
-      sortOrder === 'asc'
+      sortOrder === "asc"
         ? a.title.localeCompare(b.title)
         : b.title.localeCompare(a.title);
     return comparison;
   });
 
   return (
-    <ScrollArea className='min-h-[300px]'>
+    <ScrollArea className="h-[400px]">
       {sortedFoodData.length != 0 && (
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className='flex items-center'>
-                <span className='mr-2 truncate'>Title</span>
+              <TableHead className="flex items-center">
+                <span className="mr-2 truncate">Title</span>
                 <button onClick={toggleSortOrder}>
                   <ArrowUpDown size={15} />
                 </button>
               </TableHead>
-              <TableHead className='w-0 sm:w-max'>
-                <span className='hidden sm:block'>Attributes</span>
+              <TableHead className="w-0 sm:w-max">
+                <span className="hidden sm:block">Attributes</span>
               </TableHead>
               <TableHead />
             </TableRow>
@@ -58,18 +59,15 @@ const FoodItemsTab = ({ foodData, useCase }: FoodItemsTabProps) => {
           <TableBody>
             {sortedFoodData.map((item) => (
               <TableRow key={item.id}>
-                {/* <Link href={`/details/${item.id}`} onClick={onClose}> */}
                 <StackedTextWithImage
                   isCreator={item.isCreator}
-                  imageSrc={item.imageUrl || ''}
+                  imageSrc={item.imageUrl || ""}
                   title={item.title}
                   subtext={item.category.name}
                 />
-                {/* </Link> */}
-
                 <TableCell>
                   {item.preference ? (
-                    <span className='whitespace-nowrap text-xs text-primary-600 border border-primary-600 py-1 px-2 rounded-full mr-1 hidden w-0 sm:inline sm:w-full'>
+                    <span className="mr-1 hidden w-0 whitespace-nowrap rounded-full border border-primary-600 px-2 py-1 text-xs text-primary-600 sm:inline sm:w-full">
                       {item.preference}
                     </span>
                   ) : null}
@@ -83,7 +81,7 @@ const FoodItemsTab = ({ foodData, useCase }: FoodItemsTabProps) => {
         </Table>
       )}
       {sortedFoodData.length === 0 && (
-        <div className='text-center text-sm text-muted-foreground mt-6'>
+        <div className="mt-6 text-center text-sm text-muted-foreground">
           No Food available
         </div>
       )}

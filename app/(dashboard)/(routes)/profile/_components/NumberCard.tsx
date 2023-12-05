@@ -1,5 +1,4 @@
 import { LucideIcon } from 'lucide-react';
-import { type } from 'os';
 
 type Variant = 'primary' | 'secondary';
 

@@ -3,6 +3,7 @@
 import { Trash } from 'lucide-react';
 
 import { useMeal } from '@/context/MealContext';
+
 import IconBadge from '@/components/IconBadge';
 
 interface DeleteMealButtonProps {

@@ -1,11 +1,12 @@
-import { redirect } from 'next/navigation';
+import { redirect } from "next/navigation";
 
-import { db } from '@/lib/db';
-import { calculateNutrientRequirements } from '@/utils/calcPersonalNutrients';
-import getCurrentUser from '@/utils/getCurrentUser';
+import { db } from "@/lib/db";
+import { calculateNutrientRequirements } from "@/utils/calcPersonalNutrients";
+import getCurrentUser from "@/utils/getCurrentUser";
 
-import CalculatorGrid from './_components/CalculatorGrid';
-import CalculatorHeader from './_components/CalculatorHeader';
+import CalculatorGrid from "./_components/CalculatorGrid";
+import CalculatorHeader from "./_components/CalculatorHeader";
+import AlertCalcModal from "@/components/modals/AlertCalcModal";
 
 const CalculatorPage = async () => {
   const currentUser = await getCurrentUser();
@@ -17,24 +18,18 @@ const CalculatorPage = async () => {
     !currentUser?.gender ||
     !currentUser?.weight
   )
-    return redirect('/');
-
-  // const food = await db.food.findMany({
-  //   where: {
-  //     OR: [{ id: currentUser.id }, { isCreator: true }],
-  //   },
-  //   include: {
-  //     category: true,
-  //     mainNutrients: true,
-  //     minerals: true,
-  //     traceElements: true,
-  //     vitamins: true,
-  //   },
-  // });
+    return <AlertCalcModal />;
 
   const food = await db.food.findMany({
     where: {
       OR: [{ userId: currentUser.id }, { isCreator: true }],
+      mainNutrients: {
+        some: {
+          calories: {
+            gt: 0,
+          },
+        },
+      },
     },
     include: {
       category: true,
@@ -46,12 +41,16 @@ const CalculatorPage = async () => {
   });
 
   if (!food) {
-    return redirect('/');
+    return redirect("/");
   }
 
   const meals = await db.meal.findMany({
     where: {
       userId: currentUser.id,
+      // not empty
+      mealFoods: {
+        some: {},
+      },
     },
     include: {
       mealFoods: {
@@ -75,7 +74,7 @@ const CalculatorPage = async () => {
     currentUser?.rmr,
     currentUser?.age,
     currentUser?.gender,
-    currentUser?.weight
+    currentUser?.weight,
   );
 
   return (

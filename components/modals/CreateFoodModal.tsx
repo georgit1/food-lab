@@ -1,10 +1,14 @@
-'use client';
+"use client";
 
-import axios from 'axios';
-import * as z from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
+import axios from "axios";
+import * as z from "zod";
+import { useRouter } from "next/navigation";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+
+import { useMeal } from "@/context/MealContext";
+import { useModal } from "@/hooks/useModalStore";
 
 import {
   Dialog,
@@ -12,7 +16,7 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
+} from "@/components/ui/dialog";
 import {
   Form,
   FormControl,
@@ -20,49 +24,49 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
+} from "@/components/ui/form";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { useRouter } from 'next/navigation';
-import { useModal } from '@/hooks/useModalStore';
-import Loader from '../Loader';
+} from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import Loader from "../Loader";
 
 const formSchema = z.object({
-  title: z.string().min(1, { message: 'Title is required' }),
-  categoryId: z.string().min(1, { message: 'Please select a category' }),
+  title: z.string().min(1, { message: "Title is required" }),
+  categoryId: z.string().min(1, { message: "Please select a category" }),
 });
 
 const CreateFoodModal = () => {
   const { isOpen, onClose, type, data } = useModal();
+  const { clearAll } = useMeal();
   const router = useRouter();
 
-  const isModalOpen = isOpen && type === 'createFood';
+  const isModalOpen = isOpen && type === "createFood";
   const { options } = data;
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: { title: '', categoryId: '' },
+    defaultValues: { title: "", categoryId: "" },
   });
 
   const { isSubmitting } = form.formState;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const response = await axios.post('/api/food', values);
+      const response = await axios.post("/api/food", values);
       router.push(`/manage/${response.data.id}`);
       onClose();
+      clearAll();
       router.refresh();
       form.reset();
-      toast.success('Food added');
+      toast.success("Food added");
     } catch {
-      toast.error('Something went wrong');
+      toast.error("Something went wrong");
     }
   };
 
@@ -73,29 +77,29 @@ const CreateFoodModal = () => {
 
   return (
     <Dialog open={isModalOpen} onOpenChange={handleClose}>
-      <DialogContent className='sm:max-w-[425px]'>
+      <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle className='text-primary-800'>Add a new food</DialogTitle>
-          <DialogDescription className='text-neutral-500'>
-            Fill out the fields to insert nutrition data.
+          <DialogTitle className="text-primary-800">Add a new food</DialogTitle>
+          <DialogDescription className="text-neutral-500">
+            Add a title, choose a category, and save to get started
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <FormField
               control={form.control}
-              name='title'
+              name="title"
               render={({ field }) => (
-                <FormItem className='w-full'>
-                  <FormLabel className='text-primary-800 font-semibold'>
+                <FormItem className="w-full">
+                  <FormLabel className="font-semibold text-primary-800">
                     Title
                   </FormLabel>
                   <FormControl>
                     <Input
                       disabled={isSubmitting}
-                      placeholder='Enter title'
+                      placeholder="Enter title"
                       {...field}
-                      value={field.value || ''}
+                      value={field.value || ""}
                     />
                   </FormControl>
                   <FormMessage />
@@ -104,10 +108,10 @@ const CreateFoodModal = () => {
             />
             <FormField
               control={form.control}
-              name='categoryId'
+              name="categoryId"
               render={({ field }) => (
-                <FormItem className=' w-full mt-3'>
-                  <FormLabel className='text-primary-800 font-semibold'>
+                <FormItem className=" mt-3 w-full">
+                  <FormLabel className="font-semibold text-primary-800">
                     Category
                   </FormLabel>
                   <Select
@@ -116,7 +120,7 @@ const CreateFoodModal = () => {
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder='Select a Category' />
+                        <SelectValue placeholder="Select a Category" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -131,13 +135,13 @@ const CreateFoodModal = () => {
                 </FormItem>
               )}
             />
-            <div className='flex items-center gap-x-2 mt-6'>
+            <div className="mt-6 flex items-center gap-x-2">
               <Button
                 disabled={isSubmitting}
-                type='submit'
-                className='w-full sm:w-[80px] sm:ml-auto bg-primary-600'
+                type="submit"
+                className="w-full bg-primary-600 sm:ml-auto sm:w-[80px]"
               >
-                {isSubmitting ? <Loader /> : 'Save'}
+                {isSubmitting ? <Loader /> : "Save"}
               </Button>
             </div>
           </form>

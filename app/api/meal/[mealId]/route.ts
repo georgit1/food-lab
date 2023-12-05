@@ -1,7 +1,8 @@
+import { NextResponse } from 'next/server';
+
 import { db } from '@/lib/db';
 import getCurrentUser from '@/utils/getCurrentUser';
 import { WholeFoodWithCategory } from '@/types/types';
-import { NextResponse } from 'next/server';
 
 type WholeFoodWithCategoryWithQuantity = WholeFoodWithCategory & {
   quantity: number;
