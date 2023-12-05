@@ -4,7 +4,6 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { BookmarkPlus, MoreHorizontal, Trash } from "lucide-react";
 
 import { FoodEntry } from "@/types/types";
-import { useMeal } from "@/context/MealContext";
 import { useCalculator } from "@/context/CalculatorContext";
 import { ModalType, useModal } from "@/hooks/useModalStore";
 
