@@ -46,7 +46,7 @@ const SubnutrientsItem = ({
   );
 
   return (
-    <div className="mb-6 min-h-[280px] overflow-hidden rounded-md bg-primary-50 p-2 lg:col-span-2">
+    <div className="xs:mx-0 -mx-5 mb-6 min-h-[280px] overflow-hidden rounded-md bg-primary-50 p-2 lg:col-span-2">
       <Tabs defaultValue="minerals">
         <TabsList>
           <TabsTrigger value="minerals">Minerals</TabsTrigger>

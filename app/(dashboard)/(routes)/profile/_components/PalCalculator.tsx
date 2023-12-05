@@ -26,19 +26,19 @@ const formSchema = z.object({
   age: z.number().min(1, { message: "Age is required" }),
   height: z.number().min(1, { message: "Height is required" }),
   weight: z.number().min(1, { message: "Weight is required" }),
-  hours_sleep: z.number().min(1),
+  hours_sleep: z.number({ invalid_type_error: "hours required" }).min(1),
   hours_sleep_select: z.string({
     required_error: "Please select an option.",
   }),
-  hours_profession: z.number().min(1),
+  hours_profession: z.number({ invalid_type_error: "hours required" }).min(1),
   hours_profession_select: z.string({
     required_error: "Please select an option.",
   }),
-  hours_sport: z.number().min(1),
+  hours_sport: z.number({ invalid_type_error: "hours required" }).min(1),
   hours_sport_select: z.string({
     required_error: "Please select an option.",
   }),
-  hours_leisure_time: z.number().min(1),
+  hours_leisure_time: z.number({ invalid_type_error: "hours required" }).min(1),
   hours_leisure_time_select: z.string({
     required_error: "Please select an option.",
   }),

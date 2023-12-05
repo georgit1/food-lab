@@ -11,7 +11,7 @@ interface FoodTableItemProps {
 
 const FoodTableItem = ({ foodEntries, mealEntries }: FoodTableItemProps) => {
   return (
-    <div className="rounded-md bg-primary-50 p-2">
+    <div className="xs:mx-0 -mx-5 rounded-md bg-primary-50 p-2">
       <ScrollArea className="h-[300px]">
         <FoodItemsTable foodEntries={foodEntries} />
         {mealEntries.length > 0 && <MealItemsTable mealEntries={mealEntries} />}
