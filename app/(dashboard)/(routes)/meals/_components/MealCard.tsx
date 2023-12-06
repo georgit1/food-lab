@@ -22,6 +22,7 @@ const MealCard = ({ id, title, imageUrl, foodTitles }: MealCardProps) => {
           <div className="flex h-[90px] w-[90px] flex-shrink-0 items-center justify-center overflow-hidden rounded-full border-[3.5px] border-neutral-800">
             {isImage && (
               <Image
+                unoptimized
                 width={30}
                 height={30}
                 className="h-full w-full object-cover"

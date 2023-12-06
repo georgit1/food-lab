@@ -83,7 +83,7 @@ const CreateMealForm = ({ initialData, mealId }: CreateMealProps) => {
           name="title"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="font-semibold text-primary-600">
+              <FormLabel className="font-semibold text-primary-800">
                 Title
               </FormLabel>
               <FormControl>
@@ -105,7 +105,7 @@ const CreateMealForm = ({ initialData, mealId }: CreateMealProps) => {
           name="description"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="font-semibold text-primary-600">
+              <FormLabel className="font-semibold text-primary-800">
                 Description (optional)
               </FormLabel>
               <FormControl>

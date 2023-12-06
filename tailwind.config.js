@@ -63,7 +63,7 @@ module.exports = withUt({
           oils_fats: "#86EFAC",
           herbs: "#BBF7D0",
           beverages: "#60A5FA",
-          dairy: "#AFFFFF",
+          dairy: "#2DEFEF",
           fruits: "#F87171",
         },
         secondary: {
