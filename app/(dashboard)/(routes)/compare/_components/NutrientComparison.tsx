@@ -40,43 +40,64 @@ const NutrientComparison = ({ food1, food2 }: NutrientComparisonProps) => {
 
   const nutrientsToShow = showAllNutrients ? validNutrients : defaultNutrients;
 
-  const hasValues = nutrientsToShow.some(
+  // Filter out default nutrients
+  const customNutrients = nutrients.filter(
+    (nutrient) => !defaultNutrients.includes(nutrient),
+  );
+
+  const hasValues = customNutrients.some(
     (nutrient) => food1[nutrient] && food2[nutrient],
   );
 
   return (
     <div className="mx-auto flex w-full max-w-[650px] flex-col gap-4 px-10">
-      {nutrientsToShow.map((nutrient) => (
-        <div key={nutrient} className="flex flex-col items-center gap-1">
-          <div className="flex w-full justify-between">
-            <span className="w-28 truncate text-left text-sm font-bold text-primary-800">
-              {food1[nutrient]?.toFixed(1) || "0.0"}
-            </span>
-            <div className="text-sm font-semibold text-primary-800">
-              {formatNutrientName(nutrient)}
+      {nutrientsToShow.map((nutrient) => {
+        const totalSum = food1[nutrient] + food2[nutrient];
+
+        // Calculate the percentage of each value
+        const percent1 =
+          isNaN(totalSum) || totalSum === 0
+            ? 50
+            : (food1[nutrient] / totalSum) * 100;
+        const percent2 =
+          isNaN(totalSum) || totalSum === 0
+            ? 50
+            : totalSum === 100
+              ? 50
+              : 100 - percent1;
+
+        return (
+          <div key={nutrient} className="flex flex-col items-center gap-1">
+            <div className="flex w-full justify-between">
+              <span className="w-28 truncate text-left text-sm font-bold text-primary-800">
+                {food1[nutrient]?.toFixed(1) || "0.0"}
+              </span>
+              <div className="text-sm font-semibold text-primary-800">
+                {formatNutrientName(nutrient)}
+              </div>
+              <span className="w-28 truncate text-right text-sm font-bold text-primary-800">
+                {food2[nutrient]?.toFixed(1) || "0.0"}
+              </span>
             </div>
-            <span className="w-28 truncate text-right text-sm font-bold text-primary-800">
-              {food2[nutrient]?.toFixed(1) || "0.0"}
-            </span>
+            <div className="flex w-full items-center overflow-x-hidden">
+              <div
+                className="h-1.5 rounded-l-full bg-primary-500"
+                style={{
+                  width: `${percent1}%`,
+                  maxWidth: "100%",
+                }}
+              ></div>
+              <div
+                className="h-1.5 rounded-r-full bg-primary-300"
+                style={{
+                  width: `${percent2}%`,
+                  maxWidth: "100%",
+                }}
+              ></div>
+            </div>
           </div>
-          <div className="flex w-full items-center overflow-x-hidden">
-            <div
-              className="h-1.5 rounded-l-full bg-primary-500"
-              style={{
-                width: `${(food1[nutrient] / 2) * 100 || 50}%`,
-                maxWidth: "100%",
-              }}
-            ></div>
-            <div
-              className="h-1.5 rounded-r-full bg-primary-300"
-              style={{
-                width: `${(food2[nutrient] / 2) * 100 || 50}%`,
-                maxWidth: "100%",
-              }}
-            ></div>
-          </div>
-        </div>
-      ))}
+        );
+      })}
       {hasValues && (
         <div className="col-span-2 mt-4 flex">
           <div className="mx-auto flex flex-col content-center gap-1">
