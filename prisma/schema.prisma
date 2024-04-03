@@ -1,5 +1,5 @@
 datasource db {
-  provider     = "mysql"
+  provider     = "postgresql"
   url          = env("DATABASE_URL")
   relationMode = "prisma"
 }
@@ -8,7 +8,6 @@ generator client {
   provider = "prisma-client-js"
   previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
-
 
 enum Gender {
   MALE
@@ -113,7 +112,7 @@ model Food {
 
   @@index([categoryId])
   @@index([userId])
-  @@fulltext([title])
+  // @@fulltext([title])
 }
 
 model MealFood {
